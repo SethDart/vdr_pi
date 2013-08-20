@@ -1,6 +1,6 @@
 ##---------------------------------------------------------------------------
 ## Author:      Jean-Eudes Onfray
-## Copyright:   
+## Copyright:
 ## License:     wxWidgets License
 ##---------------------------------------------------------------------------
 
@@ -47,12 +47,16 @@ IF(WIN32)
     ADD_DEFINITIONS(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE)
 ENDIF(WIN32)
 
+IF(UNIX AND NOT APPLE)
+  SET(PREFIX_PLUGINS /usr/lib/opencpn)
+  SET(PREFIX_DATA /usr/share)
+ENDIF(UNIX AND NOT APPLE)
 
-#SET(wxWidgets_USE_LIBS base core net xml html adv aui)
-#SET(BUILD_SHARED_LIBS TRUE)
-#SET( wxWidgets_USE_DEBUG OFF)
-#SET( wxWidgets_USE_UNICODE ON)
-#FIND_PACKAGE(wxWidgets REQUIRED)
+SET(wxWidgets_USE_LIBS base core net xml html adv aui)
+SET(BUILD_SHARED_LIBS TRUE)
+SET( wxWidgets_USE_DEBUG OFF)
+SET( wxWidgets_USE_UNICODE ON)
+FIND_PACKAGE(wxWidgets REQUIRED)
 
 INCLUDE(${wxWidgets_USE_FILE})
 
