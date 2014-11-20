@@ -32,6 +32,5 @@ SET(SRC_VDR
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_VDR} )
 
 INCLUDE("cmake/PluginInstall.cmake")
-INCLUDE("cmake/PluginCurl.cmake")
 INCLUDE("cmake/PluginLocalization.cmake")
 INCLUDE("cmake/PluginPackage.cmake")
