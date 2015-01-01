@@ -1,0 +1,53 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: opencpn\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-01 14:18-0600\n"
+"PO-Revision-Date: 2015-01-01 15:19-0500\n"
+"Last-Translator: nohal <pavel@kalian.cz>\n"
+"Language-Team: Estonian\n"
+"Language: et_EE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-File: /plugins/vdr_pi/po/vdr_pi.pot\n"
+
+#: src/vdr_pi.cpp:82
+msgid "Record"
+msgstr "Lindista"
+
+#: src/vdr_pi.cpp:84
+msgid "Play"
+msgstr "Esita"
+
+#: src/vdr_pi.cpp:151
+msgid "VDR"
+msgstr "Reisiinfo salvesti"
+
+#: src/vdr_pi.cpp:157
+msgid "Voyage Data Recorder plugin for OpenCPN"
+msgstr "Reisiinfo salvesti plugin OpenCPN'i jaoks"
+
+#: src/vdr_pi.cpp:162
+msgid "Voyage Data Recorder plugin for OpenCPN\nProvides NMEA stream save and replay."
+msgstr "Reisiinfo salvesti (VDR) plugin OpenCPN'i jaoks\nVõimaldab NMEA-voo salvetamise ja taasesitamise"
+
+#: src/vdr_pi.cpp:227 src/vdr_pi.cpp:261
+msgid "Choose a file"
+msgstr "Vali fail"
+
+#: src/vdr_pi.cpp:242
+msgid "VDR replay"
+msgstr "VDR taasesitamine"
+
+#: src/vdr_pi.cpp:339
+msgid "Speed:"
+msgstr "Kiirus:"
+
+#: src/vdr_pi.cpp:346
+msgid "Progress:"
+msgstr "Edenemine:"
+
