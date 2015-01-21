@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-01 14:18-0600\n"
-"PO-Revision-Date: 2015-01-01 15:19-0500\n"
+"PO-Revision-Date: 2015-01-18 18:35-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Greek\n"
 "Language: el_GR\n"
@@ -21,33 +21,33 @@ msgstr "Εγγραφή"
 
 #: src/vdr_pi.cpp:84
 msgid "Play"
-msgstr ""
+msgstr "Αναπαραγωγή"
 
 #: src/vdr_pi.cpp:151
 msgid "VDR"
-msgstr ""
+msgstr "VDR (ΚΔΤ)"
 
 #: src/vdr_pi.cpp:157
 msgid "Voyage Data Recorder plugin for OpenCPN"
-msgstr ""
+msgstr "Καταγραφικό δεδομένων ταξιδιού για το OpenCPN"
 
 #: src/vdr_pi.cpp:162
 msgid "Voyage Data Recorder plugin for OpenCPN\nProvides NMEA stream save and replay."
-msgstr ""
+msgstr "Καταγραφικό για Δεδεομένα Ταξιδιού (Voyage Data Recorder plugin) για το OpenCPN\nΚαταγράφει τα δεδεομένα NMEA και τα αναπαράγει."
 
 #: src/vdr_pi.cpp:227 src/vdr_pi.cpp:261
 msgid "Choose a file"
-msgstr ""
+msgstr "Επιλέξτε αρχείο"
 
 #: src/vdr_pi.cpp:242
 msgid "VDR replay"
-msgstr ""
+msgstr "Επανάληψη αναπαραγωγής VDR"
 
 #: src/vdr_pi.cpp:339
 msgid "Speed:"
-msgstr ""
+msgstr "Ταχύτητα:"
 
 #: src/vdr_pi.cpp:346
 msgid "Progress:"
-msgstr ""
+msgstr "Πρόοδος:"
 
