@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-01 14:18-0600\n"
-"PO-Revision-Date: 2015-01-18 18:34-0500\n"
+"PO-Revision-Date: 2015-05-23 05:01-0400\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -13,6 +13,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Language: cs\n"
 "X-Crowdin-File: /plugins/vdr_pi/po/vdr_pi.pot\n"
 
 #: src/vdr_pi.cpp:82
@@ -32,8 +33,10 @@ msgid "Voyage Data Recorder plugin for OpenCPN"
 msgstr "Doplněk Zapisovač dat pro OpenCPN"
 
 #: src/vdr_pi.cpp:162
-msgid "Voyage Data Recorder plugin for OpenCPN\nProvides NMEA stream save and replay."
-msgstr "Doplněk pro záznam dat pro OpenCPN\nPoskytuje ukládání a přehrávání NMEA dat ze senzorů."
+msgid "Voyage Data Recorder plugin for OpenCPN\n"
+"Provides NMEA stream save and replay."
+msgstr "Doplněk pro záznam dat pro OpenCPN\n"
+"Poskytuje ukládání a přehrávání NMEA dat ze senzorů."
 
 #: src/vdr_pi.cpp:227 src/vdr_pi.cpp:261
 msgid "Choose a file"
