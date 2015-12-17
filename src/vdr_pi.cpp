@@ -239,7 +239,7 @@ void vdr_pi::OnToolbarToolCallback(int id)
                   if (! m_pvdrcontrol )
                   {
                         m_pvdrcontrol = new VDRControl( GetOCPNCanvasWindow(), wxID_ANY, this, 1000/m_interval, m_istream.GetLineCount() );
-                        wxAuiPaneInfo pane = wxAuiPaneInfo().Name(_T("VDR")).Caption(_("VDR replay")).CaptionVisible(true).Float().FloatingPosition(50,100).Dockable(false).Fixed().CloseButton(false).Show(true);
+                        wxAuiPaneInfo pane = wxAuiPaneInfo().Name(_T("VDR")).Caption(wxString::Format(_("VDR replay: %s"), fdlg.GetFilename())).CaptionVisible(true).Float().FloatingPosition(50,100).Dockable(false).Fixed().CloseButton(false).Show(true);
                         m_pauimgr->AddPane( m_pvdrcontrol, pane );
                         m_pauimgr->Update();
                   }
