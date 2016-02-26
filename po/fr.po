@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-01 14:18-0600\n"
-"PO-Revision-Date: 2015-06-06 13:27-0400\n"
+"PO-Revision-Date: 2016-02-25 08:03-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -44,7 +44,7 @@ msgstr "Choisir un fichier"
 
 #: src/vdr_pi.cpp:242
 msgid "VDR replay"
-msgstr "Rejoueur de VDR"
+msgstr "Utiliser des enregistrement VDR"
 
 #: src/vdr_pi.cpp:339
 msgid "Speed:"

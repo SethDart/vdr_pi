@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-01 14:18-0600\n"
-"PO-Revision-Date: 2015-02-03 17:08-0500\n"
+"PO-Revision-Date: 2015-12-31 15:39-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Galician\n"
 "Language: gl_ES\n"
@@ -13,41 +13,44 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Language: gl\n"
 "X-Crowdin-File: /plugins/vdr_pi/po/vdr_pi.pot\n"
 
 #: src/vdr_pi.cpp:82
 msgid "Record"
-msgstr ""
+msgstr "Gravar"
 
 #: src/vdr_pi.cpp:84
 msgid "Play"
-msgstr ""
+msgstr "Reproducir"
 
 #: src/vdr_pi.cpp:151
 msgid "VDR"
-msgstr ""
+msgstr "VDR"
 
 #: src/vdr_pi.cpp:157
 msgid "Voyage Data Recorder plugin for OpenCPN"
-msgstr ""
+msgstr "Plugin Voyage Data Recorder para OpenCPN"
 
 #: src/vdr_pi.cpp:162
-msgid "Voyage Data Recorder plugin for OpenCPN\nProvides NMEA stream save and replay."
-msgstr ""
+msgid "Voyage Data Recorder plugin for OpenCPN\n"
+"Provides NMEA stream save and replay."
+msgstr "Plugin Voyage Data Recorder para OpenCPN\n"
+"Grava e reproduce contidos NMEA."
 
 #: src/vdr_pi.cpp:227 src/vdr_pi.cpp:261
 msgid "Choose a file"
-msgstr ""
+msgstr "Seleccione un ficheiro"
 
 #: src/vdr_pi.cpp:242
 msgid "VDR replay"
-msgstr ""
+msgstr "Reproducir VDR"
 
 #: src/vdr_pi.cpp:339
 msgid "Speed:"
-msgstr ""
+msgstr "Velocidade:"
 
 #: src/vdr_pi.cpp:346
 msgid "Progress:"
-msgstr ""
+msgstr "Progreso:"
 

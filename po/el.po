@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-01 14:18-0600\n"
-"PO-Revision-Date: 2015-04-07 11:22-0400\n"
+"PO-Revision-Date: 2016-02-18 16:08-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Greek\n"
 "Language: el_GR\n"
@@ -33,8 +33,10 @@ msgid "Voyage Data Recorder plugin for OpenCPN"
 msgstr "Καταγραφικό δεδομένων ταξιδιού για το OpenCPN"
 
 #: src/vdr_pi.cpp:162
-msgid "Voyage Data Recorder plugin for OpenCPN\nProvides NMEA stream save and replay."
-msgstr "Καταγραφικό για Δεδεομένα Ταξιδιού (Voyage Data Recorder plugin) για το OpenCPN\nΚαταγράφει τα δεδεομένα NMEA και τα αναπαράγει."
+msgid "Voyage Data Recorder plugin for OpenCPN\n"
+"Provides NMEA stream save and replay."
+msgstr "Καταγραφικό για Δεδεομένα Ταξιδιού (Voyage Data Recorder plugin) για το OpenCPN\n"
+"Καταγράφει τα δεδεομένα NMEA και τα αναπαράγει."
 
 #: src/vdr_pi.cpp:227 src/vdr_pi.cpp:261
 msgid "Choose a file"

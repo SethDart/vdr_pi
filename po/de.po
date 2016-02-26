@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-01 14:18-0600\n"
-"PO-Revision-Date: 2015-05-19 07:21-0400\n"
+"PO-Revision-Date: 2016-02-24 14:27-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -18,38 +18,39 @@ msgstr ""
 
 #: src/vdr_pi.cpp:82
 msgid "Record"
-msgstr ""
+msgstr "Aufnahme"
 
 #: src/vdr_pi.cpp:84
 msgid "Play"
-msgstr ""
+msgstr "Wiedergabe"
 
 #: src/vdr_pi.cpp:151
 msgid "VDR"
-msgstr ""
+msgstr "VDR"
 
 #: src/vdr_pi.cpp:157
 msgid "Voyage Data Recorder plugin for OpenCPN"
-msgstr ""
+msgstr "Voyage Data Recorder Plugin für OpenCPN"
 
 #: src/vdr_pi.cpp:162
 msgid "Voyage Data Recorder plugin for OpenCPN\n"
 "Provides NMEA stream save and replay."
-msgstr ""
+msgstr "Voyage Data Recorder Plugin für OpenCPN\n"
+"Zum Speichern und Wiedergeben von NMEA Datenströmen."
 
 #: src/vdr_pi.cpp:227 src/vdr_pi.cpp:261
 msgid "Choose a file"
-msgstr ""
+msgstr "Datei auswählen"
 
 #: src/vdr_pi.cpp:242
 msgid "VDR replay"
-msgstr ""
+msgstr "VDR-Wiedergabe"
 
 #: src/vdr_pi.cpp:339
 msgid "Speed:"
-msgstr ""
+msgstr "Geschw:"
 
 #: src/vdr_pi.cpp:346
 msgid "Progress:"
-msgstr ""
+msgstr "Fortschritt:"
 
