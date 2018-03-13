@@ -35,8 +35,7 @@
   #include "wx/wx.h"
 #endif //precompiled headers
 
-#define     PLUGIN_VERSION_MAJOR    0
-#define     PLUGIN_VERSION_MINOR    3
+#include "version.h"
 
 #define     MY_API_VERSION_MAJOR    1
 #define     MY_API_VERSION_MINOR    6
@@ -45,7 +44,7 @@
 #include <wx/filepicker.h>
 #include <wx/file.h>
 #include <wx/aui/aui.h>
-#include "../../../include/ocpn_plugin.h"
+#include "ocpn_plugin.h"
 
 #define VDR_TOOL_POSITION -1          // Request default positioning of toolbar tool
 
