@@ -1,1 +1,0 @@
-/usr/bin/c++  -fPIC  -pthread -pthread -Wl,-Bsymbolic -shared -Wl,-soname,libvdr_pi.so -o libvdr_pi.so CMakeFiles/vdr_pi.dir/src/icons.cpp.o CMakeFiles/vdr_pi.dir/src/vdr_pi.cpp.o  -L/usr/local/lib -L/usr/local/lib -pthread -lwx_baseu-3.1 -lwx_gtk2u_core-3.1 -lwx_baseu_net-3.1 -lwx_baseu_xml-3.1 -lwx_gtk2u_html-3.1 -lbz2 -lz -Wl,-rpath,/usr/local/lib: 

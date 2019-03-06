@@ -1,1 +1,0 @@
-/usr/local/lib/opencpn/libvdr_pi.so
