@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+6eaaff7d6d1004cb171e455914938ac9 CMakeFiles/vdr-po-update
+6eaaff7d6d1004cb171e455914938ac9 CMakeFiles/vdr-pot-update
+1a3b2d4380efb0cb70e23b9ba39ae5d7 po/vdr_pi.pot.dummy
