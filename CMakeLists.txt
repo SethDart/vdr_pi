@@ -1,6 +1,6 @@
 ##---------------------------------------------------------------------------
 ## Author:      Jean-Eudes Onfray
-## Copyright:   
+## Copyright:
 ## License:     wxWidgets License
 ##---------------------------------------------------------------------------
 
@@ -21,6 +21,20 @@ SET(PLUGIN_SOURCE_DIR .)
 MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
 
 #SET(CMAKE_BUILD_TYPE Debug)
+
+SET(NAME_SUFFIX "ov50")
+
+set (CMAKE_CXX_STANDARD 11)
+
+#SET(CMAKE_BUILD_TYPE Debug)
+
+OPTION(VDR_USE_SVG "Use SVG graphics" ON)
+
+INCLUDE("cmake/PluginConfigure.cmake")
+
+IF(VDR_USE_SVG)
+  ADD_DEFINITIONS(-DVDR_USE_SVG)
+ENDIF(VDR_USE_SVG)
 
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
@@ -71,87 +85,6 @@ SET(SRC_VDR
 
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_VDR} )
 
-IF(WIN32)
-  SET(OPENCPN_IMPORT_LIB "../../${CMAKE_CFG_INTDIR}/${PARENT}")
-  TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${OPENCPN_IMPORT_LIB} )
-  ADD_DEPENDENCIES(${PACKAGE_NAME} ${PARENT})
-ENDIF(WIN32)
-
-TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${wxWidgets_LIBRARIES} )
-
-IF(UNIX)
-INSTALL(TARGETS ${PACKAGE_NAME} RUNTIME LIBRARY DESTINATION ${PREFIX_PLUGINS})
-ENDIF(UNIX)
-
-IF(WIN32)
-INSTALL(TARGETS ${PACKAGE_NAME} RUNTIME DESTINATION "plugins")
-ENDIF(WIN32)
-
-# find src/ -name \*.cpp -or -name \*.h -or -name \*.hpp >po/POTFILES.in
-FIND_PROGRAM(GETTEXT_XGETTEXT_EXECUTABLE xgettext)
-IF (GETTEXT_XGETTEXT_EXECUTABLE)
-ADD_CUSTOM_COMMAND(
-   OUTPUT po/${PACKAGE_NAME}.pot.dummy
-   COMMAND ${GETTEXT_XGETTEXT_EXECUTABLE} --force-po --package-name=${PACKAGE_NAME} --package-version="${PACKAGE_VERSION}" --output=po/${PACKAGE_NAME}.pot  --keyword=_ --width=80 --files-from=${CMAKE_CURRENT_SOURCE_DIR}/po/POTFILES.in
-   DEPENDS po/POTFILES.in po/${PACKAGE_NAME}.pot
-   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-   COMMENT "vdr-pot-update [${PACKAGE_NAME}]: Generated pot file."
-)
-ADD_CUSTOM_TARGET(vdr-pot-update COMMENT "vdr-pot-update: Done." DEPENDS po/${PACKAGE_NAME}.pot.dummy)
-
-ENDIF(GETTEXT_XGETTEXT_EXECUTABLE )
-
-MACRO(GETTEXT_UPDATE_PO _potFile)
-   SET(_poFiles ${_potFile})
-   GET_FILENAME_COMPONENT(_absPotFile ${_potFile} ABSOLUTE)
-
-   FOREACH (_currentPoFile ${ARGN})
-      GET_FILENAME_COMPONENT(_absFile ${_currentPoFile} ABSOLUTE)
-      GET_FILENAME_COMPONENT(_poBasename ${_absFile} NAME_WE)
-
-      ADD_CUSTOM_COMMAND(
-         OUTPUT ${_absFile}.dummy
-         COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} --width=80 --strict --quiet --update --backup=none --no-location -s ${_absFile} ${_absPotFile}
-         DEPENDS ${_absPotFile} ${_absFile}
-         COMMENT "vdr-po-update [${_poBasename}]: Updated po file."
-      )
-
-      SET(_poFiles ${_poFiles} ${_absFile}.dummy)
-
-   ENDFOREACH (_currentPoFile )
-
-   ADD_CUSTOM_TARGET(vdr-po-update COMMENT "vdr-po-update: Done." DEPENDS ${_poFiles})
-ENDMACRO(GETTEXT_UPDATE_PO)
-
-IF (GETTEXT_MSGMERGE_EXECUTABLE)
-FILE(GLOB PACKAGE_PO_FILES po/*.po)
-GETTEXT_UPDATE_PO(po/${PACKAGE_NAME}.pot ${PACKAGE_PO_FILES})
-ENDIF(GETTEXT_MSGMERGE_EXECUTABLE)
-
-SET(_gmoFiles)
-MACRO(GETTEXT_BUILD_MO)
-   FOREACH (_poFile ${ARGN})
-      GET_FILENAME_COMPONENT(_absFile ${_poFile} ABSOLUTE)
-      GET_FILENAME_COMPONENT(_poBasename ${_absFile} NAME_WE)
-      SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/${_poBasename}.mo)
-
-      ADD_CUSTOM_COMMAND(
-         OUTPUT ${_gmoFile}
-         COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_absFile}
-         DEPENDS ${_absFile}
-         COMMENT "vdr-i18n [${_poBasename}]: Created mo file."
-      )
-
-      INSTALL(FILES ${_gmoFile} DESTINATION ${PREFIX_DATA}/locale/${_poBasename}/LC_MESSAGES RENAME opencpn-${PACKAGE_NAME}.mo )
-      SET(_gmoFiles ${_gmoFiles} ${_gmoFile})
-   ENDFOREACH (_poFile )
-ENDMACRO(GETTEXT_BUILD_MO)
-
-if(GETTEXT_MSGFMT_EXECUTABLE)
-   FILE(GLOB PACKAGE_PO_FILES po/*.po)
-   GETTEXT_BUILD_MO(${PACKAGE_PO_FILES})
-   ADD_CUSTOM_TARGET(vdr-i18n COMMENT "vdr-i18n: Done." DEPENDS ${_gmoFiles})
-   #ADD_DEPENDENCIES(vdr-i18n ${PACKAGE_PO_FILES})
-   ADD_DEPENDENCIES(${PACKAGE_NAME} vdr-i18n)
-ENDIF(GETTEXT_MSGFMT_EXECUTABLE)
-
+INCLUDE("cmake/PluginInstall.cmake")
+INCLUDE("cmake/PluginLocalization.cmake")
+INCLUDE("cmake/PluginPackage.cmake")
