@@ -1,35 +1,337 @@
 ##---------------------------------------------------------------------------
 ## Author:      Jean-Eudes Onfray
+## Cmake Author: jongough aka. Jon Gough
 ## Copyright:   
 ## License:     wxWidgets License
 ##---------------------------------------------------------------------------
-
+# CMake-CI Number: 0.0.001  
 # define minimum cmake version
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.2)
+cmake_minimum_required(VERSION 3.1.1)
+if(COMMAND cmake_policy)
+  if(POLICY CMP0043)
+    cmake_policy(SET CMP0043 NEW)
+  endif(POLICY CMP0043)
+  cmake_policy(SET CMP0048 NEW)
+  if(POLICY CMP0077)
+    cmake_policy(SET CMP0077 NEW)
+  endif(POLICY CMP0077)
+endif(COMMAND cmake_policy)
 
-PROJECT(vdr_pi)
+set(PACKAGE_NAME "vdr_pi")
+set(VERBOSE_NAME "VDR") 
+set(TITLE_NAME "Voyage Data Recorder")
+set(PACKAGE_CONTACT "Jean-Eudes Onfray")
+set(COMMON_NAME "WeatherRouting")
+# Don't change this, sets getcommonname "Common Plugin Name" in weather_routing_pi.cpp
+# Must remain the same Common Name as the legacy unmanaged plugins to avoid duplication.
+# VERBOSE_NAME should be the same as the plugin "Common Name"
 
-SET(PACKAGE_NAME vdr_pi)
-SET(VERBOSE_NAME VDR)
-SET(TITLE_NAME VDR)
-SET(CPACK_PACKAGE_CONTACT "Jean-Eudes Onfray")
+set(VERSION_MAJOR "0")
+set(VERSION_MINOR "4")
+set(VERSION_PATCH "0")
+set(VERSION_TWEAK "0")
+set(VERSION_DATE "03/04/2020")
+set(OCPN_MIN_VERSION "ov50")
+set(OCPN_API_VERSION_MAJOR "1")
+set(OCPN_API_VERSION_MINOR "16")
+set(TP_COMMENT "  * Release for O5 using CI")
 
-SET(VERSION_MAJOR "0")
-SET(VERSION_MINOR "4")
+set(PARENT "opencpn")
+set(PACKAGE "vdr")  #used for Package name
+#set(GIT_USER "SethDart")
+set(GIT_USER "rgleason")
+set(GIT_REPOSITORY_NAME "vdr_pi")
+message(STATUS "CIRCLECI: ${CIRCLECLI}, Env CIRCLECI: $ENV{CIRCLECI}")
+if($ENV{CIRCLECI})
+  set(GIT_REPOSITORY_HOST "github.com")
+  set(GIT_REPOSITORY_DIR "${GIT_USER}/")
+#  set(GIT_REPOSITORY_BRANCH "master")
+  set(GIT_REPOSITORY_BRANCH "pkging-pavel-ci")
+  #  set(GIT_REPOSITORY_BRANCH "cmake_flatpak_test")
+# else()
+#  set(GIT_REPOSITORY_HOST "git.eclipse.com.au")
+#  set(GIT_REPOSITORY_DIR "")
+#  set(GIT_REPOSITORY_BRANCH "cmake_flatpak_test")
+endif()
+# set(CLOUDSMITH_USER "SethDart")
+set(CLOUDSMITH_USER "rick-gleason")
+#set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
+set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")
+set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/vdr.html")  
+set(XML_SUMMARY "Plugin to record and player Nmea Data")
+set(XML_DESCRIPTION "Nmea record and player used for testing")
+set(APPVEYOR_TEST_DEPLOY_TO_CLOUDSMITH "true")
+option(PLUGIN_USE_SVG "Use SVG graphics" ON)
 
-#SET(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_STANDARD 11)
 
-INCLUDE("cmake/PluginConfigure.cmake")
+# Prefer libGL.so to libOpenGL.so, see CMP0072
+set(OpenGL_GL_PREFERENCE "LEGACY")
+
+set(PACKAGE_NAME ${PACKAGE}_pi)
+set(PACKAGE_FILE_NAME "${PARENT}-plugin-${PACKAGE}")
+string(TOUPPER "${PACKAGE}" TITLE_NAME)
+
+project(${PACKAGE_NAME} VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}.${VERSION_TWEAK})
+
+set(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+
+message(STATUS "${VERBOSE_NAME} Version: ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}.${VERSION_TWEAK}")
+message(STATUS "OPCN_FLATPAK: ${OCPN_FLATPAK}")
+
+# Don't use local version of GLU library
+set(USE_LOCAL_GLU FALSE)
+
+if("${CMAKE_BUILD_TYPE}" STREQUAL "")
+  set(CMAKE_BUILD_TYPE
+      "Release"
+      CACHE STRING "Choose the type of build" FORCE)
+elseif("${CMAKE_BUILD_TYPE}" STREQUAL "")
+  set(CMAKE_BUILD_TYPE
+      "Release"
+      CACHE STRING "Choose the type of build")
+endif("${CMAKE_BUILD_TYPE}" STREQUAL "")
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
+set(PKG_NVR ${PACKAGE_NAME}-${PROJECT_VERSION}-${OCPN_MIN_VERSION}-${OCPN_API_VERSION_MAJOR}.${OCPN_API_VERSION_MINOR})
+
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm*")
+    set(PKG_URL
+ "https://dl.cloudsmith.io/public/@pkg_repo@/raw/names/@name@/versions/@version@/@filename@")
+
+ else(CMAKE_SYSTEM_PROCESSOR MATCHES "arm*")
+ # This version works for the other environments
+    set(PKG_URL
+ "https://dl.cloudsmith.io/public/--pkg_repo--/raw/names/--name--/versions/--version--/--filename--")
+
+ endif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm*")
+
+include("cmake/PluginSetup.cmake")
+
+#========Below is specific to the plugin and is from testplugin  =================
+
+set(PLUGIN_NAME ${PACKAGE}-plugin-${PKG_TARGET}-${PKG_TARGET_VERSION})
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+# option(OD_CXX11 "Use c++11" OFF)
+
+# if(OD_CXX11)
+#  message(STATUS "Attempting to use c++11")
+#  include(CheckCXXCompilerFlag)
+#  check_cxx_compiler_flag("-std=c++11" COMPILER_SUPPORTS_CXX11)
+#  check_cxx_compiler_flag("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+#  if(COMPILER_SUPPORTS_CXX11)
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+#    set(Testplugin_USE_CXX11 ON)
+#  elseif(COMPILER_SUPPORTS_CXX0X)
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+#    set(Testplugin_USE_CXX11 ON)
+#  else()
+#    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+#    set(Testplugin_USE_CXX11 OFF)
+#  endif()
+#else()
+#  set(Testplugin_USE_CXX11 OFF)
+#endif()
+
+#if(Testplugin_USE_CXX11)
+#  message(STATUS "Allowing use of c++11")
+#  add_definitions(-DTestplugin_USE_CXX11)
+#endif()
+
+message(STATUS "CMAKE version: ${CMAKE_VERSION}")
+if(CMAKE_VERSION VERSION_GREATER 3.4)
+  set(ENABLE_CLANG_TIDY
+      OFF
+      CACHE BOOL "Add clang-tidy automatically to builds")
+  if(ENABLE_CLANG_TIDY)
+    find_program(
+      CLANG_TIDY_EXE
+      NAMES "clang-tidy"
+      PATHS /usr/local/opt/llvm/bin)
+    if(CLANG_TIDY_EXE)
+      message(STATUS "clang-tidy found: ${CLANG_TIDY_EXE}")
+      # For more, see http://clang.llvm.org/extra/clang-tidy/ set(CLANG_TIDY_CHECKS "-*,modernize-*")
+      set(CLANG_TIDY_CHECKS "-*,performance-*")
+      set(CMAKE_CXX_CLANG_TIDY
+          "${CLANG_TIDY_EXE};-checks=${CLANG_TIDY_CHECKS};-header-filter='${CMAKE_SOURCE_DIR}/*'"
+          CACHE STRING "" FORCE)
+    else()
+      message(AUTHOR_WARNING "clang-tidy not found!")
+      set(CMAKE_CXX_CLANG_TIDY
+          ""
+          CACHE STRING "" FORCE) # delete it
+    endif()
+  endif()
+endif()
+
+if(CMAKE_VERSION VERSION_GREATER 3.9)
+  set(ENABLE_CPPCHECK
+      OFF
+      CACHE BOOL "Add cppcheck automatically to builds")
+  if(ENABLE_CPPCHECK)
+    find_program(CPPCHECK_EXECUTABLE NAMES "cppcheck")
+    set(CMAKE_CXX_CPPCHECK ${CPPCHECK_EXECUTABLE})
+  endif()
+endif()
+
+# SET_DIRECTORY_PROPERTIES(dummy ADDITIONAL_MAKE_CLEAN_FILES ${PROJECT_SOURCE_DIR}/include/version.h)
+
+include("cmake/PluginConfigure.cmake")
+
+add_definitions(-DUSE_S57)  #???  What is this for? Needed?
+
+IF(PLUGIN_USE_SVG)
+    MESSAGE(STATUS "SVG support enabled...")
+    IF(NOT QT_ANDROID)
+        ADD_DEFINITIONS(-DPLUGIN_USE_SVG)
+    ENDIF(NOT QT_ANDROID)
+ENDIF(PLUGIN_USE_SVG)
 
 
-SET(SRC_VDR
+
+#======== From cmakelists.txt  vdr_pi
+
+SET(SRCS
             src/icons.h
             src/icons.cpp
             src/vdr_pi.h
             src/vdr_pi.cpp
  	)
+SET(SRC ${SRCS})
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC})
 
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_VDR} )
+IF(NOT UNIX)
+    SET(SRC_BZIP	
+            src/bzip2/bzlib.c
+            src/bzip2/blocksort.c
+            src/bzip2/compress.c
+            src/bzip2/crctable.c
+            src/bzip2/decompress.c
+            src/bzip2/huffman.c
+            src/bzip2/randtable.c
+    )
+    ADD_LIBRARY(LIB_BZIP_WR STATIC ${SRC_BZIP})
+    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} LIB_BZIP_WR )
+    INCLUDE_DIRECTORIES(${PLUGIN_SOURCE_DIR}/src/bzip2)
+ENDIF(NOT UNIX)
+			
+IF(NOT UNIX)
+    INCLUDE_DIRECTORIES(src/zlib-1.2.3)
+    INCLUDE_DIRECTORIES(src/bzip2)
+ENDIF(NOT UNIX)
+
+IF(WIN32)
+  IF(MSVC)
+    INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/buildwin/include)
+    TARGET_LINK_LIBRARIES(${PACKAGE_NAME} "${CMAKE_SOURCE_DIR}/buildwin/zlib1.lib")
+  ELSE()
+    # MINGW
+#    TARGET_LINK_LIBRARIES(${PACKAGE_NAME} "-lwxzlib-2.8")
+    TARGET_LINK_LIBRARIES(${PACKAGE_NAME} "-lz")
+  ENDIF()
+ENDIF()
+
+
+
+#======== Above from cmakelists.txt  vdr_pi =========
+#=========Below from cmakelists.txt testplugin==================
+# set(OCPNSRC ocpnsrc/TexFont.cpp)
+# set(OCPNHDRS ocpninclude/ocpn_plugin.h ocpninclude/pluginmanager.h ocpninclude/TexFont.h)
+
+#set(EXTSRC)
+
+#set(EXTINCLUDE
+#    extinclude/nlohmann/json.hpp
+#    extinclude/ODAPI.h)
+
+#set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
+
+#set(LIBHDRS
+#    libs/GL/include/gl.h
+#    libs/GL/include/gl_private.h
+#    libs/GL/include/glext.h
+#    libs/GL/include/glu.h
+#    libs/wx/include/json_defs.h
+#    libs/wx/include/jsonreader.h
+#    libs/wx/include/jsonval.h
+#    libs/wx/include/jsonwriter.h)
+#option(TESTPLUGIN_USE_SVG "Use SVG graphics" ON)
+#add_definitions(-DTESTPLUGIN_USE_SVG)
+
+#IF(APPLE)
+#    OPTION(TP_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" OFF)
+#ELSE(APPLE)
+#    OPTION(TP_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
+#ENDIF(APPLE)
+
+#IF(TP_JSON_SCHEMA_VALIDATOR)
+#    MESSAGE(STATUS "Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
+#    ADD_DEFINITIONS(-DTP_JSON_SCHEMA_VALIDATOR)
+#    MESSAGE(STATUS "Adding JSON Schema validation")
+
+#    SET(EXTSRC
+#        ${EXTSRC}
+#        extsrc/json-schema-validator/json-schema-draft7.json.cpp
+#        extsrc/json-schema-validator/json-uri.cpp
+#        extsrc/json-schema-validator/json-validator.cpp
+#    )
+#    SET(EXTINCLUDE
+#        ${EXTINCLUDE}
+#        extinclude/nlohmann/json.hpp
+#        extinclude/json-schema-validator/json-schema.hpp
+#    )
+#    INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
+#ELSE(TP_JSON_SCHEMA_VALIDATOR)
+#    MESSAGE(STATUS "Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
+#ENDIF(TP_JSON_SCHEMA_VALIDATOR)
+
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
+
+#add_library(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${OCPNSRC} ${EX#TSRC} ${LIBSSRC})
+
+#add_definitions(-DTIXML_USE_STL)
+
+#IF(UNIX AND NOT APPLE)
+#  IF(TP_JSON_SCHEMA_VALIDATOR)
+#    # Change OS/ABI to be UNIX - System V to make it run with OCPN
+#    SET(lib_name lib${PACKAGE_NAME}.so)
+#    MESSAGE(STATUS "lib-name: ${lib_name}")
+#    FIND_FILE(elfedit elfedit)
+#    IF(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+#      MESSAGE(STATUS "Will ensure OS/ABI is set to 0 to match OCPN")
+#      ADD_CUSTOM_COMMAND(
+#        TARGET ${PACKAGE_NAME}
+#        POST_BUILD
+#        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#        DEPENDS ${PACKAGE_NAME}
+#        COMMENT " Running post build action on ${lib_name}."
+#        COMMAND sh -c 'elfedit --input-osabi=Linux --output-osabi=none ${lib_name} || (echo 0) '
+#      )
+#    ELSE(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+#      MESSAGE(STATUS "Cannot correct OS/ABI to match OCPN if it is generated incorrectly. Package binutils needed")
+#    ENDIF(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+#  ENDIF(TP_JSON_SCHEMA_VALIDATOR)
+#ENDIF(UNIX AND NOT APPLE)
+
+#include("cmake/PluginInstall.cmake")
+#include("cmake/PluginLocalization.cmake")
+#include("cmake/PluginPackage.cmake")
+
+#==========Above is from Testplugin cmakelists.txt ========
+#==========Below is from WxRoute cmakelists.txt========
+INCLUDE("cmake/PluginJSON.cmake")
+INCLUDE("cmake/PluginXML.cmake")
+INCLUDE("cmake/PluginGL.cmake")
 
 INCLUDE("cmake/PluginInstall.cmake")
 INCLUDE("cmake/PluginLocalization.cmake")
