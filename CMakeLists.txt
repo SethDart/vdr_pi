@@ -21,7 +21,7 @@ set(PACKAGE_NAME "vdr_pi")
 set(VERBOSE_NAME "VDR") 
 set(TITLE_NAME "Voyage Data Recorder")
 set(PACKAGE_CONTACT "Jean-Eudes Onfray")
-set(COMMON_NAME "WeatherRouting")
+set(COMMON_NAME "vdr")
 # Don't change this, sets getcommonname "Common Plugin Name" in weather_routing_pi.cpp
 # Must remain the same Common Name as the legacy unmanaged plugins to avoid duplication.
 # VERBOSE_NAME should be the same as the plugin "Common Name"
@@ -202,6 +202,28 @@ SET(SRCS
  	)
 SET(SRC ${SRCS})
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC})
+
+#old vdr_pi code
+#SET(SRC_VDR
+#            src/icons.h
+#            src/icons.cpp
+#            src/vdr_pi.h
+#            src/vdr_pi.cpp
+# 	)
+# ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_VDR} )
+
+# Not needed for vdr_pi
+# SET(SRC_LIBTESS2
+#  src/libtess2/bucketalloc.c
+#  src/libtess2/dict.c
+#  src/libtess2/geom.c
+#  src/libtess2/mesh.c
+#  src/libtess2/priorityq.c
+#  src/libtess2/sweep.c
+#  src/libtess2/tess.c)
+#SET(SRC ${SRCS} ${SRC_LIBTESS2})
+#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC})
+
 
 IF(NOT UNIX)
     SET(SRC_BZIP	
