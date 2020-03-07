@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 #
 # Upload the .tar.gz and .xml artifacts to cloudsmith
 #

@@ -21,3 +21,4 @@
   </tarball-url>
   <info-url> ${XML_INFO_URL} </info-url>
 </opencpn-plugin>
+
