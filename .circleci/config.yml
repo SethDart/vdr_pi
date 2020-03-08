@@ -46,8 +46,8 @@ jobs:
            echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-updates main"
            | sudo tee -a /etc/apt/sources.list
        - run: cat /etc/apt/sources.list
-       - run: ci/generic-build-debian.sh
-       - run: ci/generic-upload.sh	   
+       - run: ci/circleci-build-debian.sh
+       - run: ci/circleci-upload.sh   
 #   build-bionic-gtk3:
 #     docker:
 #       - image: circleci/buildpack-deps:bionic-scm
