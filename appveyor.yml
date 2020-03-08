@@ -1,4 +1,11 @@
-clone_folder: c:\project\weather_routing_pi
+version: 1.0.{build}
+environment:
+  CLOUDSMITH_API_KEY: 9f68f999c644b2a33864bd03955d6e725c763587
+
+build:
+  verbosity: minimal
+
+clone_folder: c:\project\vdr_pi
 shallow_clone: false
 clone_depth: 10
 
@@ -35,7 +42,7 @@ install:
   - set
 
 before_build:
-  - cd c:\project\weather_routing_pi
+  - cd c:\project\vdr_pi
   - rm -rf build && mkdir build && cd build
   - ps: Start-FileDownload https://downloads.sourceforge.net/project/opencpnplugins/opencpn_lib/4.99.1405-vc141_xp/opencpn.lib
   - ps: Start-FileDownload http://opencpn.navnux.org/build_deps/OpenCPN_buildwin-4.99a.7z
