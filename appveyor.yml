@@ -1,10 +1,4 @@
 version: 1.0.{build}
-environment:
-  CLOUDSMITH_API_KEY: 9f68f999c644b2a33864bd03955d6e725c763587
-
-build:
-  verbosity: minimal
-
 clone_folder: c:\project\vdr_pi
 shallow_clone: false
 clone_depth: 10
@@ -38,8 +32,6 @@ install:
   # Download and unzip wxwidgets
   - ps: Start-FileDownload http://opencpn.navnux.org/build_deps/wxWidgets-3.1.2.7z
   - cmd: 7z x wxWidgets-3.1.2.7z -o%WXWIN% > null
-
-  - set
 
 before_build:
   - cd c:\project\vdr_pi
