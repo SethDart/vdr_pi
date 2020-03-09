@@ -20,15 +20,15 @@ if [ -n "$BUILD_GTK3" ]; then
         /usr/lib/*-linux-*/wx/config/gtk3-unicode-3.0
 fi
 
-#tag=$(git tag --contains HEAD)
-#
-#if [ -n "$tag" ]; then
-#  cmake -DCMAKE_BUILD_TYPE=Release ..
-#else
-#  cmake -DCMAKE_BUILD_TYPE=Debug ..
-#fi
+tag=$(git tag --contains HEAD)
 
-cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+if [ -n "$tag" ]; then
+  cmake -DCMAKE_BUILD_TYPE=Release ..
+else
+  cmake -DCMAKE_BUILD_TYPE=Debug ..
+fi
+
+#cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 
 make -j2
 make package
