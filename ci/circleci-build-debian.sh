@@ -27,7 +27,6 @@ if [ -n "$tag" ]; then
 else
   cmake -DCMAKE_BUILD_TYPE=Debug ..
 fi
-
 #cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 
 make -j2
