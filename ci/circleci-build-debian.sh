@@ -15,10 +15,10 @@ sudo apt-get install  ./*all.deb  || :
 sudo apt-get --allow-unauthenticated install -f
 # rm -f ./*all.deb
 
-if [ -n "$BUILD_GTK3" ]; then
-    sudo update-alternatives --set wx-config \
-        /usr/lib/*-linux-*/wx/config/gtk3-unicode-3.0
-fi
+#if [ -n "$BUILD_GTK3" ]; then
+#    sudo update-alternatives --set wx-config \
+#        /usr/lib/*-linux-*/wx/config/gtk3-unicode-3.0
+#fi
 
 tag=$(git tag --contains HEAD)
 
