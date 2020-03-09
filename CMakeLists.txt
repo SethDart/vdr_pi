@@ -21,7 +21,7 @@ if(COMMAND cmake_policy)
 #  CMAKE_POLICY(SET CMP0037 NEW)
 #   if (POLICY CMP0053)
 #      CMAKE_POLICY(SET CMP0053 NEW)
-#  endif ()
+  endif ()
 endif(COMMAND cmake_policy)
 
 set(PACKAGE_NAME "vdr_pi")
