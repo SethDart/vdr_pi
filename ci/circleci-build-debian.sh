@@ -20,14 +20,15 @@ rm -f ./*all.deb
 #        /usr/lib/*-linux-*/wx/config/gtk3-unicode-3.0
 #fi
 
-#cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 
-tag=$(git tag --contains HEAD)
-if [ -n "$tag" ]; then
-  cmake -DCMAKE_BUILD_TYPE=Release ..
-else
-  cmake -DCMAKE_BUILD_TYPE=Debug ..
-fi
+#tag=$(git tag --contains HEAD)
+
+#if [ -n "$tag" ]; then
+#  cmake -DCMAKE_BUILD_TYPE=Release ..
+#else
+#  cmake -DCMAKE_BUILD_TYPE=Debug ..
+#fi
 
 make -j2
 make package
