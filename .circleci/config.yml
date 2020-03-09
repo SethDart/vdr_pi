@@ -15,7 +15,7 @@ jobs:
            | sudo tee -a /etc/apt/sources.list
        - run: cat /etc/apt/sources.list
        - run: ci/circleci-build-debian.sh
-       - run: ci/circleci-upload.sh
+#       - run: ci/circleci-upload.sh
    build-xenial:
      docker:
        - image: circleci/buildpack-deps:xenial-scm
@@ -31,7 +31,7 @@ jobs:
            | sudo tee -a /etc/apt/sources.list
        - run: cat /etc/apt/sources.list
        - run: ci/circleci-build-debian.sh
-       - run: ci/circleci-upload.sh
+#       - run: ci/circleci-upload.sh
    build-trusty:
      docker:
        - image: circleci/buildpack-deps:trusty-scm
@@ -47,7 +47,7 @@ jobs:
            | sudo tee -a /etc/apt/sources.list
        - run: cat /etc/apt/sources.list
        - run: ci/circleci-build-debian.sh
-       - run: ci/circleci-upload.sh   
+#       - run: ci/circleci-upload.sh   
 #   build-bionic-gtk3:
 #     docker:
 #       - image: circleci/buildpack-deps:bionic-scm
@@ -85,10 +85,70 @@ jobs:
      steps:
        - checkout
        - run: bash ci/circleci-build-macos.sh
-       - run: bash ci/circleci-upload.sh
+#       - run: bash ci/circleci-upload.sh
        - store_test_results:
-           path: ~/test-results	   		   
-#   build-buster:
+           path: ~/test-results
+   build-mingw:
+     docker:
+         - image: fedora:29
+     environment:
+       - OCPN_TARGET:  mingw
+       - CLOUDSMITH_PKG_EXT: exe
+     steps:
+       - run: su -c "dnf install -q -y git openssh-clients openssh-server"
+       - checkout
+       - run: bash ci/circleci-build-mingw.sh
+#      - run: bash ci/circleci-upload.sh		   
+workflows:
+  version: 2
+  build_all:
+    jobs:
+      - build-bionic:
+          filters:
+            branches:
+              ignore:
+                - devel
+                - tmp
+      - build-xenial:
+          filters:
+            branches:
+              ignore:
+                - devel
+                - tmp
+      - build-trusty:
+          filters:
+            branches:
+              ignore:
+                - devel
+                - tmp
+#      - build-bionic-gtk3:
+#          filters:
+#            branches:
+#              ignore:
+#                - devel
+#                - tmp
+      - build-flatpak:
+          filters:
+            branches:
+              ignore:
+                - devel
+                - tmp
+      - build-macos:
+          filters:
+            branches:
+              ignore:
+                - devel
+                - tmp
+     - build-mingw:
+          filters:
+            branches:
+              ignore:
+                - devel
+                - tmp
+#
+#  ====================
+#       JOBS
+#  =====================
 #     docker:
 #       - image: circleci/buildpack-deps:buster-scm
 #     environment:
@@ -131,57 +191,9 @@ jobs:
 #       - checkout
 #       - run: ci/circleci-build-fedora.sh
 #       - run: ci/circleci-upload.sh
-#   build-mingw:
-#     docker:
-#         - image: fedora:29
-#     environment:
-#       - OCPN_TARGET:  mingw
-#       - CLOUDSMITH_PKG_EXT: exe
-#     steps:
-#       - run: su -c "dnf install -q -y git openssh-clients openssh-server"
-#       - checkout
-#       - run: bash ci/circleci-build-mingw.sh
-#       - run: bash ci/circleci-upload.sh
-workflows:
-  version: 2
-  build_all:
-    jobs:
-      - build-bionic:
-          filters:
-            branches:
-              ignore:
-                - devel
-                - tmp
-      - build-xenial:
-          filters:
-            branches:
-              ignore:
-                - devel
-                - tmp
-      - build-trusty:
-          filters:
-            branches:
-              ignore:
-                - devel
-                - tmp
-#      - build-bionic-gtk3:
-#          filters:
-#            branches:
-#              ignore:
-#                - devel
-#                - tmp
-      - build-flatpak:
-          filters:
-            branches:
-              ignore:
-                - devel
-                - tmp
-      - build-macos:
-          filters:
-            branches:
-              ignore:
-                - devel
-                - tmp
+#  ===========
+#   WORKFLOWS
+#  ===========
 #      - build-buster:
 #          filters:
 #            branches:
@@ -194,9 +206,4 @@ workflows:
 #              ignore:
 #                - devel
 #                - tmp
-#      - build-mingw:
-#          filters:
-#            branches:
-#              ignore:
-#                - devel
-#                - tmp
+
