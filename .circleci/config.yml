@@ -140,7 +140,7 @@ workflows:
               ignore:
                 - devel
                 - tmp
-     - build-mingw:
+      - build-mingw:
           filters:
             branches:
               ignore:
