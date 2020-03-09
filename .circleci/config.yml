@@ -48,22 +48,23 @@ jobs:
        - run: cat /etc/apt/sources.list
        - run: ci/circleci-build-debian.sh
 #       - run: ci/circleci-upload.sh   
-#   build-bionic-gtk3:
-#     docker:
-#       - image: circleci/buildpack-deps:bionic-scm
-#     environment:
-#       - OCPN_TARGET:  bionic-gtk3
-#     steps:
-#       - checkout
-#       - run: >
-#           echo "deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main"
-#           | sudo tee -a /etc/apt/sources.list
-#       - run: >
-#           echo "deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main"
-#           | sudo tee -a /etc/apt/sources.list
-#       - run: cat /etc/apt/sources.list
-#       - run: ci/circleci-build-debian.sh
-#       - run: ci/circleci-upload.sh	 
+   build-bionic-gtk3:
+     docker:
+       - image: circleci/buildpack-deps:bionic-scm
+     environment:
+       - BUILD_GTK3: 1
+       - OCPN_TARGET:  bionic-gtk3
+     steps:
+       - checkout
+       - run: >
+           echo "deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main"
+           | sudo tee -a /etc/apt/sources.list
+       - run: >
+           echo "deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main"
+           | sudo tee -a /etc/apt/sources.list
+       - run: cat /etc/apt/sources.list
+       - run: ci/circleci-build-debian.sh
+       - run: ci/circleci-upload.sh	 
    build-flatpak:
      machine:
        image: circleci/classic:201808-01
@@ -121,12 +122,12 @@ workflows:
               ignore:
                 - devel
                 - tmp
-#      - build-bionic-gtk3:
-#          filters:
-#            branches:
-#              ignore:
-#                - devel
-#                - tmp
+      - build-bionic-gtk3:
+          filters:
+            branches:
+              ignore:
+                - devel
+                - tmp
       - build-flatpak:
           filters:
             branches:
