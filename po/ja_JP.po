@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-01 14:18-0600\n"
-"PO-Revision-Date: 2016-01-06 09:11-0500\n"
-"Last-Translator: nohal <pavel@kalian.cz>\n"
+"PO-Revision-Date: 2019-11-27 15:32\n"
+"Last-Translator: Pavel Kalian (nohal)\n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
 "MIME-Version: 1.0\n"
@@ -18,24 +18,25 @@ msgstr ""
 
 #: src/vdr_pi.cpp:82
 msgid "Record"
-msgstr ""
+msgstr "記録"
 
 #: src/vdr_pi.cpp:84
 msgid "Play"
-msgstr ""
+msgstr "再生"
 
 #: src/vdr_pi.cpp:151
 msgid "VDR"
-msgstr ""
+msgstr "航海データレコーダ"
 
 #: src/vdr_pi.cpp:157
 msgid "Voyage Data Recorder plugin for OpenCPN"
-msgstr ""
+msgstr "OpenCPN用の航海データ レコーダーのプラグイン"
 
 #: src/vdr_pi.cpp:162
 msgid "Voyage Data Recorder plugin for OpenCPN\n"
 "Provides NMEA stream save and replay."
-msgstr ""
+msgstr "OpenCPN用、航海データ レコーダーのプラグイン\n"
+"NMEA ストリームの保存と再生を提供します。"
 
 #: src/vdr_pi.cpp:227 src/vdr_pi.cpp:261
 msgid "Choose a file"
@@ -43,13 +44,13 @@ msgstr "ファイルを選択"
 
 #: src/vdr_pi.cpp:242
 msgid "VDR replay"
-msgstr ""
+msgstr "航海データ 再生"
 
 #: src/vdr_pi.cpp:339
 msgid "Speed:"
-msgstr ""
+msgstr "速度:"
 
 #: src/vdr_pi.cpp:346
 msgid "Progress:"
-msgstr ""
+msgstr "進行状況:"
 
