@@ -60,8 +60,10 @@ artifacts:
 
 deploy:
   description: 'release created by AppVeyor CI'
-  provider: GitHub
-  auth_token: '%GIT-PTOKEN-VDR-INTO-APPVEYOR VALUE%'  
+  provider: Cloudsmith
+  auth_token: '%CLOUDSMITH_API_KEY%'
+#  provider: GitHub
+#  auth_token: '%GIT-PTOKEN-VDR-INTO-APPVEYOR%'  
   artifact: installer,portable
   draft: true
   prerelease: true
