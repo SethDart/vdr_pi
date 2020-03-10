@@ -45,6 +45,7 @@ before_build:
   - ps: Start-FileDownload http://opencpn.navnux.org/build_deps/OpenCPN_buildwin-4.99a.7z
   - ps: Start-FileDownload http://zlib.net/zlib-1.2.11.tar.gz
   - cmd: 7z x -y OpenCPN_buildwin-4.99a.7z -oc:\project\vdr_pi\buildwin
+  - rm: -rf zlib-1.2.11.tar.gz
   - cmake -T v141_xp ..
 
 build_script:
