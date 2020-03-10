@@ -8,21 +8,24 @@
 # define minimum cmake version
 cmake_minimum_required(VERSION 3.1.1)
 if(COMMAND cmake_policy)
-  if(POLICY CMP0043)
-    cmake_policy(SET CMP0043 NEW)
-  endif(POLICY CMP0043)
-  cmake_policy(SET CMP0048 NEW)
-  if(POLICY CMP0077)
-    cmake_policy(SET CMP0077 NEW)
+#  if(POLICY CMP0043)
+#    cmake_policy(SET CMP0043 NEW)
+#  endif(POLICY CMP0043)
+#  cmake_policy(SET CMP0048 NEW)
+#  if(POLICY CMP0077)
+#    cmake_policy(SET CMP0077 NEW)
 #  endif(POLICY CMP0077)
-#  CMAKE_POLICY(SET CMP0003 NEW)
-#  CMAKE_POLICY(SET CMP0005 NEW)
-#  CMAKE_POLICY(SET CMP0011 NEW)
-#  CMAKE_POLICY(SET CMP0037 NEW)
-#   if (POLICY CMP0053)
-#      CMAKE_POLICY(SET CMP0053 NEW)
+  CMAKE_POLICY(SET CMP0003 NEW)
+  CMAKE_POLICY(SET CMP0005 NEW)
+  CMAKE_POLICY(SET CMP0011 NEW)
+  CMAKE_POLICY(SET CMP0037 NEW)
+   if (POLICY CMP0053)
+      CMAKE_POLICY(SET CMP0053 NEW)
   endif ()
 endif(COMMAND cmake_policy)
+
+# Prefer libGL.so to libOpenGL.so, see CMP0072
+set(OpenGL_GL_PREFERENCE "LEGACY")
 
 set(PACKAGE_NAME "vdr_pi")
 set(VERBOSE_NAME "VDR") 
@@ -209,27 +212,6 @@ SET(SRCS
  	)
 SET(SRC ${SRCS})
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC})
-
-#old vdr_pi code
-#SET(SRC_VDR
-#            src/icons.h
-#            src/icons.cpp
-#            src/vdr_pi.h
-#            src/vdr_pi.cpp
-# 	)
-# ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_VDR} )
-
-# Not needed for vdr_pi
-# SET(SRC_LIBTESS2
-#  src/libtess2/bucketalloc.c
-#  src/libtess2/dict.c
-#  src/libtess2/geom.c
-#  src/libtess2/mesh.c
-#  src/libtess2/priorityq.c
-#  src/libtess2/sweep.c
-#  src/libtess2/tess.c)
-#SET(SRC ${SRCS} ${SRC_LIBTESS2})
-#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC})
 
 
 IF(NOT UNIX)
