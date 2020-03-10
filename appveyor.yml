@@ -3,6 +3,11 @@ clone_folder: c:\project\vdr_pi
 shallow_clone: false
 clone_depth: 10
 
+# environment variables
+#environment:
+#  STABLE_REPO: rick-gleason/opencpn-plugins-stable
+#  UNSTABLE_REPO: rick-gleason/opencpn-plugins-unstable
+
 image:
 - Visual Studio 2017
 
@@ -10,8 +15,8 @@ platform:
 # - x64
   - Win32
 
-configuration: Release
-test: OFF
+# configuration: Release
+# test: OFF
 
 install:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
@@ -54,13 +59,12 @@ artifacts:
     name: installer
 
 deploy:
-  #description: 'release created by AppVeyor CI'
-  #provider: GitHub
-  #auth_token: #'%GitHub_auth_token%'  xkR09Y0VQ7A10kp+h6v9UjIeLVkf1VQ9O+AFyd62qUDI1IRh7Llagre2fI/cDPTW
-  #  secure: xkR09Y0VQ7A10kp+h6v9UjIeLVkf1VQ9O+AFyd62qUDI1IRh7Llagre2fI/cDPTW	rh0wUA7/Vv1UVnuV8abbLwTEnDZcH6qUJLhzlMKYZdnSx7EDP6CxcMfXSWM/0EdB
-  #artifact: installer,portable
-  #draft: true
-  #prerelease: true
+  description: 'release created by AppVeyor CI'
+  provider: GitHub
+  auth_token: '%GIT-PTOKEN-VDR-INTO-APPVEYOR VALUE%'  
+  artifact: installer,portable
+  draft: true
+  prerelease: true
   #on:
     #appveyor_repo_tag: true # deploy on tag push only
     #configuration: Release  # Debug contains non-redist MS DLLs
