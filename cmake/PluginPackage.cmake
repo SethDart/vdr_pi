@@ -186,7 +186,8 @@ configure_file(${PROJECT_SOURCE_DIR}/buildosx/InstallOSX/pkg_background.jpg ${CM
  #  <key>NAME</key>
  #  <string>${VERBOSE_NAME}-Plugin_${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}</string>
 
- configure_file(${PROJECT_SOURCE_DIR}/buildosx/InstallOSX/${PACKAGE_NAME}.pkgproj.in
+# configure_file(${PROJECT_SOURCE_DIR}/buildosx/InstallOSX/${PACKAGE_NAME}.pkgproj.in
+ configure_file(${PROJECT_SOURCE_DIR}/buildosx/InstallOSX/plugin.pkgproj.in
             ${CMAKE_CURRENT_BINARY_DIR}/${VERBOSE_NAME}.pkgproj)
 
  ADD_CUSTOM_COMMAND(
