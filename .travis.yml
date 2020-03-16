@@ -1,33 +1,34 @@
-#language: cpp
-#matrix:
-#  include:
-# ----
-#  - dist: trusty
-#    compiler: gcc
-#  - os: osx
-#    compiler: clang
-    
+language: cpp
+
+matrix:
+  include:
   - env:
     - OCPN_TARGET=stretch-armhf
-    - OCPN_BRANCH=pkg-pavel-ci
-    - OCPN_STABLE_REPO=rick-gleason/opencpn-plugins-prod
-    - OCPN_UNSTABLE_REPO=rick-gleason/opencpn-plugins-beta
+    - OCPN_BRANCH=master
     - DOCKER_IMAGE=raspbian/stretch
+
     services:
     - docker
     script:
     - "./ci/travis-build-raspbian-armhf.sh"
-
   - env:
     - OCPN_TARGET=buster-armhf
-    - OCPN_BRANCH=pkg-pavel-ci
-    - OCPN_STABLE_REPO=rick-gleason/opencpn-plugins-prod
-    - OCPN_UNSTABLE_REPO=rick-gleason/opencpn-plugins-beta
+    - OCPN_BRANCH=master
+#    - OCPN_STABLE_REPO=rick-gleason/opencpn-plugins-prod
+#    - OCPN_UNSTABLE_REPO=rick-gleason/opencpn-plugins-beta
+#    - OCPN_PKG_REPO=rick-gleason/opencpn-plugins-pkg
+    - DOCKER_IMAGE=raspbian/stretch
     - DOCKER_IMAGE=opencpn/raspbian-buster:plugin_build_tooling
     services:
     - docker
     script:
     - "./ci/travis-build-raspbian-armhf.sh"
+branches:
+  only:
+    - ci
+#    - master
+
+
 # ========
 #install:
 #
@@ -85,9 +86,7 @@
 #deploy:
 #- provider: releases
 #  api_key:
-# for wxrouting!!!
-#    secure: "ZMJNkbf1QxwivytkWLiEZ5G4Q3WaXBTpFEwXe/GGgkA3qg/HNw7a0tSZAkLRIx/BohsrNIRRaCyETTpdv0pVcAByQmtenFVpChqzhdxln2QbIcZMJKRO/IsKnzj03zhJdIv/VQ+J56qVsIZGEL2AVl/zn5FHpKb7cYYpldJrSq7o5gb+N3EdhJ5Ksaw0r/TjYiWr7+M87T1ZBY5D+LzCGngYVTEG1XhPPLKzSd1w4JzRnyZ1IgVRh7dRmjzOhQyAOaRPUCr51Xh1eb6iHLq8d4uLHxHDscuiIHwqXhLEF/82ECtn9n6mbP3hxoCE/9CYcJsd2Z3r5hwgKoIqvMDyBJuiy8+j5WC5fcHq81OtRtFoYJSLLQlgjCtec3aOeuYfPkZCcw2HbF6udIdm3Xo5uLonIolMMq7YT7sh20INOOXVi0m+/9FBIXjPsfQDsX0FW0RfAWk4AJFnPARV3xKReNlQntuX4WORILeDCAmneob0jF7kP8W/u65mnTguic/2qsCVAeJRepfIon6i1+VmQO2n8b9S7XC6aHRN99Bi4uy5NePyl20Rqw8nCP/nn2SENgIQahPio+4vFX7B44hYdI87cFuKvvINOJxNup9IggQ4XYdVSCtD0u8sMfm4KT2O0NpPnYdqqB0V/KLfOhDm3UmmEqxEh86q/JPh3WCMyFc="
-#"ZMJNkbf1QxwivytkWLiEZ5G4Q3WaXBTpFEwXe/GGgkA3qg/HNw7a0tSZAkLRIx/BohsrNIRRaCyETTpdv0pVcAByQmtenFVpChqzhdxln2QbIcZMJKRO/IsKnzj03zhJdIv/VQ+J56qVsIZGEL2AVl/zn5FHpKb7cYYpldJrSq7o5gb+N3EdhJ5Ksaw0r/TjYiWr7+M87T1ZBY5D+LzCGngYVTEG1XhPPLKzSd1w4JzRnyZ1IgVRh7dRmjzOhQyAOaRPUCr51Xh1eb6iHLq8d4uLHxHDscuiIHwqXhLEF/82ECtn9n6mbP3hxoCE/9CYcJsd2Z3r5hwgKoIqvMDyBJuiy8+j5WC5fcHq81OtRtFoYJSLLQlgjCtec3aOeuYfPkZCcw2HbF6udIdm3Xo5uLonIolMMq7YT7sh20INOOXVi0m+/9FBIXjPsfQDsX0FW0RfAWk4AJFnPARV3xKReNlQntuX4WORILeDCAmneob0jF7kP8W/u65mnTguic/2qsCVAeJRepfIon6i1+VmQO2n8b9S7XC6aHRN99Bi4uy5NePyl20Rqw8nCP/nn2SENgIQahPio+4vFX7B44hYdI87cFuKvvINOJxNup9IggQ4XYdVSCtD0u8sMfm4KT2O0NpPnYdqqB0V/KLfOhDm3UmmEqxEh86q/JPh3WCMyFc="
+#    secure: "oABdRX4NXR3h523BxkRPRtjChNbH1lycc3Odkm9Zt8DzbeOPLAicss510fjyKbNts1WoBmwLgHwGv3tiDOpywiPDkM8XigtjiNY1XAsOK/8WuFuEaKu9H+8qNUhrcnGwlneIB7WvSms1SIROh+n/Arz3moAvKGOeuxK134KwcUwKfGqu6ky5blLBUhg0/0nJDYI1yT4bLiXTaR77KBk4IaVdXyJ9/hplsXk3kiGDHNIeEh/F/Y+dg1380u4llSJWJ9dFMwtDQkKdpt3nQaMpWdUWoyaPygV7gmGEk9xQbpMW8ZEH8agpHif44LOwtxjZfD1M1Ai7H8fT16sqh3lkh5lPVxVlyDHQpbuLviKLHqMqYWCStogoW9j46dQpUY77NMzvH4r5WTqoBl4H/+KuyVc+mTQjs/go/plZgOBv/iCaCbD0XirJd7lXijnHSbGeNap7UzaYwZOuuuOlVDRVaWvIkv/MWk+WOCk+F1ZwiT2KLvr6/oK2/eMb+vTFtRXLxJFwsPeZf5z4DMFUOHQCG7lcdZ/6Pi9JgQaJOySNJ3kCuA4fv3pLmbX3pDKAXvFchvTyqQM9C/f/+nc4lxsQax2g0R5dsLLwFjxJrJPQ6TjP8o5mNix5sqPbxJOJpzTw5RN85NzBb9qL0xCuCN6dP4MVcQyTrfrsSiBbYHFTsmM="
 #  file_glob: true
 #  file: "$TRAVIS_BUILD_DIR/build/*.{deb,rpm,dmg,txz,pkg,pkg.tar.xz}"
 #  skip_cleanup: true
@@ -95,3 +94,5 @@
 #    repo: rgleason/weather_routing_pi 
 #    tags: true
 #    all_branches: true
+
+

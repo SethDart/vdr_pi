@@ -4,6 +4,15 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 build*
-example/
+build
+Debug
+Release
+po/*.rule
 src/version.h
+include/version.h
+tags
+example/
+index.sh
+core
 .directory
+.settings/

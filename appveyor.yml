@@ -1,73 +1,81 @@
-version: 1.0.{build}
-clone_folder: c:\project\vdr_pi
+clone_folder: c:\project\opencpn\plugin_source
 shallow_clone: false
 clone_depth: 10
-
-# environment variables
-#environment:
-#  STABLE_REPO: rick-gleason/opencpn-plugins-stable
-#  UNSTABLE_REPO: rick-gleason/opencpn-plugins-unstable
 
 image:
 - Visual Studio 2017
 
-platform:
+platform: 
 # - x64
-  - Win32
+- Win32
 
-# configuration: Release
-# test: OFF
+configuration: RelWithDebInfo
+test: OFF
 
 install:
+  # VS2015 and earlier version - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86'
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
 
-  # sent environment variables for wxWidgets
+# set environment variables for wxWidgets
   - set WXWIN=C:\wxWidgets-3.1.2
   - set wxWidgets_ROOT_DIR=%WXWIN%
   - set wxWidgets_LIB_DIR=%WXWIN%\lib\vc_dll
-  - cmd: SET PATH=%PATH%;%WXWIN%;%wxWidgets_LIB_DIR%;C:\Program Files (x86)\Poedit\Gettexttools\bin
+  - cmd: SET PATH=%PATH%;%WXWIN%;%wxWidgets_LIB_DIR%;C:\Program Files (x86)\Poedit\Gettexttools\bin;
 
-  # install dependencies:
+# install dependencies:
   - choco install poedit
-  - choco install git
-
-  - ps: Start-FileDownload http://opencpn.navnux.org/build_deps/nsis-3.04-setup.exe
-  - cmd: nsis-3.04-setup.exe /S
 
   # Download and unzip wxwidgets
   - ps: Start-FileDownload http://opencpn.navnux.org/build_deps/wxWidgets-3.1.2.7z
   - cmd: 7z x wxWidgets-3.1.2.7z -o%WXWIN% > null
 
+# some debugging information reveals part of the deploy token set on Appveyor
+  - set
+#- cmake --help
+
+  # build wxWidgets - Disabled as we provide prebuilt WX to save time
+  #- cmd: cd %WXWIN%\build\msw\
+  #- cmd: nmake -f makefile.vc BUILD=release SHARED=1 CFLAGS=/D_USING_V120_SDK71_ CXXFLAGS=/D_USING_V120_SDK71_
+  #- cmd: nmake -f makefile.vc BUILD=debug SHARED=1 CFLAGS=/D_USING_V120_SDK71_ CXXFLAGS=/D_USING_V120_SDK71_
 before_build:
-  - cd c:\project\vdr_pi
-  - rm -rf build && mkdir build && cd build
-  - ps: Start-FileDownload https://downloads.sourceforge.net/project/opencpnplugins/opencpn_lib/4.99.1405-vc141_xp/opencpn.lib
-  - ps: Start-FileDownload http://opencpn.navnux.org/build_deps/OpenCPN_buildwin-4.99a.7z
-#  - ps: Start-FileDownload http://zlib.net/zlib-1.2.11.tar.gz
-  - cmd: 7z x -y OpenCPN_buildwin-4.99a.7z -oc:\project\vdr_pi\buildwin
-#  - rm: -rf zlib-1.2.11.tar.gz
-  - cmake -T v141_xp ..
+  - cd c:\project\opencpn\plugin_source
+#  - rm -rf build && mkdir build && cd build  
+  - mkdir build
+  - cd build
+#  - ps: Start-FileDownload http://opencpn.navnux.org/build_deps/OpenCPN_buildwin-4.99a.7z
+#  - cmd: 7z x -y OpenCPN_buildwin-4.99a.7z -oc:\project\opencpn\buildwin
+  - cmake -T v141_xp -DOCPN_CI_BUILD=ON ..
 
 build_script:
-  - cmake --build . --target package --config Release
+  - cmake -G "Visual Studio 15 2017"   ..
+  - cmake --build . --target install --config RelWithDebInfo
+  - cmake --build . --target package --config RelWithDebInfo
+  - choco install git
   - python -m ensurepip
-  - python -m pip install -q setuptools
-  - python -m pip install -q cloudsmith-cli
-  - bash ../build/appveyor-upload.sh
+  - python -m pip install setuptools
+  - python -m pip install cloudsmith-cli
+  - bash ../ci/appveyor-upload.sh
 
-artifacts:
-  - path: 'build\*.exe'
-    name: installer
-
-deploy:
-  description: 'release created by AppVeyor CI'
-  provider: Cloudsmith
-  auth_token: '%CLOUDSMITH_API_KEY%'
-#  provider: GitHub
-#  auth_token: '%GIT-PTOKEN-VDR-INTO-APPVEYOR%'  
-  artifact: installer,portable
-  draft: true
-  prerelease: true
+#  - path: 'build\RelWithDebInfo\opencpn.lib'
+#    name: lib
+#
+#  - path: 'build\RelWithDebInfo\opencpn-*.pdb'
+#    name: pdb
+#
+#
+#artifacts:
+#  - path: 'build\*.exe'
+#    name: installer
+#deploy:
+  # from weather routing
+  #description: 'release created by AppVeyor CI'
+  #provider: GitHub
+  #auth_token: #'%GitHub_auth_token%'  xkR09Y0VQ7A10kp+h6v9UjIeLVkf1VQ9O+AFyd62qUDI1IRh7Llagre2fI/cDPTW
+  #  secure: xkR09Y0VQ7A10kp+h6v9UjIeLVkf1VQ9O+AFyd62qUDI1IRh7Llagre2fI/cDPTW	rh0wUA7/Vv1UVnuV8abbLwTEnDZcH6qUJLhzlMKYZdnSx7EDP6CxcMfXSWM/0EdB
+  #artifact: installer,portable
+  #draft: true
+  #prerelease: true
   #on:
     #appveyor_repo_tag: true # deploy on tag push only
     #configuration: Release  # Debug contains non-redist MS DLLs
+

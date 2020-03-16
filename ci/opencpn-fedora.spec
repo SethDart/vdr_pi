@@ -1,12 +1,11 @@
 Name: opencpn
 Summary: Chartplotter and GPS navigation software
-Version: 5.0.0
+Version: 4.8.0
 Release: 4.1%{?dist}
 License: GPLv2+
 
 BuildRequires: bzip2-devel
 BuildRequires: cmake
-BuildRequires: curl
 BuildRequires: desktop-file-utils
 BuildRequires: elfutils-libelf-devel
 BuildRequires: expat-devel
@@ -35,3 +34,5 @@ Empty package to catch build dependecies for OpenCPN
 %changelog
 * Sun Apr 28 2019 Alec Leamas <leamas.alec@gmail.com> - 4.8.0-4.1
 - rebuilt
+
+

@@ -4,9 +4,13 @@
 # Upload the .tar.gz and .xml artifacts to cloudsmith
 #
 
-# Not used 
-STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
-UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
+#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'mauro-calvi/squiddio-stable'}
+#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'mauro-calvi/squiddio-pi'}
+#PKG_REPO=${CLOUDSMITH_PKG_REPO:-'mauro-calvi/squiddio-manual'}
+
+STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
+UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
+PKG_REPO=${CLOUDSMITH_PKG_REPO:-'rick-gleason/opencpn-plugins-pkg'}
 
 if [ -z "$CLOUDSMITH_API_KEY" ]; then
     echo 'Cannot deploy to cloudsmith, missing $CLOUDSMITH_API_KEY'
