@@ -10,6 +10,7 @@ matrix:
     services:
     - docker
     script:
+    - chmod a+x ./ci/travis-build-raspbian-armhf.sh
     - "./ci/travis-build-raspbian-armhf.sh"
   - env:
     - OCPN_TARGET=buster-armhf
@@ -22,6 +23,7 @@ matrix:
     services:
     - docker
     script:
+    - chmod a+x ./ci/travis-build-raspbian-armhf.sh
     - "./ci/travis-build-raspbian-armhf.sh"
 branches:
   only:

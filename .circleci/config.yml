@@ -15,6 +15,7 @@ jobs:
            echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-updates main"
            | sudo tee -a /etc/apt/sources.list
        - run: cat /etc/apt/sources.list
+       - run: chmod a+x ci/*.sh
        - run: ci/circleci-build-trusty.sh
        - run: ci/circleci-upload.sh
    build-xenial:
