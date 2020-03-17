@@ -19,6 +19,8 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,                                       *
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx          *
 ## ***************************************************************************			  
+##    PLUGIN MANAGER FRONTEND OPTION #1     Version: 1.0    Date:3-17-2020   * 
+## ***************************************************************************			  
 
 # define minimum cmake version  (newer)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1.1)
@@ -48,10 +50,10 @@ SET(PLUGIN_SOURCE_DIR .)
 MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
 
 SET(VERSION_MAJOR "0")
-SET(VERSION_MINOR "4")
+SET(VERSION_MINOR "5")
 SET(VERSION_PATCH "0")
 SET(VERSION_TWEAK "0")
-SET(VERSION_DATE "03/15/2020")
+SET(VERSION_DATE "03/17/2020")
 SET(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" )
 
 SET(PKG_RELEASE "1")
@@ -498,7 +500,7 @@ ENDIF(NOT WIN32)
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "dsr")
 
 #============================================
-# Do not change needed to build app
+# Do not change, needed to build app
 #=============================================
 INCLUDE("cmake/PluginLocalization.cmake")
 INCLUDE("cmake/PluginInstall.cmake")
