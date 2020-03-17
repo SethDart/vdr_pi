@@ -406,7 +406,7 @@ IF(NOT QT_ANDROID)
 
  
     IF(WIN32) 
-        SET(SRC_OSENC_WXCURL
+        SET(SRC_WXCURL
         src/wxcurl/base.cpp
         src/wxcurl/dav.cpp
         src/wxcurl/davtool.cpp
