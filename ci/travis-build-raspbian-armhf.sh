@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
+
 #
 #
+
 # bailout on errors and echo commands.
 set -xe
 sudo apt-get -qq update
@@ -40,7 +42,7 @@ docker exec -ti $DOCKER_CONTAINER_ID apt-get -y install git cmake build-essentia
 #    'mkdir source_top/build; cd source_top/build; cmake ..; make; make package;'
 
 docker exec -ti $DOCKER_CONTAINER_ID /bin/bash -c \
-   'mkdir ci-source/build; cd ci-source/build; cmake -DCMAKE_INSTALL_PREFIX=/usr ..; make; make package;'
+    'mkdir ci-source/build; cd ci-source/build; cmake -DCMAKE_INSTALL_PREFIX=/usr ..; make; make package;'
  
 echo "Stopping"
 docker ps -a
@@ -50,6 +52,10 @@ docker rm -v $DOCKER_CONTAINER_ID
 sudo apt-get install python3-pip python3-setuptools
 
 #  Upload to cloudsmith
+
+#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
+#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
+
 STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
 UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
 PKG_REPO=${CLOUDSMITH_PKG_REPO:-'rick-gleason/opencpn-plugins-pkg'}

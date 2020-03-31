@@ -4,8 +4,6 @@
 ## License:     GPLv3+
 ##---------------------------------------------------------------------------
 
-SET(PLUGIN_SOURCE_DIR .)
-
 # This should be 2.8.0 to have FindGTK2 module
 
 MESSAGE (STATUS "*** Staging to build ${PACKAGE_NAME} ***")
@@ -53,7 +51,7 @@ IF(MSVC)
 ENDIF(MSVC)
 
 IF(NOT DEFINED wxWidgets_USE_FILE)
-   SET(wxWidgets_USE_LIBS base core net xml html adv aui)  
+  SET(wxWidgets_USE_LIBS base core net xml html adv aui)
 ENDIF(NOT DEFINED wxWidgets_USE_FILE)
 
 
@@ -140,7 +138,6 @@ IF (NOT QT_ANDROID )
     if(WXWIDGETS_FORCE_VERSION)
         set (wxWidgets_CONFIG_OPTIONS --version=${WXWIDGETS_FORCE_VERSION})
     endif()
-#    FIND_PACKAGE(wxWidgets REQUIRED)
     find_package(wxWidgets COMPONENTS ${wxWidgets_USE_LIBS})
     INCLUDE(${wxWidgets_USE_FILE})
 ENDIF (NOT QT_ANDROID )

@@ -46,9 +46,10 @@ PROJECT(vdr_pi)
 
 SET(PACKAGE_NAME vdr_pi)
 SET(VERBOSE_NAME VDR)  
-SET(PLUGIN_SOURCE_DIR .)
+# SET(PLUGIN_SOURCE_DIR .)
 MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
 
+#include("VERSION.cmake")
 SET(VERSION_MAJOR "0")
 SET(VERSION_MINOR "5")
 SET(VERSION_PATCH "0")
@@ -59,6 +60,7 @@ SET(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" )
 SET(PKG_RELEASE "1")
 SET(PKG_API_VERSION "1.16")
 SET(PKG_AUTHOR "Jean-Eudes Onfray")
+# NVR: <Name-version>[-release]					   
 SET(PKG_NVR ${PACKAGE_NAME}-${PACKAGE_VERSION}-${PKG_RELEASE})
 # ================================================
 # Plugin Specifics  -End of Header
@@ -73,7 +75,6 @@ SET(TARBALL_URL ${TARBALL_URL}/names/@name@/versions/@version@/@filename@)
 # SET YOUR STABLE_REPO, UNSTABLE_REPO and PKG_REPO in
 #     ci/appveyor.upload.sh
 #     ci/circleci.upload.sh
-#     ci/circleci.build.trusty.sh
 #     ci/travis-build-raspbian-armhf.sh 
 #
 #Example: Plugins artifacts repository url
@@ -90,10 +91,10 @@ SET(OCPN_USE_API_16 ON)
 
 SET(OCPN_MIN_VERSION "ov50")
 
-OPTION(OCPN_FLATPAK "Build flatpak plugin" OFF)
 # Turned on under flatpak build
+OPTION(OCPN_FLATPAK "Build flatpak plugin" OFF)
 
-set(PLUGIN_NAME ${VERBOSE_NAME}-plugin-${PKG_TARGET}-${PKG_TARGET_VERSION})
+set(PLUGIN_NAME ${PKG_NVR}_${PKG_TARGET}-${PKG_TARGET_VERSION})
 
 IF( NOT CMAKE_BUILD_TYPE )
   SET( CMAKE_BUILD_TYPE Release CACHE STRING
@@ -310,7 +311,7 @@ ENDIF(_wx_selected_config MATCHES "androideabi-qt")
 ENDIF(DEFINED _wx_selected_config)
 
 #===========================================================
-# Check cmake/PluginConfigure.cmake, no need to configure
+# Check cmake/PluginConfigure.cmake  (no need to configure)
 #===========================================================
 
 INCLUDE("cmake/PluginConfigure.cmake")
@@ -320,6 +321,8 @@ INCLUDE("cmake/PluginConfigure.cmake")
 #=============================================================
 INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/wxJSON)
 INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src)
+# Do not need to include dir src/cpl  for Oesenc
+# Do not need to include dir src.dsa  for Oesenc
 INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR})
 
 if (OCPN_USE_API_16) 
@@ -490,8 +493,41 @@ SET(PARENT opencpn)
 SET(PREFIX_PLUGINS ${LIB_INSTALL_DIR}/${PARENT})
 SET(PREFIX_PARENTBIN bin)
 SET(PREFIX_PARENTDATA ${PREFIX_DATA}/${PARENT})
-ENDIF(UNIX AND NOT APPLE)
 
+#=================================================
+# Oesenc Chart Catalog stuff - Not Needed
+#=================================================
+
+# IF (ARCH MATCHES "amd64" OR ARCH MATCHES "x86_64") 
+#	INSTALL(FILES "buildlinux64/oeserverd/oeserverd"
+#   etc, etc.
+# ELSE (ARCH MATCHES "amd64" OR ARCH MATCHES "x86_64")
+#   etc, etc.
+# ENDIF (ARCH MATCHES "amd64" OR ARCH MATCHES "x86_64")
+#
+# IF(PACKAGE_FORMAT MATCHES "DEB")
+#    etc etc
+# ENDIF(PACKAGE_FORMAT MATCHES "DEB")
+# INSTALL(FILES "src/rrc_eula_ChartSetsForOpenCPN-v16-12.txt"
+#      PERMISSIONS OWNER_READ GROUP_READ WORLD_READ
+#      DESTINATION ${PREFIX_PARENTDATA}/plugins/${PACKAGE_NAME} )
+# necessary endif
+ENDIF(UNIX AND NOT APPLE)
+#===========================================
+#  Oesenc Chart permissions - Not needed 
+#============================================
+#IF(WIN32)
+#    INSTALL(FILES "buildwin/oeserverd/oeserverd.exe"
+#   etc, etc
+# ENDIF(WIN32)
+#IF(APPLE)
+#INSTALL(FILES "buildosx/oeserverd/oeserverd"
+# etc, etc
+#ENDIF(APPLE)
+
+#==============================================
+# From Oesenc - Needed
+#==============================================
 
 IF(NOT WIN32)
 SET(CPACK_SET_DESTDIR ON)

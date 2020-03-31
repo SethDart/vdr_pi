@@ -4,9 +4,9 @@
 1. Make these changes on a new branch "frontend1" or "ci" (if possible).
 1. Keep your currently working "master" branch intact. 
 1. Rename CMakeLists.txt ----> CMakeLists.save.txt for reference
-1. Rename cmake files adding "save" for reference
+1. Rename the cmake directory ---> "cmake.save" for reference
 1. Keep any other specialized plugin directories
-1. Keep these directories too:
+1. Keep these directories too, don't over-write them!:
 - Include
 - Data
 - src
@@ -23,7 +23,7 @@
 - ci
 - ci  circleci-upload.sh - modify for your Cloudsmith upload
 - ci  appveyor-upload.sh - modify for your Cloudsmith upload
-- ci  trusty-upload.sh - modify for your Cloudsmith upload
+- ci  trusty-upload.sh - modify for your Cloudsmith upload  (delete)
 - ci  travis-build-raspbian-armhf.sh -modify for your Cloudsmith upload
 - cmake
 - debian
@@ -34,13 +34,13 @@
 
 #### Files
 - .gitignore   <---Check against current file
-- .travis.yml 
-- appveyor.yml
+- .travis.yml  <---Check branch
+- appveyor.yml  <--Check branch and current file
 - CMakeLists.txt
 - Curl.cmake
-- pkg_version.sh.in
-   - squiddio-plugin.xml.in
-   - supload-conf.sh.in
+- pkg_version.sh.in 
+   - <verbose_name>-plugin.xml.in
+   - upload-conf.sh.in
 - VERSION.cmake
   - INSTALL.md
   - README.md
@@ -48,6 +48,7 @@
 # CHANGES REQUIRED
 ----------------------------------------------------------------
 1. Rename CMakeLists.txt to CMakeLists.old.txt
+1. Rename cmake directory to cmake.save for reference.
 1. Modify CMakeLists.txt file, following the in-line notes.
    - Modify Plugin Specifics about Ln 40.
    - Rename the file flatpak/org.opencpn.OpenCPN.Plugin.${VERBOSE_NAME}.yaml

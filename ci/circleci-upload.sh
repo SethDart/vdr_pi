@@ -5,9 +5,11 @@
 #
 
 set -xe
-
 #set -e
 #test -z "UPLOAD_DEBUG" || set -x
+
+#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
+#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
 
 #STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'mauro-calvi/squiddio-stable'}
 #UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'mauro-calvi/squiddio-pi'}
@@ -16,6 +18,7 @@ set -xe
 STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
 UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
 PKG_REPO=${CLOUDSMITH_PKG_REPO:-'rick-gleason/opencpn-plugins-pkg'}
+
 
 if [ -z "$CIRCLECI" ]; then
     exit 0;
@@ -38,7 +41,6 @@ elif apt-get --version 2>&1 >/dev/null; then
     sudo python3 -m pip install -q cloudsmith-cli
 else
     sudo -H python3 -m ensurepip
-#    sudo dnf -y install python3-pip python3-setuptools   #More env fail- flatpak, fedora, macos
     sudo -H python3 -m pip install -q setuptools
     sudo -H python3 -m pip install -q cloudsmith-cli
 fi
@@ -52,23 +54,12 @@ tarball=$(ls $HOME/project/build/*.tar.gz)
 tarball_basename=${tarball##*/}
 
 # extract the project name for a filename.  e.g. oernc-pi... sets PROJECT to  "oernc"
-#echo "Check 1"
-##pwd
-#cd build
-#ls *.xml
-#PROJECT=$(ls *.xml | awk '{split($0,a,"-"); print a[1]}')
-#cd ..
-#echo $PROJECT
-#echo $xml
-PROJECT=${tarball_basename%%-pi*}
+PROJECT=${tarball_basename%%_pi*}
 
 source $HOME/project/build/pkg_version.sh
 test -n "$tag" && VERSION="$tag" || VERSION="${VERSION}.${commit}"
 test -n "$tag" && REPO="$STABLE_REPO" || REPO="$UNSTABLE_REPO"
 tarball_name=${PROJECT}-${PKG_TARGET}-${PKG_TARGET_VERSION}-tarball
-xml_name=${PROJECT}-plugin-${PKG_TARGET}-${PKG_TARGET_VERSION}.xml
-#echo $xml_name
-
 
 sudo sed -i -e "s|@pkg_repo@|$REPO|" $xml
 sudo sed -i -e "s|@name@|$tarball_name|" $xml
