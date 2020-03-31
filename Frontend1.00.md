@@ -4,6 +4,8 @@
 1. Make these changes on a new branch "frontend1" or "ci" (if possible).
 1. Keep your currently working "master" branch intact. 
 1. Rename CMakeLists.txt ----> CMakeLists.save.txt for reference
+1. Rename appveyor.yml ----> appveyor.save.yml for reference
+1. Rename .travis.yml ----> .travis.save.yml for reference
 1. Rename the cmake directory ---> "cmake.save" for reference
 1. Keep any other specialized plugin directories
 1. Keep these directories too, don't over-write them!:
@@ -59,11 +61,12 @@
    - Modify/configure 'Add Library' listings for the plugin about Ln 550
    - Edit the file  <squiiddio>_pi.xml.in, about Ln 612
    - Edit the file  <squiddio>_pi.xml, about Ln 612
-1. Modify buildosx/InstallOSX/<plugin>_pi.pkgproj.in filename.
-   - PluginPackage.cmake Ln 184 has configure_file to make this file.
-   - File inside is generic. Rename and change 7x's inside file.
+1. Check that buildosx/InstallOSX/plugin_pi.pkgproj.in exists
+   - PluginPackage.cmake Ln 184 has a configure_file to make this file.
+   - File inside is generic and uses a variable for plugin project name (7x's inside file).
 1. Modify flatpak\org.opencpn.OpenCPN.Plugin.oesenc.yaml filename
-   - Rename to "squiddio" and rename all 7 instances of "oesenc" to "squiddio"
+   - Rename to <verbose_name> and rename all 3 instances of previous name to <verbose_name>.
+   - See Line 233 for more instructions.
 1. Modify cmake/PluginConfigure.cmake: Ln 56 -Only if necessary (squiddio req'd) 
    - Change to SET(wxWidgets_USE_LIBS base core net xml html adv aui)
    - adding 'aui' due to errors for aui.
@@ -84,5 +87,4 @@
    - Configure uploads to Cloudsmith
      - ci/circleci-upload.sh modify Cloudsmith destinations
      - ci/appveyor-uploads.sh modify Cloudsmith destinations
-     - ci/trusty-upload.sh - modify Cloudsmith destinations
      - ci/travis-build-raspbian-armhf.sh -modify Cloudsmith destinations
