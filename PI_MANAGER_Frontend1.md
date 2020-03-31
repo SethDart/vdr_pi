@@ -1,9 +1,10 @@
 # KEEP EXISTING DIRECTORIES AND FILES
 -----------------------------------------------------
 #### Important: 
-1. Make these changes on a new branch "ci" (if possible).
+1. Make these changes on a new branch "frontend1" or "ci" (if possible).
 1. Keep your currently working "master" branch intact. 
-1. Rename CMakeLists.txt ----> CMakeLists.old.txt for reference
+1. Rename CMakeLists.txt ----> CMakeLists.save.txt for reference
+1. Rename cmake files adding "save" for reference
 1. Keep any other specialized plugin directories
 1. Keep these directories too:
 - Include
