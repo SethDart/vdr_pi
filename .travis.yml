@@ -30,8 +30,8 @@ matrix:
 branches:
   only:
 #   - ci
-	- frontend1
-#   - master
+   - frontend1
+   - master
 
 
 # ========
