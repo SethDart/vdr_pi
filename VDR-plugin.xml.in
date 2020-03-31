@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<opencpn-plugin version="1">
-  <name> VDR </name>
-  <version> ${PACKAGE_VERSION} </version>
-  <release> ${PKG_RELEASE} </release>
-  <summary> Voyage Data Recorder & Player </summary>
+  <plugin version="1">
+     <name> VDR </name>
+     <version> ${PACKAGE_VERSION} </version>
+     <release> ${PKG_RELEASE} </release>
+     <summary> Voyage Data Recorder & Player </summary>
 
-  <api-version> ${PKG_API_VERSION} </api-version>
-  <open-source> no </open-source>
-  <author> ${PKG_AUTHOR} </author>
-  <source> https://github.com/SethDart/vdr_pi/ </source>
-  <info-url>https://opencpn.org/OpenCPN/plugins/vdr.html </info-url>
+     <api-version> ${PKG_API_VERSION} </api-version>
+     <open-source> no </open-source>
+     <author> ${PKG_AUTHOR} </author>
+     <source> https://github.com/SethDart/vdr_pi/ </source>
+     <info-url>https://opencpn.org/OpenCPN/plugins/vdr.html </info-url>
 
-  <description>
+     <description>
 VDR Voyage Data Recorder Use Voyage Data Recorder (VDR) to record and play NMEA files.
 Save NMEA stream to a file.  Replay NMEA stream previously saved. Plugin by Seth Dart
-  </description>
+     </description>
 
-  <target>${PKG_TARGET}</target>
-  <target-version>${PKG_TARGET_VERSION}</target-version>
-  <tarball-url> ${TARBALL_URL} </tarball-url>
-</opencpn-plugin>
+     <target>${PKG_TARGET}</target>
+     <target-version>${PKG_TARGET_VERSION}</target-version>
+     <tarball-url> ${TARBALL_URL} </tarball-url>
+  </plugin>
