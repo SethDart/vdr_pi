@@ -52,13 +52,13 @@ MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
 #include("VERSION.cmake")
 SET(VERSION_MAJOR "0")
 SET(VERSION_MINOR "5")
-SET(VERSION_PATCH "0")
-SET(VERSION_DATE "03/31/2020")
+SET(VERSION_PATCH "1")
+SET(VERSION_DATE "04/10/2020")
 SET(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" )
 
-SET(PKG_RELEASE "2")
+SET(PKG_RELEASE "3")
 SET(PKG_API_VERSION "1.16")
-SET(PKG_AUTHOR "Jean-Eudes Onfray")
+SET(PKG_AUTHOR "Jean-Eudes Onfray ")
 # NVR: <Name-version>[-release]					   
 SET(PKG_NVR ${PACKAGE_NAME}-${PACKAGE_VERSION}-${PKG_RELEASE})
 # ================================================
@@ -537,10 +537,7 @@ SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "dsr")
 #============================================
 # Do not change, needed to build app
 #=============================================
-INCLUDE("cmake/PluginLocalization.cmake")
-INCLUDE("cmake/PluginInstall.cmake")
 INCLUDE("cmake/PluginSetup.cmake")
-INCLUDE("cmake/PluginPackage.cmake")
 
 configure_file(
   ${CMAKE_SOURCE_DIR}/pkg_version.sh.in
@@ -560,3 +557,10 @@ configure_file(
   ${CMAKE_SOURCE_DIR}/${VERBOSE_NAME}-plugin.xml.in
   ${CMAKE_CURRENT_BINARY_DIR}/${PLUGIN_NAME}.xml
 )
+
+#============================================
+# Do not change, needed to build app
+#=============================================
+INCLUDE("cmake/PluginLocalization.cmake")
+INCLUDE("cmake/PluginInstall.cmake")
+INCLUDE("cmake/PluginPackage.cmake")
