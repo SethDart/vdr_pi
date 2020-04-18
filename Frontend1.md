@@ -88,3 +88,11 @@
      - ci/circleci-upload.sh modify Cloudsmith destinations
      - ci/appveyor-uploads.sh modify Cloudsmith destinations
      - ci/travis-build-raspbian-armhf.sh -modify Cloudsmith destinations
+
+More complete documentation on the full Plugin Manager System is available at the 
+Opencpn Developer Manual https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:developer_manual
+Plugin Manager - Dev Setup https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:developer_manual:pi_installler_build_deploy
+Plugin Manager - Dev Procedure https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:developer_manual:pi_installer_procedure
+Plugin Manager - Catalog and Meta-URL https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:developer_manual:pi_installer_procedure
+
+For more in depth Plugin Manager Program Documentation  https://github.com/leamas/OpenCPN/wiki 

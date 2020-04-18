@@ -83,7 +83,7 @@ jobs:
      steps:
        - checkout
        - run: ci/circleci-build-flatpak.sh
-       - run: ci/circleci-upload.sh
+       - run: ci/circleci-flatpak-upload.sh
    build-fedora:
      docker:
          - image: fedora:29
@@ -93,6 +93,15 @@ jobs:
        - run: su -c "dnf install -q -y git openssh-clients openssh-server"
        - checkout
        - run: ci/circleci-build-fedora.sh
+       - run: ci/circleci-upload.sh
+   build-macos:
+     macos:
+       xcode: "10.0.0"
+     environment:
+       - OCPN_TARGET:  macos
+     steps:
+       - checkout
+       - run: ci/circleci-build-macos.sh
        - run: ci/circleci-upload.sh
    build-mingw:
      docker:
@@ -104,15 +113,6 @@ jobs:
        - checkout
        - run: ci/circleci-build-mingw.sh
        - run: ci/circleci-upload.sh
-   build-macos:
-     macos:
-       xcode: "10.0.0"
-     environment:
-       - OCPN_TARGET:  macos
-     steps:
-       - checkout
-       - run: ci/circleci-build-macos.sh
-       - run: ci/circleci-upload.sh
 workflows:
   version: 2
   build_all:
@@ -120,36 +120,54 @@ workflows:
       - build-trusty:
           filters:
             branches:
-              only: frontend1
+              only:
+                - master
+                - frontend1
       - build-xenial:
           filters:
             branches:
-              only: frontend1
+              only:
+                - master
+                - frontend1
       - build-bionic-gtk3:
           filters:
             branches:
-              only: frontend1
+              only:
+                - master
+                - frontend1
       - build-bionic:
           filters:
             branches:
-              only: frontend1
+              only:
+                - master
+                - frontend1
       - build-buster:
           filters:
             branches:
-              only: frontend1
+              only:
+                - master
+                - frontend1
       - build-flatpak:
           filters:
             branches:
-              only: frontend1
+              only:
+                - master
+                - frontend1
       - build-fedora:
           filters:
             branches:
-              only: frontend1
+              only:
+                - master
+                - frontend1
       - build-macos:
           filters:
             branches:
-              only: frontend1
+              only:
+                - master
+                - frontend1
       - build-mingw:
           filters:
             branches:
-              only: frontend1
+               only:
+                - master
+                - frontend1

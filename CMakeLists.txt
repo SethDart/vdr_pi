@@ -1,7 +1,9 @@
-##---------------------------------------------------------------------------
-## Author:      Jean-Eudes Onfray
-## Copyright:
+##==========================================================================
+#-----FRONTEND1 + Cmake  Version: 1.02    4-18-2020
+#-----Author:  bdbcat aka. dsr (Dave Register)
 ## License:     wxWidgets License
+##===========================================================================
+## Author:      Jean-Eudes Onfray
 ##---------------------------------------------------------------------------
 ## *   Copyright (C) 2010 by ean-Eudes Onfray                                *
 ## *   This program is free software; you can redistribute it and/or modify  *
@@ -18,8 +20,6 @@
 ## *   along with this program; if not, write to the                         *
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,                                       *
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx          *
-## ***************************************************************************			  
-##    PLUGIN MANAGER FRONTEND OPTION #1     Version: 1.0    Date:3-17-2020   * 
 ## ***************************************************************************			  
 
 # define minimum cmake version  (newer)
@@ -45,7 +45,7 @@ set(OpenGL_GL_PREFERENCE "LEGACY")
 PROJECT(vdr_pi)
 
 SET(PACKAGE_NAME vdr_pi)
-SET(VERBOSE_NAME VDR)  
+SET(VERBOSE_NAME VDR)  #Not necessarily the same as CommonName, see below Line 238
 # SET(PLUGIN_SOURCE_DIR .)
 MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
 
@@ -56,7 +56,7 @@ SET(VERSION_PATCH "1")
 SET(VERSION_DATE "04/11/2020")
 SET(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" )
 
-SET(PKG_RELEASE "3")
+SET(PKG_RELEASE "4")
 SET(PKG_API_VERSION "1.16")
 SET(PKG_AUTHOR "Jean-Eudes Onfray ")
 # NVR: <Name-version>[-release]					   
@@ -74,9 +74,13 @@ SET(TARBALL_URL ${TARBALL_URL}/names/@name@/versions/@version@/@filename@)
 # SET YOUR STABLE_REPO, UNSTABLE_REPO and PKG_REPO in
 #     ci/appveyor.upload.sh
 #     ci/circleci.upload.sh
+#     ci/circleci.upload-flatpak.sh
 #     ci/travis-build-raspbian-armhf.sh 
 #
 #Example: Plugins artifacts repository url
+# STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'mauro-calvi/squiddio-stable')
+# UNSTABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'mauro-calvi/squiddio-pi')
+# STABLE_PKG_REPO=${CLOUDSMITH_STABLE_REPO:-'mauro-calvi/manual')
 #
 # STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
 # UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
@@ -271,7 +275,7 @@ if (OCPN_FLATPAK)
 #=====================================================================
         COMMAND ${TAR}
             -czf ${PKG_NVR}_${PKG_TARGET_NVR}.tar.gz
-            --transform 's|.*/files/|${VERBOSE_NAME}_pi-flatpak-${PACKAGE_VERSION}/|'
+            --transform 's|.*/files/|${VERBOSE_NAME}-flatpak-${PACKAGE_VERSION}/|'
             ${CMAKE_CURRENT_BINARY_DIR}/app/files
     )
     return ()
@@ -326,8 +330,8 @@ INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR})
 
 if (OCPN_USE_API_16) 
   INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/api-16)
-#else ()
-#  INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/api-13)
+else ()
+  INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/api-13)
 endif ()
 #=============================================================
 
@@ -439,7 +443,7 @@ IF(UNIX AND NOT APPLE)
 ENDIF(UNIX AND NOT APPLE)
 
 IF(TINYXML_FOUND)
- message (STATUS "oeSENCr_pi building with system tinyxml")
+ message (STATUS "Plugin is building with system tinyxml")
  INCLUDE_DIRECTORIES(${TINYXML_INCLUDE_DIR})
 ELSE(TINYXML_FOUND)
  message (STATUS "Plugin is building with embedded tinyxml")

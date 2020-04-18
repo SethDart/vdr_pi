@@ -4,9 +4,6 @@
 # Upload the .tar.gz and .xml artifacts to cloudsmith
 #
 
-#set -e
-#test -z "UPLOAD_DEBUG" || set -x
-
 #STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
 #UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
 
@@ -57,6 +54,10 @@ while read line; do
     line=${line/@filename@/$tarball_basename}
     echo $line
 done < $xml > xml.tmp && cp xml.tmp $xml && rm xml.tmp
+
+source ../ci/commons.sh
+cp $xml metadata.xml 
+repack $tarball metadata.xml
 
 cloudsmith push raw --republish --no-wait-for-sync \
     --name ${PROJECT}-${PKG_TARGET}-${PKG_TARGET_VERSION}-metadata \
