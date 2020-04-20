@@ -384,9 +384,6 @@ SET(SRC_VDR
             src/vdr_pi.cpp
  	)
 
-
-
-
 INCLUDE_DIRECTORIES(src/wxJSON)
 INCLUDE_DIRECTORIES(api-16)
 

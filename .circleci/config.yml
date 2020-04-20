@@ -66,6 +66,22 @@ jobs:
        - run: cat /etc/apt/sources.list
        - run: ci/circleci-build-debian.sh
        - run: ci/circleci-upload.sh
+   build-focal:
+     docker:
+       - image: circleci/buildpack-deps:focal-scm
+     environment:
+       - OCPN_TARGET:  focal
+     steps:
+       - checkout
+       - run: >
+           echo "deb-src http://us.archive.ubuntu.com/ubuntu/ focal main"
+           | sudo tee -a /etc/apt/sources.list
+       - run: >
+           echo "deb-src http://us.archive.ubuntu.com/ubuntu/ focal-updates main"
+           | sudo tee -a /etc/apt/sources.list
+       - run: cat /etc/apt/sources.list
+       - run: ci/circleci-build-debian.sh
+       - run: ci/circleci-upload.sh
    build-buster:
      docker:
        - image: circleci/buildpack-deps:buster-scm
@@ -94,15 +110,6 @@ jobs:
        - checkout
        - run: ci/circleci-build-fedora.sh
        - run: ci/circleci-upload.sh
-   build-macos:
-     macos:
-       xcode: "10.0.0"
-     environment:
-       - OCPN_TARGET:  macos
-     steps:
-       - checkout
-       - run: ci/circleci-build-macos.sh
-       - run: ci/circleci-upload.sh
    build-mingw:
      docker:
          - image: fedora:29
@@ -112,6 +119,15 @@ jobs:
        - run: su -c "dnf install -q -y git openssh-clients openssh-server"
        - checkout
        - run: ci/circleci-build-mingw.sh
+       - run: ci/circleci-upload.sh
+   build-macos:
+     macos:
+       xcode: "10.0.0"
+     environment:
+       - OCPN_TARGET:  macos
+     steps:
+       - checkout
+       - run: ci/circleci-build-macos.sh
        - run: ci/circleci-upload.sh
 workflows:
   version: 2
@@ -129,13 +145,19 @@ workflows:
               only:
                 - master
                 - frontend1
+      - build-bionic:
+          filters:
+            branches:
+              only: 
+                 - master
+                 - frontend1
       - build-bionic-gtk3:
           filters:
             branches:
               only:
                 - master
                 - frontend1
-      - build-bionic:
+      - build-focal:
           filters:
             branches:
               only:
@@ -159,15 +181,15 @@ workflows:
               only:
                 - master
                 - frontend1
-      - build-macos:
-          filters:
-            branches:
-              only:
-                - master
-                - frontend1
       - build-mingw:
           filters:
             branches:
                only:
+                - master
+                - frontend1
+      - build-macos:
+          filters:
+            branches:
+              only:
                 - master
                 - frontend1
