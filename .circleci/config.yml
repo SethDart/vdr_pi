@@ -136,40 +136,70 @@ workflows:
       - build-trusty:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - frontend1-update
+                - frontend1
       - build-xenial:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - frontend1-update
+                - frontend1
       - build-bionic-gtk3:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - frontend1-update
+                - frontend1
       - build-bionic:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - frontend1-update
+                - frontend1
       - build-focal:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - frontend1-update
+                - frontend1
       - build-buster:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - frontend1-update
+                - frontend1
       - build-flatpak:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - frontend1-update
+                - frontend1
       - build-fedora:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - frontend1-update
+                - frontend1
       - build-macos:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - frontend1-update
+                - frontend1
       - build-mingw:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - frontend1-update
+                - frontend1
