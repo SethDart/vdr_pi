@@ -7,8 +7,6 @@
 set -xe
 sudo apt-get -qq update
 
-#source $HOME/project/ci/commons.sh
-
 DOCKER_SOCK="unix:///var/run/docker.sock"
 
 echo "DOCKER_OPTS=\"-H tcp://127.0.0.1:2375 -H $DOCKER_SOCK -s devicemapper\"" \
@@ -16,22 +14,30 @@ echo "DOCKER_OPTS=\"-H tcp://127.0.0.1:2375 -H $DOCKER_SOCK -s devicemapper\"" \
 sudo service docker restart;
 sleep 5;
 
-docker run --rm --privileged multiarch/qemu-user-static:register --reset
+#docker run --rm --privileged multiarch/qemu-user-static:register --reset
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
 docker run --privileged -d -ti -e "container=docker" \
       -v ~/source_top:/source_top \
       -v $(pwd):/ci-source:rw \
       $DOCKER_IMAGE /bin/bash
-      
-sudo docker ps			  
-DOCKER_CONTAINER_ID=$(sudo docker ps | grep raspbian | awk '{print $1}')
+ 
+sudo docker ps
 
-#echo $DOCKER_CONTAINER_ID 
+DOCKER_CONTAINER_ID=$(sudo docker ps | grep 'ubuntu' | awk '{print $1}')
+
+
+echo $DOCKER_CONTAINER_ID 
+sleep 5
+sudo docker ps
+
+docker exec -ti $DOCKER_CONTAINER_ID uname -a
 
 docker exec -ti $DOCKER_CONTAINER_ID apt-get update
 docker exec -ti $DOCKER_CONTAINER_ID echo "------\nEND apt-get update\n" 
 
 docker exec -ti $DOCKER_CONTAINER_ID apt-get -y install git cmake build-essential cmake gettext wx-common libwxgtk3.0-dev libbz2-dev libcurl4-openssl-dev libexpat1-dev libcairo2-dev libarchive-dev liblzma-dev libexif-dev lsb-release 
+
 
 #docker exec -ti $DOCKER_CONTAINER_ID echo $OCPN_BRANCH
 
@@ -56,7 +62,6 @@ sudo apt-get install python3-pip python3-setuptools
 
 #UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
 #STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
-
 #STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'mauro-calvi/squiddio-stable'}
 #UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'mauro-calvi/squiddio-pi'}
 #PKG_REPO=${CLOUDSMITH_PKG_REPO:-'mauro-calvi/squiddio-manual'}
@@ -64,7 +69,6 @@ sudo apt-get install python3-pip python3-setuptools
 STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
 UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
 PKG_REPO=${CLOUDSMITH_PKG_REPO:-'rick-gleason/opencpn-plugins-pkg'}
-
 
 echo "Check 0.5"
 echo $STABLE_REPO
@@ -80,6 +84,7 @@ echo "Using \$CLOUDSMITH_API_KEY: ${CLOUDSMITH_API_KEY:0:4}..."
 set -xe
 
 #python -m ensurepip
+
 python3 -m pip install -q setuptools
 python3 -m pip install -q cloudsmith-cli
 
@@ -156,12 +161,10 @@ sudo cp ~/$xml $tar_dir/metadata.xml
 tar_dir_here=${tar_dir##*/}
 sudo tar czf $tarball $tar_dir_here
 
-
 # Repack using gnu tar (cmake's is problematic) and add metadata.
 #cp $xml metadata.xml
 #sudo chmod 666 $tarball
 #repack $tarball metadata.xml
-
 cloudsmith push raw --republish --no-wait-for-sync \
     --name ${PROJECT}-${PKG_TARGET}-${PKG_TARGET_VERSION}-metadata \
     --version ${VERSION} \
