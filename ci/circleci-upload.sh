@@ -15,9 +15,13 @@ source $HOME/project/ci/commons.sh
 #UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'mauro-calvi/squiddio-pi'}
 #PKG_REPO=${CLOUDSMITH_PKG_REPO:-'mauro-calvi/squiddio-manual'}
 
-STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
-UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
-PKG_REPO=${CLOUDSMITH_PKG_REPO:-'rick-gleason/opencpn-plugins-pkg'}
+#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
+#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
+#PKG_REPO=${CLOUDSMITH_PKG_REPO:-'rick-gleason/opencpn-plugins-pkg'}
+
+STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'opencpn/vdr-prod'}
+UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'opencpn/vdr-beta'}
+PKG_REPO=${CLOUDSMITH_PKG_REPO:-'opencpn/vdr-alpha'}
 
 if [ -z "$CIRCLECI" ]; then
     exit 0;
