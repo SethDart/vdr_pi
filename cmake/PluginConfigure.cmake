@@ -8,7 +8,7 @@
 
 MESSAGE (STATUS "*** Staging to build ${PACKAGE_NAME} ***")
 
-include  ("VERSION.cmake")
+# include  ("VERSION.cmake")
 
 #  Do the version.h configuration into the build output directory,
 #  thereby allowing building from a read-only source tree.
