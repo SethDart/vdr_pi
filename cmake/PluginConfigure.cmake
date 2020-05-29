@@ -23,6 +23,7 @@ SET(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" )
 #SET(CMAKE_BUILD_TYPE Debug)
 #SET(CMAKE_VERBOSE_MAKEFILE ON)
 
+
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/src)
 
 # SET(PROFILING 1)
@@ -33,7 +34,9 @@ IF(NOT MSVC)
   ADD_DEFINITIONS( "-Wall -g -fprofile-arcs -ftest-coverage -fexceptions" )
  ELSE(PROFILING)
 #  ADD_DEFINITIONS( "-Wall -g -fexceptions" )
+
  ADD_DEFINITIONS( "-Wall -Wno-unused-result -g -O2 -fexceptions" )
+
  ENDIF(PROFILING)
 
  IF(NOT APPLE)
@@ -101,13 +104,16 @@ IF(OPENGL_GLU_FOUND)
     INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR})
 
     MESSAGE (STATUS "Found OpenGL..." )
+
     #MESSAGE (STATUS "    Lib: " ${OPENGL_LIBRARIES})
     #MESSAGE (STATUS "    Include: " ${OPENGL_INCLUDE_DIR})
+
     ADD_DEFINITIONS(-DocpnUSE_GL)
 ELSE(OPENGL_GLU_FOUND)
     MESSAGE (STATUS "OpenGL not found..." )
 ENDIF(OPENGL_GLU_FOUND)
 ENDIF(NOT QT_ANDROID)
+
 
 #  Building for QT_ANDROID involves a cross-building environment,
 #  So the OpenGL include directories, flags, etc must be stated explicitly
@@ -159,13 +165,13 @@ IF (QT_ANDROID )
 
         libGLESv2.so
         libEGL.so
+
         )
 
 ENDIF(QT_ANDROID)
 
 
 ADD_DEFINITIONS(-DBUILDING_PLUGIN)
-
 
 SET(BUILD_SHARED_LIBS TRUE)
 

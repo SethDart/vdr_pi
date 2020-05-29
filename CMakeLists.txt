@@ -1,7 +1,7 @@
+
 ##==========================================================================
 #-----FRONTEND1 + Cmake  Version: 1.02    4-18-2020
 #-----Author:  bdbcat aka. dsr (Dave Register)
-## License:     wxWidgets License
 ##===========================================================================
 ## Author:      Jean-Eudes Onfray
 ##---------------------------------------------------------------------------
@@ -565,3 +565,4 @@ configure_file(
 INCLUDE("cmake/PluginLocalization.cmake")
 INCLUDE("cmake/PluginInstall.cmake")
 INCLUDE("cmake/PluginPackage.cmake")
+
