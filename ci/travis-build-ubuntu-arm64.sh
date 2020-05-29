@@ -67,9 +67,13 @@ sudo apt-get install python3-pip python3-setuptools
 #UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'mauro-calvi/squiddio-pi'}
 #PKG_REPO=${CLOUDSMITH_PKG_REPO:-'mauro-calvi/squiddio-manual'}
 
-STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
-UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
-PKG_REPO=${CLOUDSMITH_PKG_REPO:-'rick-gleason/opencpn-plugins-pkg'}
+# STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
+# UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
+# PKG_REPO=${CLOUDSMITH_PKG_REPO:-'rick-gleason/opencpn-plugins-pkg'}
+
+STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'opencpn/vdr-prod'}
+UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'opencpn/vdr-beta'}
+PKG_REPO=${CLOUDSMITH_PKG_REPO:-'opencpn/vdr-alpha'}
 
 echo "Check 0.5"
 echo $STABLE_REPO
@@ -162,6 +166,10 @@ sudo cp ~/$xml $tar_dir/metadata.xml
 tar_dir_here=${tar_dir##*/}
 sudo tar czf $tarball $tar_dir_here
 
+# Repack using gnu tar (cmake's is problematic) and add metadata.
+#cp $xml metadata.xml
+#sudo chmod 666 $tarball
+#repack $tarball metadata.xml
 cloudsmith push raw --republish --no-wait-for-sync \
     --name ${PROJECT}-${PKG_TARGET}-${PKG_TARGET_VERSION}-metadata \
     --version ${VERSION} \

@@ -123,17 +123,19 @@ bool vdr_pi::DeInit(void)
 
 int vdr_pi::GetAPIVersionMajor()
 {
-      return MY_API_VERSION_MAJOR;
+//      return MY_API_VERSION_MAJOR;
+     return OCPN_API_VERSION_MAJOR;
 }
 
 int vdr_pi::GetAPIVersionMinor()
 {
-      return MY_API_VERSION_MINOR;
+//      return MY_API_VERSION_MINOR;
+     return OCPN_API_VERSION_MINOR;
 }
 
 int vdr_pi::GetPlugInVersionMajor()
 {
-      return PLUGIN_VERSION_MAJOR;
+     return PLUGIN_VERSION_MAJOR;
 }
 
 int vdr_pi::GetPlugInVersionMinor()

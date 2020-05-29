@@ -5,9 +5,9 @@ matrix:
   - env:
     - OCPN_TARGET=stretch-armhf
     - OCPN_BRANCH=master
-    - OCPN_STABLE_REPO=rick-gleason/opencpn-plugins-prod
-    - OCPN_UNSTABLE_REPO=rick-gleason/opencpn-plugins-beta
-    - OCPN_PKG_REPO=rick-gleason/opencpn-plugins-pkg
+    - OCPN_STABLE_REPO=opencpn/vdr-prod
+    - OCPN_UNSTABLE_REPO=opencpn/vdr-beta
+    - OCPN_PKG_REPO=opencpn/vdr-alpha
 
     - DOCKER_IMAGE=raspbian/stretch
 
@@ -25,18 +25,15 @@ matrix:
     services:
     - docker
     script:
-#    - chmod a+x ./ci/travis-build-raspbian-armhf.sh
     - "./ci/travis-build-raspbian-armhf.sh"
 #  - env:
 #    - OCPN_TARGET=bionic-arm64
 #    - OCPN_BRANCH=master
-# 
 #    - DOCKER_IMAGE=arm64v8/ubuntu:18.04
-#
 #    services:
 #    - docker
 #    script:
-#    - chmod a+x ./ci/travis-build-raspbian-armhf.sh	
+#    - chmod a+x
 #    - "./ci/travis-build-ubuntu-arm64.sh"
 
 branches:
