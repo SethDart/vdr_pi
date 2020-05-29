@@ -30,10 +30,13 @@ matrix:
   - env:
     - OCPN_TARGET=bionic-arm64
     - OCPN_BRANCH=master
+ 
     - DOCKER_IMAGE=arm64v8/ubuntu:18.04
+
     services:
     - docker
     script:
+    - chmod a+x ./ci/travis-build-raspbian-armhf.sh	
     - "./ci/travis-build-ubuntu-arm64.sh"
 
 branches:
