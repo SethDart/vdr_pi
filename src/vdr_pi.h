@@ -38,7 +38,7 @@
 #include "version.h"
 
 #define     MY_API_VERSION_MAJOR    1
-#define     MY_API_VERSION_MINOR    6
+#define     MY_API_VERSION_MINOR    16
 
 #include <wx/fileconf.h>
 #include <wx/filepicker.h>
