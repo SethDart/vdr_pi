@@ -35,11 +35,17 @@
   #include "wx/wx.h"
 #endif //precompiled headers
 
-#define     PLUGIN_VERSION_MAJOR    0
-#define     PLUGIN_VERSION_MINOR    3
+#include "version.h"
 
-#define     MY_API_VERSION_MAJOR    1
-#define     MY_API_VERSION_MINOR    6
+//  The version number now comes from (${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/include/version.h) file
+//  as configured by the CMakeLists.txt script
+
+//#define     PLUGIN_VERSION_MAJOR    0
+//#define     PLUGIN_VERSION_MINOR    2
+//#define     MY_API_VERSION_MAJOR    1
+//#define     MY_API_VERSION_MINOR    16
+
+#include "ocpn_plugin.h"
 
 #include <wx/fileconf.h>
 #include <wx/filepicker.h>

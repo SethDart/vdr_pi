@@ -1,0 +1,109 @@
+language: cpp
+
+matrix:
+  include:
+  - env:
+    - OCPN_TARGET=stretch-armhf
+    - OCPN_BRANCH=master
+    - OCPN_STABLE_REPO=rick-gleason/opencpn-plugins-prod
+    - OCPN_UNSTABLE_REPO=rick-gleason/opencpn-plugins-beta
+    - OCPN_PKG_REPO=rick-gleason/opencpn-plugins-pkg
+
+    - DOCKER_IMAGE=raspbian/stretch
+
+    services:
+    - docker
+    script:
+    - "./ci/travis-build-raspbian-armhf.sh"
+#    - travis_wait 40 sleep infinity & bash ./ci/travis-build-raspbian-armhf.sh
+  - env:
+    - OCPN_TARGET=buster-armhf
+    - OCPN_BRANCH=master
+
+    - DOCKER_IMAGE=opencpn/raspbian-buster:plugin_build_tooling
+
+    services:
+    - docker
+    script:
+#    - chmod a+x ./ci/travis-build-raspbian-armhf.sh
+    - "./ci/travis-build-raspbian-armhf.sh"
+  - env:
+    - OCPN_TARGET=bionic-arm64
+    - OCPN_BRANCH=master
+    - DOCKER_IMAGE=arm64v8/ubuntu:18.04
+    services:
+    - docker
+    script:
+    - "./ci/travis-build-ubuntu-arm64.sh"
+
+branches:
+  only:
+
+
+# ========
+#install:
+#
+#    - if [[ "$TRAVIS_OS_NAME" == "linux" ]];
+#      then
+#        sudo apt-get -qq update;
+#        sudo apt-get install libwxgtk3.0-dev libwxgtk3.0-0 libgps-dev libglu1-mesa-dev libgtk2.0-dev libbz2-dev libtinyxml-dev;
+#        sudo apt-get install libexpat1-dev libcairo2-dev;
+#        sudo apt-get install rpm;
+#      fi
+#    - if [[ "$TRAVIS_OS_NAME" == "osx" ]];
+#      then
+#        brew install cairo libexif xz libarchive;
+#        wget http://opencpn.navnux.org/build_deps/wx312_opencpn50_macos109.tar.xz;
+#        tar xJf wx312_opencpn50_macos109.tar.xz -C /tmp;
+#        export PATH="/usr/local/opt/gettext/bin:$PATH";
+#        echo 'export PATH="/usr/local/opt/gettext/bin:$PATH"' >> ~/.bash_profile;
+#        wget http://opencpn.navnux.org/build_deps/Packages.dmg;
+#        hdiutil attach Packages.dmg;
+#        sudo installer -pkg "/Volumes/Packages 1.2.5/Install Packages.pkg" -target "/";
+#      fi
+#
+#script:
+#  - if [[ "${COVERITY_SCAN_BRANCH}" == 1 ]];
+#    then
+#      echo "Don't build on coverty_scan branch.";
+#      exit 0;
+#    fi
+#  - cd build
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]];
+#    then
+#       cmake -DCMAKE_BUILD_TYPE=Release ../ && make -sj2 package;
+#    fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]];
+#    then
+#        cmake -DwxWidgets_CONFIG_EXECUTABLE=/tmp/wx312_opencpn50_macos109/bin/wx-config -DwxWidgets_CONFIG_OPTIONS="--prefix=/tmp/wx312_opencpn50_macos109" -DCMAKE_INSTALL_PREFIX=/tmp/opencpn -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 .. && make -sj2 && make create-pkg;
+#     fi
+#  - ls -l;
+# =========
+
+#notifications:
+#  email: false
+#git:
+#  depth: 10
+#before_install:
+#- if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
+#- if [ "${#OAUTH_ACCESS_TOKEN}" != 0 ]; then (echo OAUTH_ACCESS_TOKEN=${OAUTH_ACCESS_TOKEN} > ~/.dropbox_uploader); fi
+#addons:
+#  apt:
+#    sources:
+#    - ubuntu-toolchain-r-test
+#    packages:
+#    - gcc-6
+#    - g++-6
+#deploy:
+#- provider: releases
+#  api_key:
+#    secure: "oABdRX4NXR3h523BxkRPRtjChNbH1lycc3Odkm9Zt8DzbeOPLAicss510fjyKbNts1WoBmwLgHwGv3tiDOpywiPDkM8XigtjiNY1XAsOK/8WuFuEaKu9H+8qNUhrcnGwlneIB7WvSms1SIROh+n/Arz3moAvKGOeuxK134KwcUwKfGqu6ky5blLBUhg0/0nJDYI1yT4bLiXTaR77KBk4IaVdXyJ9/hplsXk3kiGDHNIeEh/F/Y+dg1380u4llSJWJ9dFMwtDQkKdpt3nQaMpWdUWoyaPygV7gmGEk9xQbpMW8ZEH8agpHif44LOwtxjZfD1M1Ai7H8fT16sqh3lkh5lPVxVlyDHQpbuLviKLHqMqYWCStogoW9j46dQpUY77NMzvH4r5WTqoBl4H/+KuyVc+mTQjs/go/plZgOBv/iCaCbD0XirJd7lXijnHSbGeNap7UzaYwZOuuuOlVDRVaWvIkv/MWk+WOCk+F1ZwiT2KLvr6/oK2/eMb+vTFtRXLxJFwsPeZf5z4DMFUOHQCG7lcdZ/6Pi9JgQaJOySNJ3kCuA4fv3pLmbX3pDKAXvFchvTyqQM9C/f/+nc4lxsQax2g0R5dsLLwFjxJrJPQ6TjP8o5mNix5sqPbxJOJpzTw5RN85NzBb9qL0xCuCN6dP4MVcQyTrfrsSiBbYHFTsmM="
+#  file_glob: true
+#  file: "$TRAVIS_BUILD_DIR/build/*.{deb,rpm,dmg,txz,pkg,pkg.tar.xz}"
+#  skip_cleanup: true
+#  on:
+#    repo: rgleason/weather_routing_pi 
+#    tags: true
+#    all_branches: true
+
+
