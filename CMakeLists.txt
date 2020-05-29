@@ -1,7 +1,7 @@
+
 ##==========================================================================
 #-----FRONTEND1 + Cmake  Version: 1.02    4-18-2020
 #-----Author:  bdbcat aka. dsr (Dave Register)
-## License:     wxWidgets License
 ##===========================================================================
 ## Author:      Jean-Eudes Onfray
 ##---------------------------------------------------------------------------
@@ -61,6 +61,7 @@ SET(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" )
 
 SET(PKG_RELEASE "${VERSION_TWEAK}")
 SET(PKG_API_VERSION "${OCPN_API_VERSION_MAJOR}.${OCPN_API_VERSION_MINOR}")
+
 SET(PKG_AUTHOR "Jean-Eudes Onfray ")
 # NVR: <Name-version>[-release]					   
 SET(PKG_NVR ${PACKAGE_NAME}-${PACKAGE_VERSION}-${PKG_RELEASE})
@@ -574,3 +575,4 @@ configure_file(
 INCLUDE("cmake/PluginLocalization.cmake")
 INCLUDE("cmake/PluginInstall.cmake")
 INCLUDE("cmake/PluginPackage.cmake")
+

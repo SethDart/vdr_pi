@@ -62,6 +62,7 @@ sudo apt-get install python3-pip python3-setuptools
 
 #UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
 #STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
+
 #STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'mauro-calvi/squiddio-stable'}
 #UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'mauro-calvi/squiddio-pi'}
 #PKG_REPO=${CLOUDSMITH_PKG_REPO:-'mauro-calvi/squiddio-manual'}
@@ -180,4 +181,3 @@ cloudsmith push raw --republish --no-wait-for-sync \
     --version ${VERSION} \
     --summary "opencpn plugin tarball for automatic installation" \
     $REPO $tarball
-

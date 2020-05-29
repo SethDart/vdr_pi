@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-
 #
 #
-
 # bailout on errors and echo commands.
 set -xe
 sudo apt-get -qq update
@@ -22,8 +20,9 @@ docker run --privileged -d -ti -e "container=docker" \
       -v ~/source_top:/source_top \
       -v $(pwd):/ci-source:rw \
       $DOCKER_IMAGE /bin/bash
-      
-sudo docker ps			  
+
+sudo docker ps
+
 DOCKER_CONTAINER_ID=$(sudo docker ps | grep raspbian | awk '{print $1}')
 
 #echo $DOCKER_CONTAINER_ID 
@@ -141,7 +140,6 @@ echo "Check 4"
 #raspbian
 #echo $PKG_TARGET_VERSION
 #10
-
 cat ~/$xml
 #cat ~/xml.tmp
 
@@ -159,11 +157,6 @@ sudo cp ~/$xml $tar_dir/metadata.xml
 tar_dir_here=${tar_dir##*/}
 sudo tar czf $tarball $tar_dir_here
 
-
-# Repack using gnu tar (cmake's is problematic) and add metadata.
-#cp $xml metadata.xml
-#sudo chmod 666 $tarball
-#repack $tarball metadata.xml
 
 cloudsmith push raw --republish --no-wait-for-sync \
     --name ${PROJECT}-${PKG_TARGET}-${PKG_TARGET_VERSION}-metadata \
