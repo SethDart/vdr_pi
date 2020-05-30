@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-
 #
 #
-
 # bailout on errors and echo commands.
 set -xe
 sudo apt-get -qq update
@@ -60,12 +58,8 @@ sudo apt-get install python3-pip python3-setuptools
 
 #  Upload to cloudsmith
 
-#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
-#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
-
-#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'mauro-calvi/squiddio-stable'}
-#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'mauro-calvi/squiddio-pi'}
-#PKG_REPO=${CLOUDSMITH_PKG_REPO:-'mauro-calvi/squiddio-manual'}
+# UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
+# STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
 
 # STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
 # UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
@@ -166,10 +160,6 @@ sudo cp ~/$xml $tar_dir/metadata.xml
 tar_dir_here=${tar_dir##*/}
 sudo tar czf $tarball $tar_dir_here
 
-# Repack using gnu tar (cmake's is problematic) and add metadata.
-#cp $xml metadata.xml
-#sudo chmod 666 $tarball
-#repack $tarball metadata.xml
 cloudsmith push raw --republish --no-wait-for-sync \
     --name ${PROJECT}-${PKG_TARGET}-${PKG_TARGET_VERSION}-metadata \
     --version ${VERSION} \
