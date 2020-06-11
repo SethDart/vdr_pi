@@ -59,7 +59,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 vdr_pi::vdr_pi(void *ppimgr)
-      :opencpn_plugin_16(ppimgr), wxTimer(this)
+      :opencpn_plugin_116(ppimgr), wxTimer(this)
 {
       // Create the PlugIn icons
       initialize_images();
