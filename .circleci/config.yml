@@ -182,13 +182,14 @@ workflows:
                 - master
                 - frontend1-update
                 - frontend1
-      - build-fedora:
-          filters:
-            branches:
-              only:
-                - master
-                - frontend1-update
-                - frontend1
+# Fedora builds are being eliminated, Alec says hard to maintain.
+#      - build-fedora:
+#          filters:
+#            branches:
+#              only:
+#                - master
+#                - frontend1-update
+#                - frontend1
       - build-macos:
           filters:
             branches:
