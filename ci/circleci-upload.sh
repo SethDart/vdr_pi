@@ -6,8 +6,16 @@
 
 set -xe
 
-UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
-STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
+#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
+#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
+
+#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'mauro-calvi/squiddio-stable'}
+#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'mauro-calvi/squiddio-pi'}
+#PKG_REPO=${CLOUDSMITH_PKG_REPO:-'mauro-calvi/squiddio-manual'}
+
+STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'opencpn/vdr-prod'}
+UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'opencpn/vdr-beta'}
+PKG_REPO=${CLOUDSMITH_PKG_REPO:-'opencpn/vdr-alpha'}
 
 source $HOME/project/ci/commons.sh
 
