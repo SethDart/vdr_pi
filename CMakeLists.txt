@@ -52,7 +52,7 @@ MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
 SET(VERSION_MAJOR "1")
 SET(VERSION_MINOR "2")
 SET(VERSION_PATCH "4")
-SET(VERSION_TWEAK "4")
+SET(VERSION_TWEAK "5")
 SET(VERSION_DATE "09/07/2020")
 SET(OCPN_API_VERSION_MAJOR "1")
 SET(OCPN_API_VERSION_MINOR "16")
@@ -390,15 +390,15 @@ SET(SRC_VDR
             src/vdr_pi.cpp
  	)
 
-# SET(SRC_JSON
-#            src/wxJSON/json_defs.h
-#            src/wxJSON/jsonreader.h
-#            src/wxJSON/jsonval.h
-#            src/wxJSON/jsonwriter.h
-#            src/wxJSON/jsonreader.cpp
-#            src/wxJSON/jsonval.cpp
-#            src/wxJSON/jsonwriter.cpp
-#        )
+SET(SRC_JSON
+            src/wxJSON/json_defs.h
+            src/wxJSON/jsonreader.h
+            src/wxJSON/jsonval.h
+            src/wxJSON/jsonwriter.h
+            src/wxJSON/jsonreader.cpp
+            src/wxJSON/jsonval.cpp
+            src/wxJSON/jsonwriter.cpp
+        )
 
 if( QT_ANDROID)
     set(OCPN_USE_CURL OFF)
