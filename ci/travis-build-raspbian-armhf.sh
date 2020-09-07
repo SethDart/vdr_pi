@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
+
 #
 #
+
 # bailout on errors and echo commands.
 set -xe
 sudo apt-get -qq update
-
-#source $HOME/project/ci/commons.sh
 
 DOCKER_SOCK="unix:///var/run/docker.sock"
 
@@ -25,12 +25,13 @@ sudo docker ps
 
 DOCKER_CONTAINER_ID=$(sudo docker ps | grep raspbian | awk '{print $1}')
 
-#echo $DOCKER_CONTAINER_ID 
+echo $DOCKER_CONTAINER_ID 
 
 docker exec -ti $DOCKER_CONTAINER_ID apt-get update
 docker exec -ti $DOCKER_CONTAINER_ID echo "------\nEND apt-get update\n" 
 
 docker exec -ti $DOCKER_CONTAINER_ID apt-get -y install git cmake build-essential cmake gettext wx-common libwxgtk3.0-dev libbz2-dev libcurl4-openssl-dev libexpat1-dev libcairo2-dev libarchive-dev liblzma-dev libexif-dev lsb-release 
+
 
 #docker exec -ti $DOCKER_CONTAINER_ID echo $OCPN_BRANCH
 
@@ -53,20 +54,8 @@ sudo apt-get install python3-pip python3-setuptools
 
 #  Upload to cloudsmith
 
-#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
-#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
-
-#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'mauro-calvi/squiddio-stable'}
-#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'mauro-calvi/squiddio-pi'}
-#PKG_REPO=${CLOUDSMITH_PKG_REPO:-'mauro-calvi/squiddio-manual'}
-
-# STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
-# UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
-# PKG_REPO=${CLOUDSMITH_PKG_REPO:-'rick-gleason/opencpn-plugins-pkg'}
-
-STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'opencpn/vdr-prod'}
-UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'opencpn/vdr-beta'}
-PKG_REPO=${CLOUDSMITH_PKG_REPO:-'opencpn/vdr-alpha'}
+UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
+STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
 
 echo "Check 0.5"
 echo $STABLE_REPO
@@ -82,6 +71,7 @@ echo "Using \$CLOUDSMITH_API_KEY: ${CLOUDSMITH_API_KEY:0:4}..."
 set -xe
 
 #python -m ensurepip
+
 python3 -m pip install -q setuptools
 python3 -m pip install -q cloudsmith-cli
 
@@ -140,6 +130,7 @@ echo "Check 4"
 #raspbian
 #echo $PKG_TARGET_VERSION
 #10
+
 cat ~/$xml
 #cat ~/xml.tmp
 
@@ -156,7 +147,6 @@ ls -la $tar_dir
 sudo cp ~/$xml $tar_dir/metadata.xml
 tar_dir_here=${tar_dir##*/}
 sudo tar czf $tarball $tar_dir_here
-
 
 cloudsmith push raw --republish --no-wait-for-sync \
     --name ${PROJECT}-${PKG_TARGET}-${PKG_TARGET_VERSION}-metadata \
