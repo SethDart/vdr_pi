@@ -485,8 +485,12 @@ IF (QT_ANDROID )
     TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${OCPN_Core_LIBRARIES} )
     TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} "-lc++_shared")
     TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} "-lz" )
-    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME}  ${Qt_Base}/${Qt_Build}/lib/libQt5Core.so )
-    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} "${OCPN_Base}/${OCPN_Build}/libgorp.so" )
+    IF(_wx_selected_config MATCHES "androideabi-qt-arm64")
+      TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/opencpn/API-117/libarm64/libgorp.so )
+    ELSE(_wx_selected_config MATCHES "androideabi-qt-arm64")
+      TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/opencpn/API-117/libarmhf/libgorp.so )
+    ENDIF(_wx_selected_config MATCHES "androideabi-qt-arm64")
+  
 ENDIF(QT_ANDROID)
 
 

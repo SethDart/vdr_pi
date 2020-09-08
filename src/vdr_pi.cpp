@@ -226,14 +226,23 @@ void vdr_pi::OnToolbarToolCallback(int id)
             }
             else
             {
-                  wxFileDialog fdlg( GetOCPNCanvasWindow(), _("Choose a file"), wxT(""), m_ifilename, wxT("*.*"), wxFD_OPEN|wxFD_FILE_MUST_EXIST );
-                  if ( fdlg.ShowModal() != wxID_OK)
+                  wxString idir, ifile;
+                  if(m_ifilename.Length()){
+                    wxFileName fn(m_ifilename);
+                    idir = fn.GetPath();
+                    ifile = fn.GetFullName();
+                  }
+                
+                  wxString file;
+                  int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file"), idir, ifile, _T("*.*") );
+
+                  if( response != wxID_OK ) 
                   {
                         SetToolbarItemState( id, false );
                         return;
                   }
                   m_ifilename.Clear();
-                  m_ifilename = fdlg.GetPath();
+                  m_ifilename = file;
 
                   m_istream.Open( m_ifilename );
                   Start( m_interval, wxTIMER_CONTINUOUS ); // start timer
@@ -241,7 +250,8 @@ void vdr_pi::OnToolbarToolCallback(int id)
                   if (! m_pvdrcontrol )
                   {
                         m_pvdrcontrol = new VDRControl( GetOCPNCanvasWindow(), wxID_ANY, this, 1000/m_interval, m_istream.GetLineCount() );
-                        wxAuiPaneInfo pane = wxAuiPaneInfo().Name(_T("VDR")).Caption(wxString::Format(_("VDR replay: %s"), fdlg.GetFilename())).CaptionVisible(true).Float().FloatingPosition(50,100).Dockable(false).Fixed().CloseButton(false).Show(true);
+                        wxAuiPaneInfo pane = wxAuiPaneInfo().Name(_T("VDR")).Caption(wxString::Format(_("VDR replay: %s"),m_ifilename))
+                        .CaptionVisible(true).Float().FloatingPosition(100,100).Dockable(false).Fixed().CloseButton(false).Show(true);
                         m_pauimgr->AddPane( m_pvdrcontrol, pane );
                         m_pauimgr->Update();
                   }
@@ -260,14 +270,23 @@ void vdr_pi::OnToolbarToolCallback(int id)
             }
             else
             {
-                  wxFileDialog fdlg( GetOCPNCanvasWindow(), _("Choose a file"), wxT(""), m_ofilename, wxT("*.*"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT );
-                  if ( fdlg.ShowModal() != wxID_OK)
+                  wxString idir, ifile;
+                  if(m_ofilename.Length()){
+                    wxFileName fn(m_ifilename);
+                    idir = fn.GetPath();
+                    ifile = fn.GetFullName();
+                  }
+
+                  wxString file;
+                  int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file"), idir, ifile, _T("*.*") );
+
+                  if( response != wxID_OK ) 
                   {
                         SetToolbarItemState( id, false );
                         return;
                   }
                   m_ofilename.Clear();
-                  m_ofilename = fdlg.GetPath();
+                  m_ofilename = file;
 
                   //m_ostream.Open( m_ofilename, wxFile::write_append );
                   m_ostream.Open( m_ofilename, wxFile::write );
