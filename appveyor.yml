@@ -53,8 +53,8 @@ build_script:
   - cmake --build . --target package --config RelWithDebInfo
   - choco install git
   - python -m ensurepip
-  - python -m pip install setuptools
-  - python -m pip install cloudsmith-cli
+  - python -m pip install -q setuptools
+  - python -m pip install -q cloudsmith-cli
   - bash ../ci/appveyor-upload.sh
 
 #  - path: 'build\RelWithDebInfo\opencpn.lib'
