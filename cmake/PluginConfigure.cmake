@@ -12,7 +12,7 @@ MESSAGE (STATUS "*** Staging to build ${PACKAGE_NAME} ***")
 
 #  Do the version.h configuration into the build output directory,
 #  thereby allowing building from a read-only source tree.
- IF(NOT SKIP_VERSION_CONFIG)
+IF(NOT SKIP_VERSION_CONFIG)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/version.h.in ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/include/version.h)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/include)
 ENDIF(NOT SKIP_VERSION_CONFIG)
@@ -22,7 +22,6 @@ SET(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" )
 
 #SET(CMAKE_BUILD_TYPE Debug)
 #SET(CMAKE_VERBOSE_MAKEFILE ON)
-
 
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/src)
 
@@ -34,9 +33,7 @@ IF(NOT MSVC)
   ADD_DEFINITIONS( "-Wall -g -fprofile-arcs -ftest-coverage -fexceptions" )
  ELSE(PROFILING)
 #  ADD_DEFINITIONS( "-Wall -g -fexceptions" )
-
  ADD_DEFINITIONS( "-Wall -Wno-unused-result -g -O2 -fexceptions" )
-
  ENDIF(PROFILING)
 
  IF(NOT APPLE)
@@ -66,26 +63,75 @@ IF(QT_ANDROID)
   ADD_DEFINITIONS(-DOCPN_USE_WRAPPER)
   ADD_DEFINITIONS(-DANDROID)
 
-  SET(CMAKE_CXX_FLAGS "-pthread -fPIC -O2")
+  SET(CMAKE_CXX_FLAGS "-pthread -fPIC -O2 -g")
 
   ## Compiler flags
- #   if(CMAKE_COMPILER_IS_GNUCXX)
- #       set(CMAKE_CXX_FLAGS "-O2")        ## Optimize
-        set(CMAKE_EXE_LINKER_FLAGS "-s")  ## Strip binary
- #   endif()
+  SET(CMAKE_EXE_LINKER_FLAGS "-s")  ## Strip binary
 
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include/QtCore")
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include")
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include/QtWidgets")
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include/QtGui")
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include/QtOpenGL")
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include/QtTest")
+  ADD_DEFINITIONS(-DocpnUSE_GLES)
+  ADD_DEFINITIONS(-DocpnUSE_GL)
+  ADD_DEFINITIONS(-DARMHF)
 
-  INCLUDE_DIRECTORIES( "${wxQt_Base}/${wxQt_Build}/lib/wx/include/arm-linux-androideabi-qt-unicode-static-3.1")
-  INCLUDE_DIRECTORIES("${wxQt_Base}/include")
-
+  SET(OPENGLES_FOUND "YES")
+  SET(OPENGL_FOUND "YES")
+    
+  MESSAGE (STATUS "Using GLESv2 for Android")
+  ADD_DEFINITIONS(-DUSE_ANDROID_GLES2)
+  ADD_DEFINITIONS(-DUSE_GLSL)
+  ADD_DEFINITIONS("-Wno-inconsistent-missing-override -Wno-potentially-evaluated-expression")
+  SET(QT_LINUX "OFF")
+  SET(QT "ON")
+  SET(CMAKE_SKIP_BUILD_RPATH  TRUE)
   ADD_DEFINITIONS(-DQT_WIDGETS_LIB)
 
+  IF(_wx_selected_config MATCHES "androideabi-qt-arm64")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm64_O3/qtbase/include")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm64_O3/qtbase/include/QtCore")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm64_O3/qtbase/include/QtWidgets")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm64_O3/qtbase/include/QtGui")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm64_O3/qtbase/include/QtOpenGL")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm64_O3/qtbase/include/QtTest")
+
+   INCLUDE_DIRECTORIES( "${OCPN_Android_Common}/wxWidgets/libarm64/wx/include/arm-linux-androideabi-qt-unicode-static-3.1")
+   INCLUDE_DIRECTORIES( "${OCPN_Android_Common}/wxWidgets/include")
+
+   
+   SET(OCPN_Core_LIBRARIES
+                ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/qt5/build_arm64_O3/qtbase/lib/libQt5Core.so
+                ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/qt5/build_arm64_O3/qtbase/lib/libQt5OpenGL.so
+                ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/qt5/build_arm64_O3/qtbase/lib/libQt5Widgets.so
+                ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/qt5/build_arm64_O3/qtbase/lib/libQt5Gui.so
+                ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/qt5/build_arm64_O3/qtbase/lib/libQt5AndroidExtras.so
+
+                libGLESv2.so
+                libEGL.so
+                )
+
+  ELSE(_wx_selected_config MATCHES "androideabi-qt-arm64")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm32_19_O3/qtbase/include")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm32_19_O3/qtbase/include/QtCore")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm32_19_O3/qtbase/include/QtWidgets")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm32_19_O3/qtbase/include/QtGui")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm32_19_O3/qtbase/include/QtOpenGL")
+   INCLUDE_DIRECTORIES("${OCPN_Android_Common}/qt5/build_arm32_19_O3/qtbase/include/QtTest")
+
+   INCLUDE_DIRECTORIES( "${OCPN_Android_Common}/wxWidgets/libarmhf/wx/include/arm-linux-androideabi-qt-unicode-static-3.1")
+   INCLUDE_DIRECTORIES( "${OCPN_Android_Common}/wxWidgets/include")
+
+   ADD_DEFINITIONS( -DOCPN_ARMHF )
+  
+   SET(OCPN_Core_LIBRARIES
+                ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/qt5/build_arm32_19_O3/qtbase/lib/libQt5Core.so
+                ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/qt5/build_arm32_19_O3/qtbase/lib/libQt5OpenGL.so
+                ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/qt5/build_arm32_19_O3/qtbase/lib/libQt5Widgets.so
+                ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/qt5/build_arm32_19_O3/qtbase/lib/libQt5Gui.so
+                ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/qt5/build_arm32_19_O3/qtbase/lib/libQt5AndroidExtras.so
+
+                libGLESv2.so
+                libEGL.so
+                )
+  
+  ENDIF(_wx_selected_config MATCHES "androideabi-qt-arm64")
 ENDIF(QT_ANDROID)
 
 
@@ -104,41 +150,14 @@ IF(OPENGL_GLU_FOUND)
     INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR})
 
     MESSAGE (STATUS "Found OpenGL..." )
-
     #MESSAGE (STATUS "    Lib: " ${OPENGL_LIBRARIES})
     #MESSAGE (STATUS "    Include: " ${OPENGL_INCLUDE_DIR})
-
     ADD_DEFINITIONS(-DocpnUSE_GL)
 ELSE(OPENGL_GLU_FOUND)
     MESSAGE (STATUS "OpenGL not found..." )
 ENDIF(OPENGL_GLU_FOUND)
 ENDIF(NOT QT_ANDROID)
 
-
-#  Building for QT_ANDROID involves a cross-building environment,
-#  So the OpenGL include directories, flags, etc must be stated explicitly
-#  without trying to locate them on the host build system.
-IF(QT_ANDROID)
-    ADD_DEFINITIONS(-DocpnUSE_GLES)
-    ADD_DEFINITIONS(-DocpnUSE_GL)
-#    ADD_DEFINITIONS(-DUSE_GLU_TESS)
-    ADD_DEFINITIONS(-DARMHF)
-
-    SET(OPENGLES_FOUND "YES")
-    SET(OPENGL_FOUND "YES")
-    
-      
-  SET(USE_GLES2 ON )
-
-  IF(USE_GLES2)
-    MESSAGE (STATUS "Using GLESv2 for Android")
-    ADD_DEFINITIONS(-DUSE_ANDROID_GLES2)
-    ADD_DEFINITIONS(-DUSE_GLSL)
-  ENDIF(USE_GLES2)
-
-
-
-ENDIF(QT_ANDROID)
 
 IF (NOT QT_ANDROID )
     if(WXWIDGETS_FORCE_VERSION)
@@ -148,30 +167,9 @@ IF (NOT QT_ANDROID )
     INCLUDE(${wxWidgets_USE_FILE})
 ENDIF (NOT QT_ANDROID )
 
-# On Android, PlugIns need a specific linkage set....
-IF (QT_ANDROID )
-  # These libraries are needed to create PlugIns on Android.
-
-  SET(OCPN_Core_LIBRARIES
-        # Presently, Android Plugins are built in the core tree, so the variables {wxQT_BASE}, etc.
-        # flow to this module from above.  If we want to build Android plugins out-of-core, this will need improvement.
-
-  
-    ${Qt_Base}/${Qt_Build}/lib/libQt5Core.so
-    ${Qt_Base}/${Qt_Build}/lib/libQt5OpenGL.so
-    ${Qt_Base}/${Qt_Build}/lib/libQt5Widgets.so
-    ${Qt_Base}/${Qt_Build}/lib/libQt5Gui.so
-    ${Qt_Base}/${Qt_Build}/lib/libQt5AndroidExtras.so
-
-        libGLESv2.so
-        libEGL.so
-
-        )
-
-ENDIF(QT_ANDROID)
-
 
 ADD_DEFINITIONS(-DBUILDING_PLUGIN)
+
 
 SET(BUILD_SHARED_LIBS TRUE)
 

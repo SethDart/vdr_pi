@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
+
 #
 #
+
 # bailout on errors and echo commands.
 set -xe
 sudo apt-get -qq update
@@ -58,12 +60,8 @@ sudo apt-get install python3-pip python3-setuptools
 
 #  Upload to cloudsmith
 
-# UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
-# STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
-
-# STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'rick-gleason/opencpn-plugins-prod'}
-# UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'rick-gleason/opencpn-plugins-beta'}
-# PKG_REPO=${CLOUDSMITH_PKG_REPO:-'rick-gleason/opencpn-plugins-pkg'}
+#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
+#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
 
 STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'opencpn/vdr-prod'}
 UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'opencpn/vdr-beta'}
@@ -171,3 +169,4 @@ cloudsmith push raw --republish --no-wait-for-sync \
     --version ${VERSION} \
     --summary "opencpn plugin tarball for automatic installation" \
     $REPO $tarball
+

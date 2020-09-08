@@ -1,6 +1,6 @@
 
 ##==========================================================================
-#-----FRONTEND1 + Cmake  Version: 1.02    4-18-2020
+#-----FRONTEND1 + Cmake  Version: 1.03    9-7-2020
 #-----Author:  bdbcat aka. dsr (Dave Register)
 ##===========================================================================
 ## Author:      Jean-Eudes Onfray
@@ -22,9 +22,8 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx          *
 ## ***************************************************************************			  
 
-# define minimum cmake version  (newer)
+# define minimum cmake version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1.1)
-# This should be 2.8.0 to have FindGTK2 module
 											  
 IF (COMMAND cmake_policy)
   if (POLICY CMP0043)
@@ -53,17 +52,16 @@ MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
 SET(VERSION_MAJOR "1")
 SET(VERSION_MINOR "2")
 SET(VERSION_PATCH "4")
-SET(VERSION_TWEAK "0")
-SET(VERSION_DATE "06/25/2020")
+SET(VERSION_TWEAK "8")
+SET(VERSION_DATE "09/08/2020")
 SET(OCPN_API_VERSION_MAJOR "1")
 SET(OCPN_API_VERSION_MINOR "16")
 SET(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" )
 
 SET(PKG_RELEASE "${VERSION_TWEAK}")
 SET(PKG_API_VERSION "${OCPN_API_VERSION_MAJOR}.${OCPN_API_VERSION_MINOR}")
-
 SET(PKG_AUTHOR "Jean-Eudes Onfray ")
-# NVR: <Name-version>[-release]					   
+# NVR: <Name-version>[-release]
 SET(PKG_NVR ${PACKAGE_NAME}-${PACKAGE_VERSION}-${PKG_RELEASE})
 # ================================================
 # Plugin Specifics  -End of Header
@@ -94,13 +92,11 @@ SET(TARBALL_URL ${TARBALL_URL}/names/@name@/versions/@version@/@filename@)
 
 SET(API_DIR "${CMAKE_SOURCE_DIR}/api-16")
 SET(OCPN_USE_API_16 ON)
-#OPTION(OCPN_USE_API_16 "Use plugin api 16 (default: api 13)." OFF)
 
 SET(OCPN_MIN_VERSION "ov50")
-
-# Turned on under flatpak build
+#OPTION(OCPN_USE_API_16 "Use plugin api 16 (default: api 13)." OFF)
 OPTION(OCPN_FLATPAK "Build flatpak plugin" OFF)
-
+ 
 set(PLUGIN_NAME ${PKG_NVR}_${PKG_TARGET}-${PKG_TARGET_VERSION})
 
 IF( NOT CMAKE_BUILD_TYPE )
@@ -144,7 +140,9 @@ IF (NOT WIN32)
   # default
   SET (ARCH "i386")
   IF (UNIX AND NOT APPLE)
+
     MESSAGE (STATUS "*** Will install to ${CMAKE_INSTALL_PREFIX}  ***")
+
     IF (EXISTS /etc/debian_version)
       MESSAGE (STATUS "*** Debian detected  ***")
       SET (PACKAGE_FORMAT "DEB")
@@ -206,6 +204,7 @@ IF (NOT WIN32)
     ENDIF(NOT DEFINED PACKAGE_FORMAT)
 
   ENDIF (UNIX AND NOT APPLE)
+  
   IF(APPLE)
     SET (ARCH "x86_64")
   ENDIF(APPLE)
@@ -310,16 +309,13 @@ ENDIF(NOT DEFINED Qt_Build)
 
 MESSAGE (STATUS "selected config ${_wx_selected_config}")
 
-IF(_wx_selected_config MATCHES "androideabi-qt")
-  MESSAGE (STATUS "Building for wxQt-Android")
-  MESSAGE (STATUS "Qt_Base/Build: " ${Qt_Base} "/" ${Qt_Build})
-  MESSAGE (STATUS "wxQt_Base/Build: " ${wxQt_Base} "/" ${wxQt_Build})
+IF(_wx_selected_config MATCHES "androideabi-qt-arm64")
   SET(QT_ANDROID "ON")
-  SET(QT_LINUX "OFF")
-  SET(QT "ON")
-  ADD_DEFINITIONS("-Wno-inconsistent-missing-override -Wno-potentially-evaluated-expression")
-  SET(CMAKE_SKIP_BUILD_RPATH  TRUE)
-ENDIF(_wx_selected_config MATCHES "androideabi-qt")
+ENDIF(_wx_selected_config MATCHES "androideabi-qt-arm64")
+
+IF(_wx_selected_config MATCHES "androideabi-qt-armhf")
+  SET(QT_ANDROID "ON")
+ENDIF(_wx_selected_config MATCHES "androideabi-qt-armhf")
 
 ENDIF(DEFINED _wx_selected_config)
 
@@ -394,11 +390,21 @@ SET(SRC_VDR
             src/vdr_pi.cpp
  	)
 
-INCLUDE_DIRECTORIES(src/wxJSON)
-INCLUDE_DIRECTORIES(api-16)
+SET(SRC_JSON
+            src/wxJSON/json_defs.h
+            src/wxJSON/jsonreader.h
+            src/wxJSON/jsonval.h
+            src/wxJSON/jsonwriter.h
+            src/wxJSON/jsonreader.cpp
+            src/wxJSON/jsonval.cpp
+            src/wxJSON/jsonwriter.cpp
+        )
 
-OPTION(OCPN_USE_CURL "Use Curl libraries" ON)
-ADD_DEFINITIONS(-D__OCPN_USE_CURL__)
+if( QT_ANDROID)
+    set(OCPN_USE_CURL OFF)
+else()
+    OPTION(OCPN_USE_CURL "Use Curl libraries" ON)
+endif()
 
 IF(WIN32)
     OPTION(OCPN_USE_EXTERN_CURL "Use external libcurl" OFF)
@@ -406,7 +412,16 @@ ELSE(WIN32)
     SET(OCPN_USE_EXTERN_CURL ON)
 ENDIF(WIN32)
 
-IF(NOT QT_ANDROID)
+
+IF(WIN32)
+    OPTION(OCPN_USE_EXTERN_CURL "Use external libcurl" OFF)
+ELSE(WIN32)
+    SET(OCPN_USE_EXTERN_CURL ON)
+ENDIF(WIN32)
+
+IF(OCPN_USE_CURL)
+
+    ADD_DEFINITIONS(-D__OCPN_USE_CURL__)
 
     IF(OCPN_USE_EXTERN_CURL)
         FIND_PACKAGE(CURL REQUIRED)
@@ -442,7 +457,7 @@ IF(NOT QT_ANDROID)
     
     MESSAGE (STATUS "wxCurl configured...")
 
-ENDIF(NOT QT_ANDROID)
+ENDIF(OCPN_USE_CURL)
 
 IF(UNIX AND NOT APPLE)
  INCLUDE("cmake/FindTinyXML.cmake")
@@ -463,15 +478,19 @@ ADD_DEFINITIONS(-DTIXML_USE_STL)
 #  MODIFY and adjust ADD_LIBRARY listing for the plugin
 #===============================================================
 
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_VDR} )
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_VDR} ${SRC_JSON} )
 # ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_SQUIDDIO} ${SRC_NMEA0183} ${SRC_JSON} ${SRC_LTINYXML})
 
 IF (QT_ANDROID )
     TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${OCPN_Core_LIBRARIES} )
     TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} "-lc++_shared")
     TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} "-lz" )
-    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME}  ${Qt_Base}/${Qt_Build}/lib/libQt5Core.so )
-    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} "${OCPN_Base}/${OCPN_Build}/libgorp.so" )
+    IF(_wx_selected_config MATCHES "androideabi-qt-arm64")
+      TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/opencpn/API-117/libarm64/libgorp.so )
+    ELSE(_wx_selected_config MATCHES "androideabi-qt-arm64")
+      TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/${OCPN_Android_Common}/opencpn/API-117/libarmhf/libgorp.so )
+    ENDIF(_wx_selected_config MATCHES "androideabi-qt-arm64")
+  
 ENDIF(QT_ANDROID)
 
 
@@ -487,9 +506,9 @@ IF(WIN32)
 
 ENDIF(WIN32)
 
-IF(NOT APPLE)
+IF(NOT APPLE AND NOT QT_ANDROID )
 TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${wxWidgets_LIBRARIES} )
-ENDIF(NOT APPLE)
+ENDIF(NOT APPLE AND NOT QT_ANDROID)
 
 
 #====================================================================
@@ -508,20 +527,31 @@ SET(PREFIX_PARENTDATA ${PREFIX_DATA}/${PARENT})
 # Oesenc Chart Catalog stuff - Not Needed
 #=================================================
 
+# IF(QT_ANDROID)										
+# etc, etc.
+
 # IF (ARCH MATCHES "amd64" OR ARCH MATCHES "x86_64") 
+
 #	INSTALL(FILES "buildlinux64/oeserverd/oeserverd"
 #   etc, etc.
+
 # ELSE (ARCH MATCHES "amd64" OR ARCH MATCHES "x86_64")
 #   etc, etc.
+
 # ENDIF (ARCH MATCHES "amd64" OR ARCH MATCHES "x86_64")
 #
 # IF(PACKAGE_FORMAT MATCHES "DEB")
 #    etc etc
-# ENDIF(PACKAGE_FORMAT MATCHES "DEB")
+
+# IF(PACKAGE_FORMAT MATCHES "DEB" AND NOT QT_ANDROID)
+
 # INSTALL(FILES "src/rrc_eula_ChartSetsForOpenCPN-v16-12.txt"
 #      PERMISSIONS OWNER_READ GROUP_READ WORLD_READ
 #      DESTINATION ${PREFIX_PARENTDATA}/plugins/${PACKAGE_NAME} )
 # necessary endif
+
+#ENDIF(QT_ANDROID)
+
 ENDIF(UNIX AND NOT APPLE)
 #===========================================
 #  Oesenc Chart permissions - Not needed 

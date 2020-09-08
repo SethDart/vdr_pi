@@ -17,7 +17,7 @@ execute_process(
 )
 
 if (OCPN_FLATPAK)
-    set(PKG_TARGET "flatpak")
+    set(PKG_TARGET "flatpak-x86_64")
     set(PKG_TARGET_VERSION "18.08")    # As of flatpak/*yaml
 elseif (MINGW)
     set(PKG_TARGET "mingw")
@@ -39,15 +39,27 @@ elseif (APPLE)
     set(PKG_TARGET "darwin")
     execute_process(COMMAND "sw_vers" "-productVersion"
                     OUTPUT_VARIABLE PKG_TARGET_VERSION)
+elseif(_wx_selected_config MATCHES "androideabi-qt-arm64")
+     #Android is cross built, so set wxWidgets dependies directly, elsewhere
+     set(wxWidgets_LIBRARIES FOOBAT)
+     set(PKG_TARGET "Android-ARM64")
+     set(PKG_TARGET_VERSION 16)
+     set(ARCH arm64)              
+elseif(_wx_selected_config MATCHES "androideabi-qt-armhf")
+     #Android is cross built, so set wxWidgets dependies directly, elsewhere
+     set(wxWidgets_LIBRARIES FOOBAT)
+     set(PKG_TARGET "Android-ARMHF")
+     set(PKG_TARGET_VERSION 16)
+     set(ARCH armhf)              
 elseif (UNIX)
     # Some linux dist:
     execute_process(COMMAND "lsb_release" "-is"
                     OUTPUT_VARIABLE PKG_TARGET
 					OUTPUT_STRIP_TRAILING_WHITESPACE)
-					
     execute_process(COMMAND "lsb_release" "-rs"
                     OUTPUT_VARIABLE PKG_TARGET_VERSION
 					OUTPUT_STRIP_TRAILING_WHITESPACE)
+
 
     # Handle gtk3 build variant           
     string(STRIP "${PKG_TARGET}" PKG_TARGET)
@@ -83,4 +95,3 @@ set(PKG_TARGET_NVR "${PKG_TARGET}-${PKG_TARGET_VERSION}")
 
 message(STATUS "PluginSetup: PKG_TARGET: ${PKG_TARGET}")
 message(STATUS "PluginSetup: PKG_TARGET_VERSION: ${PKG_TARGET_VERSION}")
-
