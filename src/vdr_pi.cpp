@@ -236,7 +236,7 @@ void vdr_pi::OnToolbarToolCallback(int id)
                   wxString file;
                   int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file"), idir, ifile, _T("*.*") );
 
-                  if( response != wxID_OK ) {
+                  if( response != wxID_OK ) 
                   {
                         SetToolbarItemState( id, false );
                         return;
@@ -280,7 +280,7 @@ void vdr_pi::OnToolbarToolCallback(int id)
                   wxString file;
                   int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file"), idir, ifile, _T("*.*") );
 
-                  if( response != wxID_OK ) {
+                  if( response != wxID_OK ) 
                   {
                         SetToolbarItemState( id, false );
                         return;
