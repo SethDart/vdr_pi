@@ -54,8 +54,12 @@ sudo apt-get install python3-pip python3-setuptools
 
 #  Upload to cloudsmith
 
-UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
-STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
+#UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'david-register/ocpn-plugins-unstable'}
+#STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'david-register/ocpn-plugins-stable'}
+
+STABLE_REPO=${CLOUDSMITH_STABLE_REPO:-'opencpn/vdr-prod'}
+UNSTABLE_REPO=${CLOUDSMITH_UNSTABLE_REPO:-'opencpn/vdr-beta'}
+PKG_REPO=${CLOUDSMITH_PKG_REPO:-'opencpn/vdr-alpha'}
 
 echo "Check 0.5"
 echo $STABLE_REPO
