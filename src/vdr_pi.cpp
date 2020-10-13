@@ -276,6 +276,10 @@ void vdr_pi::OnToolbarToolCallback(int id)
                     idir = fn.GetPath();
                     ifile = fn.GetFullName();
                   }
+                  else{
+                    ifile = wxString(_T("vdr.txt"));
+                    idir = *GetpPrivateApplicationDataLocation();
+                  }
 
                   wxString file;
                   int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file"), idir, ifile, _T("*.*") );
