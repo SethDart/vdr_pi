@@ -17,7 +17,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,                                       *
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx          *
 #-----------------------------------------------------------------------------
-# Frontend1  v2.8.0.0  				 
+# Frontend1  v2.8.0.0
 # buildCI:yes useODAPI:no validateJSON:no
 # ---------------------------------------------------------------------------
 
@@ -62,12 +62,12 @@ set(OCPN_TEST_REPO
 )
 set(OCPN_BETA_REPO
     "opencpn/vdr-beta"
-    CACHE STRING 
+    CACHE STRING
     "Default repository for tagged builds matching 'beta'"
 )
 set(OCPN_RELEASE_REPO
     "opencpn/vdr-prod"
-    CACHE STRING 
+    CACHE STRING
     "Default repository for tagged builds not matching 'beta'"
 )
 option(VDR_USE_SVG "Use SVG graphics" OFF)
@@ -108,18 +108,13 @@ set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/vdr.html)
 # -------- Setup completed, build the plugin --------
 #
 
-
 SET(SRC
             src/icons.h
             src/icons.cpp
             src/vdr_pi.h
             src/vdr_pi.cpp
-#			libs/ocpn-api/ocpn_plugin.h
-	 
-								   
-		 
  	)
-	  					 
+
 #SET(SRC_JSON
 #            src/wx/json_defs.h
 #            src/wx/jsonreader.h
@@ -131,7 +126,63 @@ SET(SRC
 #        )
 
 
+if( QT_ANDROID)
+    set(OCPN_USE_CURL OFF)
+else()
+    OPTION(OCPN_USE_CURL "Use Curl libraries" ON)
+endif()
 
+IF(WIN32)
+    OPTION(OCPN_USE_EXTERN_CURL "Use external libcurl" OFF)
+ELSE(WIN32)
+    SET(OCPN_USE_EXTERN_CURL ON)
+ENDIF(WIN32)
+
+IF(WIN32)
+    OPTION(OCPN_USE_EXTERN_CURL "Use external libcurl" OFF)
+ELSE(WIN32)
+    SET(OCPN_USE_EXTERN_CURL ON)
+ENDIF(WIN32)
+
+IF(OCPN_USE_CURL)
+
+    ADD_DEFINITIONS(-D__OCPN_USE_CURL__)
+
+    IF(OCPN_USE_EXTERN_CURL)
+        FIND_PACKAGE(CURL REQUIRED)
+        IF(CURL_FOUND)
+            MESSAGE (STATUS "Using SYSTEM curl library...${CURL_LIBRARIES}...${CURL_INCLUDE_DIR}")
+        ENDIF(CURL_FOUND)
+        INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
+    ELSE(OCPN_USE_EXTERN_CURL)
+        INCLUDE("Curl.cmake")
+        MESSAGE (STATUS "Using local curl library...")
+    ENDIF(OCPN_USE_EXTERN_CURL)
+
+
+    IF(WIN32)
+        SET(SRC_WXCURL
+        src/wxcurl/base.cpp
+        src/wxcurl/dav.cpp
+        src/wxcurl/davtool.cpp
+        src/wxcurl/dialog.cpp
+        src/wxcurl/ftp.cpp
+        src/wxcurl/ftpparse.cpp
+        src/wxcurl/ftptool.cpp
+        src/wxcurl/http.cpp
+        src/wxcurl/panel.cpp
+        src/wxcurl/telnet.cpp
+        src/wxcurl/thread.cpp
+        src/wxcurl/utils.cpp
+        )
+    ENDIF(WIN32)
+
+#    ADD_LIBRARY(WXCURL ${SRC_WXCURL})
+    INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/wxcurl)
+
+    MESSAGE (STATUS "wxCurl configured...")
+
+ENDIF(OCPN_USE_CURL)
 
 # -------- Setup completed, build the plugin --------
 #
@@ -170,26 +221,36 @@ endif ()
 if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   # Build package as required (flatpak already dealt with).
   #
+  #===============================
   include(PluginCompiler)
   include(PluginInstall)
   include(PluginPackage)
+  #===============================
+
   if (QT_ANDROID)
     include(libs/AndroidLibs.cmake)
   else ()
     include(PluginLibs)
   endif ()
+
+  #===============================
   include(PluginLocalization)
+  #===============================
 
   include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
+  add_subdirectory("libs/jsoncpp")
+  target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
 
-  #add_subdirectory("libs/jsoncpp")
-  #target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
-  
   add_subdirectory("libs/tinyxml")
   target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
-  
+
   add_subdirectory("libs/wxJSON")
   target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+
+ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/wxcurl)
+
+    MESSAGE (STATUS "wxCurl configured...")
+
 endif ()
 
 configure_file(
