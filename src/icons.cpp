@@ -15,7 +15,8 @@ wxBitmap *_img_vdr_record;
 #ifdef VDR_USE_SVG
 #include "ocpn_plugin.h"
 wxString _svg_vdr;
-wxString _svg_vdr_toggled;
+wxString _svg_vdr_play;
+wxString _svg_vdr_record;
 #endif
 
 void initialize_images(void)
