@@ -101,69 +101,9 @@ set(PKG_IS_OPEN_SOURCE "yes")
 set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/rgleason/vdr_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/vdr.html)
 
-# -------- Setup completed, build the plugin --------
-#
-
-set(SRC src/icons.h src/icons.cpp src/vdr_pi.h src/vdr_pi.cpp)
-
-# SET(SRC_JSON src/wx/json_defs.h src/wx/jsonreader.h src/wx/jsonval.h
-# src/wx/jsonwriter.h src/wx/jsonreader.cpp src/wx/jsonval.cpp
-# src/wx/jsonwriter.cpp )
-
-
-if (WIN32)
-  option(OCPN_USE_EXTERN_CURL "Use external libcurl" OFF)
-else (WIN32)
-  set(OCPN_USE_EXTERN_CURL ON)
-endif (WIN32)
-
-if (WIN32)
-  option(OCPN_USE_EXTERN_CURL "Use external libcurl" OFF)
-else (WIN32)
-  set(OCPN_USE_EXTERN_CURL ON)
-endif (WIN32)
-
-if (OCPN_USE_CURL)
-
-  add_definitions(-D__OCPN_USE_CURL__)
-
-  if (OCPN_USE_EXTERN_CURL)
-    find_package(CURL REQUIRED)
-    if (CURL_FOUND)
-      message(
-        STATUS
-          "Using SYSTEM curl library...${CURL_LIBRARIES}...${CURL_INCLUDE_DIR}"
-      )
-    endif (CURL_FOUND)
-    include_directories(${CURL_INCLUDE_DIR})
-  else (OCPN_USE_EXTERN_CURL)
-    include("Curl.cmake")
-    message(STATUS "Using local curl library...")
-  endif (OCPN_USE_EXTERN_CURL)
-
-  if (WIN32)
-    set(SRC_WXCURL
-        src/wxcurl/base.cpp
-        src/wxcurl/dav.cpp
-        src/wxcurl/davtool.cpp
-        src/wxcurl/dialog.cpp
-        src/wxcurl/ftp.cpp
-        src/wxcurl/ftpparse.cpp
-        src/wxcurl/ftptool.cpp
-        src/wxcurl/http.cpp
-        src/wxcurl/panel.cpp
-        src/wxcurl/telnet.cpp
-        src/wxcurl/thread.cpp
-        src/wxcurl/utils.cpp
-    )
-  endif (WIN32)
-
-  # ADD_LIBRARY(WXCURL ${SRC_WXCURL})
-  include_directories(${CMAKE_SOURCE_DIR}/src/wxcurl)
-
-  message(STATUS "wxCurl configured...")
-
-endif (OCPN_USE_CURL)
+set(SRC
+  src/icons.h src/icons.cpp src/vdr_pi.h src/vdr_pi.cpp src/ocpn_plugin.h
+)
 
 # -------- Setup completed, build the plugin --------
 #
@@ -201,37 +141,15 @@ endif ()
 
 if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   # Build package as required (flatpak already dealt with).
-  #
-  # ===============================
   include(PluginCompiler)
   include(PluginInstall)
   include(PluginPackage)
-  # ===============================
-
   if (QT_ANDROID)
     include(libs/AndroidLibs.cmake)
   else ()
     include(PluginLibs)
   endif ()
-
-  # ===============================
   include(PluginLocalization)
-  # ===============================
-
-  include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
-  add_subdirectory("libs/jsoncpp")
-  target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
-
-  add_subdirectory("libs/tinyxml")
-  target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
-
-  add_subdirectory("libs/wxJSON")
-  target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
-
-  include_directories(${CMAKE_SOURCE_DIR}/src/wxcurl)
-
-  message(STATUS "wxCurl configured...")
-
 endif ()
 
 configure_file(
@@ -250,6 +168,6 @@ configure_file(
 set(checksum "@checksum@")
 configure_file(
   # The XML metadata file
-  ${CMAKE_SOURCE_DIR}/shipdriver-plugin.xml.in
+  ${CMAKE_SOURCE_DIR}/plugin.xml.in
   ${CMAKE_BINARY_DIR}/${pkg_displayname}.xml.in @ONLY
 )
