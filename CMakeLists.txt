@@ -5,86 +5,175 @@
 ##---------------------------------------------------------------------------
 
 
-# define minimum cmake version
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.2)
-# This should be 2.8.0 to have FindGTK2 module
-IF (COMMAND cmake_policy)
-  CMAKE_POLICY(SET CMP0003 OLD)
-  CMAKE_POLICY(SET CMP0005 OLD)
-  CMAKE_POLICY(SET CMP0011 OLD)
-ENDIF (COMMAND cmake_policy)
+cmake_minimum_required(VERSION 3.12.0)
 
-PROJECT(vdr_pi)
+cmake_policy(SET CMP0042 NEW)
 
-SET(PACKAGE_NAME vdr_pi)
-SET(PLUGIN_SOURCE_DIR .)
-MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
+if (POLICY CMP0072)
+  cmake_policy(SET CMP0072 NEW)
+endif ()
 
-#SET(CMAKE_BUILD_TYPE Debug)
+if (POLICY CMP0077)
+  cmake_policy(SET CMP0077 NEW)
+endif ()
 
-SET(NAME_SUFFIX "ov50")
+# Locations where cmake looks for cmake modules.
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/build ${CMAKE_SOURCE_DIR}/cmake)
 
-set (CMAKE_CXX_STANDARD 11)
-
-#SET(CMAKE_BUILD_TYPE Debug)
-
-OPTION(VDR_USE_SVG "Use SVG graphics" ON)
-
-INCLUDE("cmake/PluginConfigure.cmake")
-
-IF(VDR_USE_SVG)
-  ADD_DEFINITIONS(-DVDR_USE_SVG)
-ENDIF(VDR_USE_SVG)
-
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
-
-# require proper c++
-#ADD_DEFINITIONS( "-Wall -ansi -pedantic -Wno-variadic-macros" )
-#TODO: Should we use  -fno-stack-protector
-#  IF NOT DEBUGGING CFLAGS="-O2 -march=native"
-IF(NOT WIN32)
- ADD_DEFINITIONS( "-Wall -g -fexceptions -fvisibility=hidden" )
-
- IF(NOT APPLE)
-  SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,-Bsymbolic")
- ELSE(NOT APPLE)
-  SET(CMAKE_SHARED_LINKER_FLAGS "-Wl")
- ENDIF(NOT APPLE)
-
-ENDIF(NOT WIN32)
-
-#SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,-Bsymbolic")
-
-# Add some definitions to satisfy MS
-IF(WIN32)
-    ADD_DEFINITIONS(-D__MSVC__)
-    ADD_DEFINITIONS(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE)
-ENDIF(WIN32)
+if (WIN32)
+  list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/buildwin)
+endif ()
+message(STATUS "Cmake version: ${CMAKE_VERSION}.")
 
 
-#SET(wxWidgets_USE_LIBS base core net xml html adv aui)
-#SET(BUILD_SHARED_LIBS TRUE)
-#SET( wxWidgets_USE_DEBUG OFF)
-#SET( wxWidgets_USE_UNICODE ON)
-#FIND_PACKAGE(wxWidgets REQUIRED)
+# -------- Build setup (mostly in PluginCompiler) --------
+#
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-INCLUDE(${wxWidgets_USE_FILE})
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+message(STATUS "Building: ${BUILD_TYPE}")
 
-FIND_PACKAGE(Gettext REQUIRED)
+# -------- Options ----------
 
-# For convenience we define the sources as a variable. You can add
-# header files and cpp/c files and CMake will sort them out
+set(OCPN_TEST_REPO
+    "mike-rossiter/vdr-alpha"
+    CACHE STRING "Default repository for untagged builds"
+)
+set(OCPN_BETA_REPO
+    "mike-rossiter/vdr-beta"
+    CACHE STRING 
+    "Default repository for tagged builds matching 'beta'"
+)
+set(OCPN_RELEASE_REPO
+    "mike-rossiter/vdr-prod"
+    CACHE STRING 
+    "Default repository for tagged builds not matching 'beta'"
+)
+option(VDR_USE_SVG "Use SVG graphics" ON)
+
+set(OCPN_TARGET_TUPLE "" CACHE STRING
+  "Target spec: \"platform;version;arch\""
+)
+
+string(TOLOWER "${OCPN_TARGET_TUPLE}" _lc_target)
+if ("${_lc_target}" MATCHES "android*")
+  set(QT_ANDROID ON)
+  # Until we have a proper toolchain file:
+  set(CMAKE_CROSSCOMPILING ON)
+else ()
+  set(QT_ANDROID OFF)
+  add_definitions(-D__OCPN_USE_CURL__)
+endif ()
+
+#
+# -------  Plugin setup --------
+#
+project(vdr_pi VERSION 1.3.0.0)
+set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
+
+set(DISPLAY_NAME VDR)    # Dialogs, installer artifacts, ...
+set(PLUGIN_API_NAME VDR) # As of GetCommonName() in plugin API
+set(CPACK_PACKAGE_CONTACT "Mike Rossiter")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Record/Playback vessels movements")
+set(CPACK_PACKAGE_DESCRIPTION [=[
+Allows playback.
+]=])
+
+set(PKG_AUTHOR "Mike Rossiter")
+set(PKG_IS_OPEN_SOURCE "yes")
+set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/Rasbats/vdr_pi)
+set(PKG_INF
 
 
-SET(SRC_VDR
+SET(SRC
             src/icons.h
             src/icons.cpp
             src/vdr_pi.h
             src/vdr_pi.cpp
  	)
 
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_VDR} )
+# -------- Setup completed, build the plugin --------
+#
+add_library(${CMAKE_PROJECT_NAME} SHARED ${SRC})
+include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
 
-INCLUDE("cmake/PluginInstall.cmake")
-INCLUDE("cmake/PluginLocalization.cmake")
-INCLUDE("cmake/PluginPackage.cmake")
+add_subdirectory("libs/api-16")
+target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api)
+
+set(VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(VERSION_PATCH ${PROJECT_VERSION_PATCH})
+
+set(PACKAGE_NAME ${CMAKE_PROJECT_NAME})
+
+# Create the minimim ocpn version id string like ov50
+string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2"
+       OCPN_MIN_VERSION ${API_OCPN_MIN_VERSION})
+
+if (VDR_USE_SVG)
+  add_definitions(-DVDR_USE_SVG)
+endif ()
+
+# Set up targets. Targets sets up a recursive call with BUILD_TYPE set to
+# 'flatpak', 'pkg' or 'tarball'. The initial call without BUILD_TYPE ends
+# here.
+#
+include(Targets)
+create_targets(
+  ${PROJECT_SOURCE_DIR}/flatpak/org.opencpn.OpenCPN.Plugin.vdr.yaml
+)
+if ("${BUILD_TYPE}" STREQUAL "")
+  return ()
+endif ()
+
+if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
+  # Build package as required (flatpak already dealt with).
+  #
+  include(PluginCompiler)
+  include(PluginInstall)
+  include(PluginPackage)
+  if (QT_ANDROID)
+    include(libs/AndroidLibs.cmake)
+  else ()
+    include(PluginLibs)
+  endif ()
+  include(PluginLocalization)
+
+  include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
+
+  add_subdirectory("libs/jsoncpp")
+  target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+  
+  add_subdirectory("libs/tinyxml")
+  target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
+  
+  add_subdirectory("libs/wxJSON")
+  target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+endif ()
+
+configure_file(
+  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include//config.h
+  @ONLY
+)
+
+configure_file(
+  # The cloudsmith upload script
+  ${CMAKE_SOURCE_DIR}/ci/upload.sh.in ${CMAKE_BINARY_DIR}/upload.sh
+  @ONLY
+)
+configure_file(
+  # The cloudsmith upload script, windows bat file.
+  ${CMAKE_SOURCE_DIR}/ci/upload.bat.in ${CMAKE_BINARY_DIR}/upload.bat
+  @ONLY
+)
+
+
+set(checksum "@checksum@")
+configure_file(
+  # The XML metadata file
+  ${CMAKE_SOURCE_DIR}/vdr-plugin.xml.in
+  ${CMAKE_BINARY_DIR}/${pkg_displayname}.xml.in
+  @ONLY
+)

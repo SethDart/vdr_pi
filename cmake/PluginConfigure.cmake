@@ -50,7 +50,7 @@ SET(BUILD_SHARED_LIBS "ON")
 #  QT_ANDROID is a cross-build, so the native FIND_PACKAGE(wxWidgets...) and wxWidgets_USE_FILE is not useful.
 IF(NOT QT_ANDROID)
 IF(NOT DEFINED wxWidgets_USE_FILE)
-  SET(wxWidgets_USE_LIBS base core net xml html adv)
+  SET(wxWidgets_USE_LIBS base core net xml html adv aui)
   SET(BUILD_SHARED_LIBS TRUE)
   FIND_PACKAGE(wxWidgets REQUIRED)
 ENDIF(NOT DEFINED wxWidgets_USE_FILE)

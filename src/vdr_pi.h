@@ -46,6 +46,7 @@
 #include <wx/file.h>
 #include <wx/aui/aui.h>
 #include "ocpn_plugin.h"
+#include "config.h"
 
 #define VDR_TOOL_POSITION -1          // Request default positioning of toolbar tool
 
