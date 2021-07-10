@@ -84,8 +84,7 @@ Allows playback.
 set(PKG_AUTHOR "Mike Rossiter")
 set(PKG_IS_OPEN_SOURCE "yes")
 set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/Rasbats/vdr_pi)
-set(PKG_INF
-
+set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/vdr.html)
 
 SET(SRC
             src/icons.h
