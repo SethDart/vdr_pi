@@ -3,9 +3,12 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
-#include "icons.h"
 #include <wx/filename.h>
 #include <wx/mstream.h>
+
+#include "config.h"
+
+#include "ocpn_plugin.h"
 #include "icons.h"
 
 wxBitmap *_img_vdr_pi;
@@ -13,7 +16,6 @@ wxBitmap *_img_vdr_play;
 wxBitmap *_img_vdr_record;
 
 #ifdef PLUGIN_USE_SVG
-#include "ocpn_plugin.h"
    wxString _svg_vdr_pi;
    wxString _svg_vdr_play;
    wxString _svg_vdr_play_toggled;

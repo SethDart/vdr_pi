@@ -7,8 +7,10 @@
 #include <wx/wx.h>
 #endif
 
-#include <wx/filename.h>
-#include <wx/mstream.h>
+#include <wx/bitmap.h>
+#include <wx/string.h>
+
+#include "config.h"
 
 extern void initialize_images(void);
 
