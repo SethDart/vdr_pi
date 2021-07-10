@@ -13,4 +13,10 @@ extern wxBitmap *_img_vdr_pi;
 extern wxBitmap *_img_vdr_play;
 extern wxBitmap *_img_vdr_record;
 
+#ifdef VDR_USE_SVG
+extern wxString _svg_vdr;
+extern wxString _svg_vdr_play;
+extern wxString _svg_vdr_record;
+#endif
+
 #endif /* ICONS_H */

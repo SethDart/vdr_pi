@@ -59,10 +59,33 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 vdr_pi::vdr_pi(void *ppimgr)
-      :opencpn_plugin_16(ppimgr), wxTimer(this)
+      :opencpn_plugin_116(ppimgr), wxTimer(this)
 {
       // Create the PlugIn icons
       initialize_images();
+
+	  wxFileName fn;
+
+    auto path = GetPluginDataDir("vdr_pi");
+    fn.SetPath(path);
+    fn.AppendDir("data");
+    fn.SetFullName("vdr_panel_icon.png");
+
+    path = fn.GetFullPath();
+
+    wxInitAllImageHandlers();
+
+    wxLogDebug(wxString("Using icon path: ") + path);
+    if (!wxImage::CanRead(path)) {
+        wxLogDebug("Initiating image handlers.");
+        wxInitAllImageHandlers();
+    }
+    wxImage panelIcon(path);
+    if (panelIcon.IsOk())
+        m_panelBitmap = wxBitmap(panelIcon);
+    else
+        wxLogWarning("VDR panel icon has NOT been loaded");
+    
 }
 
 int vdr_pi::Init(void)
@@ -78,11 +101,24 @@ int vdr_pi::Init(void)
       LoadConfig();
 
       //    This PlugIn needs two toolbar icons
+#ifdef VDR_USE_SVG
+        m_tb_item_id_record = InsertPlugInToolSVG(_T( "VDR" ),
+            _svg_vdr_record, _svg_vdr_record, _svg_vdr_record,
+            wxITEM_CHECK, _("Record"), _T( "" ), NULL,
+            VDR_TOOL_POSITION, 0, this);
+		m_tb_item_id_play = InsertPlugInToolSVG(_T( "VDR" ),
+            _svg_vdr_play, _svg_vdr_play, _svg_vdr_play,
+            wxITEM_CHECK, _("Play"), _T( "" ), NULL,
+            VDR_TOOL_POSITION, 0, this);
+		 m_recording = false;
+
+#else
       m_tb_item_id_record = InsertPlugInTool(_T(""), _img_vdr_record, _img_vdr_record, wxITEM_CHECK,
             _("Record"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
       m_tb_item_id_play = InsertPlugInTool(_T(""), _img_vdr_play, _img_vdr_play, wxITEM_CHECK,
             _("Play"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
       m_recording = false;
+#endif
 
       return (
            WANTS_TOOLBAR_CALLBACK    |
@@ -123,12 +159,14 @@ bool vdr_pi::DeInit(void)
 
 int vdr_pi::GetAPIVersionMajor()
 {
-      return MY_API_VERSION_MAJOR;
+      return atoi(API_VERSION);
 }
 
 int vdr_pi::GetAPIVersionMinor()
 {
-      return MY_API_VERSION_MINOR;
+    std::string v(API_VERSION);
+    size_t dotpos = v.find('.');
+    return atoi(v.substr(dotpos + 1).c_str());
 }
 
 int vdr_pi::GetPlugInVersionMajor()
@@ -143,7 +181,7 @@ int vdr_pi::GetPlugInVersionMinor()
 
 wxBitmap *vdr_pi::GetPlugInBitmap()
 {
-      return _img_vdr_pi;
+       return &m_panelBitmap; 
 }
 
 wxString vdr_pi::GetCommonName()
