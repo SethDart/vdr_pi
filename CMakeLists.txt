@@ -1,24 +1,23 @@
-##===========================================================================
-## Author:      Jean-Eudes Onfray
-##---------------------------------------------------------------------------
-## *   Copyright (C) 2010 by Jean-Eudes Onfray                                *
-## *   This program is free software; you can redistribute it and/or modify  *
-## *   it under the terms of the GNU General Public License as published by  *
-## *   the Free Software Foundation; either version 2 of the License, or     *
-## *   (at your option) any later version.                                   *
-## *                                                                         *
-## *   This program is distributed in the hope that it will be useful,       *
-## *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-## *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-## *   GNU General Public License for more details.                          *
-## *                                                                         *
-## *   You should have received a copy of the GNU General Public License     *
-## *   along with this program; if not, write to the                         *
-## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,                                       *
-## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx          *
-#-----------------------------------------------------------------------------
-# Frontend1  v2.8.0.0
-# buildCI:yes useODAPI:no validateJSON:no
+# ===========================================================================
+# Author:      Jean-Eudes Onfray
+# ---------------------------------------------------------------------------
+# - Copyright (C) 2010 by Jean-Eudes Onfray                                *
+# - This program is free software; you can redistribute it and/or modify  *
+# - it under the terms of the GNU General Public License as published by  *
+# - the Free Software Foundation; either version 2 of the License, or     *
+# - (at your option) any later version.                                   *
+# - *
+# - This program is distributed in the hope that it will be useful,       *
+# - but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# - GNU General Public License for more details.                          *
+# - *
+# - You should have received a copy of the GNU General Public License     *
+# - along with this program; if not, write to the                         *
+# - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,                                       *
+# - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx          *
+# -----------------------------------------------------------------------------
+# Frontend1  v2.8.0.0 buildCI:yes useODAPI:no validateJSON:no
 # ---------------------------------------------------------------------------
 
 # -------- Cmake setup ---------
@@ -43,7 +42,6 @@ if (WIN32)
 endif ()
 message(STATUS "Cmake version: ${CMAKE_VERSION}.")
 
-
 # -------- Build setup (mostly in PluginCompiler) --------
 #
 set(CMAKE_CXX_STANDARD 11)
@@ -53,7 +51,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 message(STATUS "Building: ${BUILD_TYPE}")
 
-
 # -------- Options ----------
 
 set(OCPN_TEST_REPO
@@ -62,18 +59,17 @@ set(OCPN_TEST_REPO
 )
 set(OCPN_BETA_REPO
     "opencpn/vdr-beta"
-    CACHE STRING
-    "Default repository for tagged builds matching 'beta'"
+    CACHE STRING "Default repository for tagged builds matching 'beta'"
 )
 set(OCPN_RELEASE_REPO
     "opencpn/vdr-prod"
-    CACHE STRING
-    "Default repository for tagged builds not matching 'beta'"
+    CACHE STRING "Default repository for tagged builds not matching 'beta'"
 )
 option(VDR_USE_SVG "Use SVG graphics" OFF)
 
-set(OCPN_TARGET_TUPLE "" CACHE STRING
-  "Target spec: \"platform;version;arch\""
+set(OCPN_TARGET_TUPLE
+    ""
+    CACHE STRING "Target spec: \"platform;version;arch\""
 )
 
 string(TOLOWER "${OCPN_TARGET_TUPLE}" _lc_target)
@@ -90,12 +86,12 @@ endif ()
 # -------  Plugin setup --------
 #
 project(Vdr_pi VERSION 1.2.10.0)
-set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
+set(PKG_PRERELEASE "") # Empty, or a tag like 'beta'
 
-set(DISPLAY_NAME Vdr)    # Dialogs, installer artifacts, ...
+set(DISPLAY_NAME Vdr) # Dialogs, installer artifacts, ...
 set(PLUGIN_API_NAME VDR) # As of GetCommonName() in plugin API
 set(CPACK_PACKAGE_CONTACT "Jean-Eudes Onfray")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Voyage Data Recorder plugin for OpenCPN")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Voyage Data Recorder")
 set(CPACK_PACKAGE_DESCRIPTION [=[
 Voyage Data Recorder plugin for OpenCPN. Provides NMEA stream save and replay.
 ]=])
@@ -108,60 +104,45 @@ set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/vdr.html)
 # -------- Setup completed, build the plugin --------
 #
 
-SET(SRC
-            src/icons.h
-            src/icons.cpp
-            src/vdr_pi.h
-            src/vdr_pi.cpp
- 	)
+set(SRC src/icons.h src/icons.cpp src/vdr_pi.h src/vdr_pi.cpp)
 
-#SET(SRC_JSON
-#            src/wx/json_defs.h
-#            src/wx/jsonreader.h
-#            src/wx/jsonval.h
-#            src/wx/jsonwriter.h
-#            src/wx/jsonreader.cpp
-#            src/wx/jsonval.cpp
-#            src/wx/jsonwriter.cpp
-#        )
+# SET(SRC_JSON src/wx/json_defs.h src/wx/jsonreader.h src/wx/jsonval.h
+# src/wx/jsonwriter.h src/wx/jsonreader.cpp src/wx/jsonval.cpp
+# src/wx/jsonwriter.cpp )
 
 
-if( QT_ANDROID)
-    set(OCPN_USE_CURL OFF)
-else()
-    OPTION(OCPN_USE_CURL "Use Curl libraries" ON)
-endif()
+if (WIN32)
+  option(OCPN_USE_EXTERN_CURL "Use external libcurl" OFF)
+else (WIN32)
+  set(OCPN_USE_EXTERN_CURL ON)
+endif (WIN32)
 
-IF(WIN32)
-    OPTION(OCPN_USE_EXTERN_CURL "Use external libcurl" OFF)
-ELSE(WIN32)
-    SET(OCPN_USE_EXTERN_CURL ON)
-ENDIF(WIN32)
+if (WIN32)
+  option(OCPN_USE_EXTERN_CURL "Use external libcurl" OFF)
+else (WIN32)
+  set(OCPN_USE_EXTERN_CURL ON)
+endif (WIN32)
 
-IF(WIN32)
-    OPTION(OCPN_USE_EXTERN_CURL "Use external libcurl" OFF)
-ELSE(WIN32)
-    SET(OCPN_USE_EXTERN_CURL ON)
-ENDIF(WIN32)
+if (OCPN_USE_CURL)
 
-IF(OCPN_USE_CURL)
+  add_definitions(-D__OCPN_USE_CURL__)
 
-    ADD_DEFINITIONS(-D__OCPN_USE_CURL__)
+  if (OCPN_USE_EXTERN_CURL)
+    find_package(CURL REQUIRED)
+    if (CURL_FOUND)
+      message(
+        STATUS
+          "Using SYSTEM curl library...${CURL_LIBRARIES}...${CURL_INCLUDE_DIR}"
+      )
+    endif (CURL_FOUND)
+    include_directories(${CURL_INCLUDE_DIR})
+  else (OCPN_USE_EXTERN_CURL)
+    include("Curl.cmake")
+    message(STATUS "Using local curl library...")
+  endif (OCPN_USE_EXTERN_CURL)
 
-    IF(OCPN_USE_EXTERN_CURL)
-        FIND_PACKAGE(CURL REQUIRED)
-        IF(CURL_FOUND)
-            MESSAGE (STATUS "Using SYSTEM curl library...${CURL_LIBRARIES}...${CURL_INCLUDE_DIR}")
-        ENDIF(CURL_FOUND)
-        INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
-    ELSE(OCPN_USE_EXTERN_CURL)
-        INCLUDE("Curl.cmake")
-        MESSAGE (STATUS "Using local curl library...")
-    ENDIF(OCPN_USE_EXTERN_CURL)
-
-
-    IF(WIN32)
-        SET(SRC_WXCURL
+  if (WIN32)
+    set(SRC_WXCURL
         src/wxcurl/base.cpp
         src/wxcurl/dav.cpp
         src/wxcurl/davtool.cpp
@@ -174,15 +155,15 @@ IF(OCPN_USE_CURL)
         src/wxcurl/telnet.cpp
         src/wxcurl/thread.cpp
         src/wxcurl/utils.cpp
-        )
-    ENDIF(WIN32)
+    )
+  endif (WIN32)
 
-#    ADD_LIBRARY(WXCURL ${SRC_WXCURL})
-    INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/wxcurl)
+  # ADD_LIBRARY(WXCURL ${SRC_WXCURL})
+  include_directories(${CMAKE_SOURCE_DIR}/src/wxcurl)
 
-    MESSAGE (STATUS "wxCurl configured...")
+  message(STATUS "wxCurl configured...")
 
-ENDIF(OCPN_USE_CURL)
+endif (OCPN_USE_CURL)
 
 # -------- Setup completed, build the plugin --------
 #
@@ -199,33 +180,33 @@ set(VERSION_PATCH ${PROJECT_VERSION_PATCH})
 set(PACKAGE_NAME ${CMAKE_PROJECT_NAME})
 
 # Create the minimim ocpn version id string like ov50
-string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2"
-       OCPN_MIN_VERSION ${API_OCPN_MIN_VERSION})
+string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2" OCPN_MIN_VERSION
+                     ${API_OCPN_MIN_VERSION}
+)
 
 if (VDR_USE_SVG)
   add_definitions(-DVDR_USE_SVG)
 endif ()
 
 # Set up targets. Targets sets up a recursive call with BUILD_TYPE set to
-# 'flatpak', 'pkg' or 'tarball'. The initial call without BUILD_TYPE ends
-# here.
+# 'flatpak', 'pkg' or 'tarball'. The initial call without BUILD_TYPE ends here.
 #
 include(Targets)
 create_targets(
   ${PROJECT_SOURCE_DIR}/flatpak/org.opencpn.OpenCPN.Plugin.shipdriver.yaml
 )
 if ("${BUILD_TYPE}" STREQUAL "")
-  return ()
+  return()
 endif ()
 
 if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   # Build package as required (flatpak already dealt with).
   #
-  #===============================
+  # ===============================
   include(PluginCompiler)
   include(PluginInstall)
   include(PluginPackage)
-  #===============================
+  # ===============================
 
   if (QT_ANDROID)
     include(libs/AndroidLibs.cmake)
@@ -233,9 +214,9 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
     include(PluginLibs)
   endif ()
 
-  #===============================
+  # ===============================
   include(PluginLocalization)
-  #===============================
+  # ===============================
 
   include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
   add_subdirectory("libs/jsoncpp")
@@ -247,33 +228,28 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   add_subdirectory("libs/wxJSON")
   target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 
- INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/wxcurl)
+  include_directories(${CMAKE_SOURCE_DIR}/src/wxcurl)
 
-    MESSAGE (STATUS "wxCurl configured...")
+  message(STATUS "wxCurl configured...")
 
 endif ()
 
 configure_file(
-  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include//config.h
-  @ONLY
+  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include//config.h @ONLY
 )
 
 configure_file(
   # The cloudsmith upload script
-  ${CMAKE_SOURCE_DIR}/ci/upload.sh.in ${CMAKE_BINARY_DIR}/upload.sh
-  @ONLY
+  ${CMAKE_SOURCE_DIR}/ci/upload.sh.in ${CMAKE_BINARY_DIR}/upload.sh @ONLY
 )
 configure_file(
   # The cloudsmith upload script, windows bat file.
-  ${CMAKE_SOURCE_DIR}/ci/upload.bat.in ${CMAKE_BINARY_DIR}/upload.bat
-  @ONLY
+  ${CMAKE_SOURCE_DIR}/ci/upload.bat.in ${CMAKE_BINARY_DIR}/upload.bat @ONLY
 )
-
 
 set(checksum "@checksum@")
 configure_file(
   # The XML metadata file
   ${CMAKE_SOURCE_DIR}/shipdriver-plugin.xml.in
-  ${CMAKE_BINARY_DIR}/${pkg_displayname}.xml.in
-  @ONLY
+  ${CMAKE_BINARY_DIR}/${pkg_displayname}.xml.in @ONLY
 )
