@@ -22,7 +22,7 @@
 
 # -------- Cmake setup ---------
 #
-cmake_minimum_required(VERSION 3.15.0)
+cmake_minimum_required(VERSION 3.12.0)
 
 cmake_policy(SET CMP0042 NEW)
 
@@ -133,7 +133,7 @@ endif ()
 #
 include(Targets)
 create_targets(
-  ${PROJECT_SOURCE_DIR}/flatpak/org.opencpn.OpenCPN.Plugin.shipdriver.yaml
+  ${PROJECT_SOURCE_DIR}/flatpak/org.opencpn.OpenCPN.Plugin.vdr.yaml
 )
 if ("${BUILD_TYPE}" STREQUAL "")
   return()
