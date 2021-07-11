@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: vdr_pi 0.3\n"
+"Project-Id-Version: vdr_pi 2.4.506\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-01 14:18-0600\n"
+"POT-Creation-Date: 2011-05-10 23:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,32 +25,32 @@ msgstr ""
 msgid "Play"
 msgstr ""
 
-#: src/vdr_pi.cpp:151
+#: src/vdr_pi.cpp:147
 msgid "VDR"
 msgstr ""
 
-#: src/vdr_pi.cpp:157
+#: src/vdr_pi.cpp:153
 msgid "Voyage Data Recorder plugin for OpenCPN"
 msgstr ""
 
-#: src/vdr_pi.cpp:162
+#: src/vdr_pi.cpp:158
 msgid ""
 "Voyage Data Recorder plugin for OpenCPN\n"
 "Provides NMEA stream save and replay."
 msgstr ""
 
-#: src/vdr_pi.cpp:227 src/vdr_pi.cpp:261
+#: src/vdr_pi.cpp:223 src/vdr_pi.cpp:254
 msgid "Choose a file"
 msgstr ""
 
-#: src/vdr_pi.cpp:242
+#: src/vdr_pi.cpp:236
 msgid "VDR replay"
 msgstr ""
 
-#: src/vdr_pi.cpp:339
+#: src/vdr_pi.cpp:332
 msgid "Speed:"
 msgstr ""
 
-#: src/vdr_pi.cpp:346
+#: src/vdr_pi.cpp:339
 msgid "Progress:"
 msgstr ""
