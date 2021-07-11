@@ -65,7 +65,7 @@ set(OCPN_RELEASE_REPO
     "opencpn/vdr-prod"
     CACHE STRING "Default repository for tagged builds not matching 'beta'"
 )
-option(PLUGIN_USE_SVG "Use SVG graphics" ON)
+option(PLUGIN_USE_SVG "Use SVG graphics" OFF)
 
 set(OCPN_TARGET_TUPLE
     ""
