@@ -70,6 +70,7 @@ endif ()
 #
 # -------  Plugin setup --------
 #
+
 project(vdr_pi VERSION 1.3.4.0)
 set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
 
