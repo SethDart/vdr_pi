@@ -1,2 +1,2 @@
-build/*
-src/version.h
+build
+po/*.pot

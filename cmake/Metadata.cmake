@@ -36,6 +36,8 @@ elseif (NOT "$ENV{TRAVIS_BUILD_NUMBER}" STREQUAL "")
   set(_build_id "$ENV{TRAVIS_BUILD_NUMBER}")
 elseif (NOT "$ENV{APPVEYOR_BUILD_NUMBER}" STREQUAL "")
   set(_build_id "$ENV{APPVEYOR_BUILD_NUMBER}")
+elseif (NOT "$ENV{DRONE_BUILD_NUMBER}" STREQUAL "")
+  set(_build_id "$ENV{DRONE_BUILD_NUMBER}")
 else ()
   string(TIMESTAMP _build_id "%y%m%d%H%M" UTC)
 endif ()
@@ -92,6 +94,8 @@ string(CONCAT pkg_displayname
   "${PLUGIN_API_NAME}-${VERSION_MAJOR}.${VERSION_MINOR}"
   "-${plugin_target}${_display_arch}-${plugin_target_version}"
 )
+# pkg_xmlname: XML metadata basename
+set(pkg_xmlname ${pkg_displayname}-${_build_id})
 
 # pkg_tarname: Tarball basename
 string(CONCAT pkg_tarname 
