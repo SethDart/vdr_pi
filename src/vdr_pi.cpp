@@ -50,8 +50,6 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 }
 
 
-
-
 //---------------------------------------------------------------------------------------------------------
 //
 //    VDR PlugIn Implementation
@@ -78,11 +76,30 @@ int vdr_pi::Init(void)
       LoadConfig();
 
       //    This PlugIn needs two toolbar icons
-      m_tb_item_id_record = InsertPlugInTool(_T(""), _img_vdr_record, _img_vdr_record, wxITEM_CHECK,
+/*      m_tb_item_id_record = InsertPlugInTool(_T(""), _img_vdr_record, _img_vdr_record, wxITEM_CHECK,
             _("Record"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
       m_tb_item_id_play = InsertPlugInTool(_T(""), _img_vdr_play, _img_vdr_play, wxITEM_CHECK,
             _("Play"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
       m_recording = false;
+*/
+
+  // FOR SVG ICONS  - CMakeLists.txt line 72  PLUGIN_USE_SVG=ON
+
+#ifdef PLUGIN_USE_SVG
+     m_tb_item_id_record = InsertPlugInToolSVG(
+        "Record", _svg_record, _svg_record_rollover,
+        _svg_record_toggled, wxITEM_CHECK, _("Record"), "", NULL,
+        VDR_TOOL_POSITION, 0, this);		
+    m_tb_item_id_play = InsertPlugInToolSVG(
+        "Play", _svg_play, _svg_play_rollover,
+        _svg_play_toggled, wxITEM_CHECK, _("Play"), "", NULL,
+        VDR_TOOL_POSITION, 0, this);
+#else
+    m_tb_item_id_record = InsertPlugInTool(_T(""), _img_vdr_record, _img_vdr_record, wxITEM_CHECK,
+            _("Record"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
+    m_tb_item_id_play = InsertPlugInTool(_T(""), _img_vdr_play, _img_vdr_play, wxITEM_CHECK,
+            _("Play"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
+#endif
 
       return (
            WANTS_TOOLBAR_CALLBACK    |

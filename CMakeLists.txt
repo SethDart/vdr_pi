@@ -85,7 +85,7 @@ endif ()
 #
 # -------  Plugin setup --------
 #
-project(Vdr_pi VERSION 1.2.10.0)
+project(Vdr_pi VERSION 1.2.10.4)
 set(PKG_PRERELEASE "") # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME Vdr) # Dialogs, installer artifacts, ...
@@ -124,7 +124,7 @@ string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2" OCPN_MIN_VERSION
                      ${API_OCPN_MIN_VERSION}
 )
 
-if (VDR_USE_SVG)
+if (PLUGIN_USE_SVG)
   add_definitions(-DVDR_USE_SVG)
 endif ()
 
