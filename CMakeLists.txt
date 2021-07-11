@@ -73,8 +73,8 @@ endif ()
 project(vdr_pi VERSION 1.3.4.0)
 set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
 
-set(DISPLAY_NAME vdr)    # Dialogs, installer artifacts, ...
-set(PLUGIN_API_NAME vdr) # As of GetCommonName() in plugin API
+set(DISPLAY_NAME VDR)    # Dialogs, installer artifacts, ...
+set(PLUGIN_API_NAME VDR) # As of GetCommonName() in plugin API
 set(CPACK_PACKAGE_CONTACT "Mike Rossiter")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Record/Playback vessels movements")
 set(CPACK_PACKAGE_DESCRIPTION [=[

@@ -4,7 +4,7 @@
 #   - beta       Flathub beta branch, aarch64 with 20.08 runtime.
 #   - stable     Flathub main branch, x86_64 with 18.08 runtime.
 #
-id: org.opencpn.OpenCPN.Plugin.vdr
+id: org.opencpn.OpenCPN.Plugin.VDR
 runtime: org.opencpn.OpenCPN
 runtime-version: stable   # official build at flathub
 #runtime-version: master   # for nightly builds
@@ -19,11 +19,11 @@ finish-args:
     - --device=all
 
 modules:
-    - name: vdr
+    - name: VDR
       no-autogen: true
       buildsystem: cmake
       config-opts:
-          - -DCMAKE_INSTALL_PREFIX=/app/extensions/vdr/
+          - -DCMAKE_INSTALL_PREFIX=/app/extensions/VDR/
           - -DCMAKE_BUILD_TYPE:STRING=Release
           - -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
           - -DBUILD_TYPE:STRING=tarball
