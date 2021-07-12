@@ -67,14 +67,7 @@ public:
       wxString GetCommonName();
       wxString GetShortDescription();
       wxString GetLongDescription();
-	  wxString _svg_vdr_pi;
-	  wxString _svg_play;
-	  wxString _svg_play_rollover;
-	  wxString _svg_play_toggled;
-	  wxString _svg_record;
-	  wxString _svg_record_rollover;
-	  wxString _svg_record_toggled;
-	  
+
       void Notify();
       void SetInterval( int interval );
 
@@ -91,6 +84,7 @@ private:
 
       int               m_tb_item_id_record;
       int               m_tb_item_id_play;
+
       wxFileConfig     *m_pconfig;
       wxAuiManager     *m_pauimgr;
       VDRControl       *m_pvdrcontrol;
@@ -100,7 +94,7 @@ private:
       bool              m_recording;
       wxTextFile        m_istream;
       wxFile            m_ostream;
-	  wxBitmap          m_panelBitmap;
+	  wxBitmap          m_panelBitmap;									
 };
 
 class VDRControl : public wxWindow

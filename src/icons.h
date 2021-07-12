@@ -4,11 +4,13 @@
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
-#	include <wx/wx.h>
+#include <wx/wx.h>
 #endif
 
-#include <wx/filename.h>
-#include <wx/mstream.h>
+#include <wx/bitmap.h>
+#include <wx/string.h>
+
+#include "config.h"
 
 extern void initialize_images(void);
 
@@ -17,15 +19,13 @@ extern wxBitmap *_img_vdr_play;
 extern wxBitmap *_img_vdr_record;
 
 #ifdef PLUGIN_USE_SVG
-// #include "ocpn_plugin.h"
-  extern wxString _svg_vdr_pi;
-  extern wxString _svg_play;
-  extern wxString _svg_play_rollover;
-  extern wxString _svg_play_toggled;
-  extern wxString _svg_record;
-  extern wxString _svg_record_rollover;
-  extern wxString _svg_record_toggled;
+   extern wxString _svg_vdr_pi;
+   extern wxString _svg_play;
+   extern wxString _svg_play_rollover;
+   extern wxString _svg_play_toggled;
+   extern wxString _svg_record;
+   extern wxString _svg_record_rollover;
+   extern wxString _svg_record_toggled;
 #endif
-
 
 #endif /* ICONS_H */
