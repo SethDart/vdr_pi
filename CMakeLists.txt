@@ -65,7 +65,7 @@ set(OCPN_RELEASE_REPO
     "opencpn/vdr-prod"
     CACHE STRING "Default repository for tagged builds not matching 'beta'"
 )
-option(PLUGIN_USE_SVG "Use SVG graphics" OFF)
+option(PLUGIN_USE_SVG "Use SVG graphics" ON)
 
 set(OCPN_TARGET_TUPLE
     ""
@@ -85,7 +85,7 @@ endif ()
 #
 # -------  Plugin setup --------
 #
-project(Vdr_pi VERSION 1.2.10.4)
+project(Vdr_pi VERSION 1.2.10.6)
 set(PKG_PRERELEASE "") # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME Vdr) # Dialogs, installer artifacts, ...
@@ -160,6 +160,7 @@ configure_file(
   # The cloudsmith upload script
   ${CMAKE_SOURCE_DIR}/ci/upload.sh.in ${CMAKE_BINARY_DIR}/upload.sh @ONLY
 )
+
 configure_file(
   # The cloudsmith upload script, windows bat file.
   ${CMAKE_SOURCE_DIR}/ci/upload.bat.in ${CMAKE_BINARY_DIR}/upload.bat @ONLY

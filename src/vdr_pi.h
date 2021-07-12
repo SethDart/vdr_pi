@@ -35,23 +35,12 @@
   #include "wx/wx.h"
 #endif //precompiled headers
 
-#include "config.h"
-
-//  The version number now comes from (${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/include/version.h) file
-//  as configured by the CMakeLists.txt script
-
-//#define     PLUGIN_VERSION_MAJOR    0
-//#define     PLUGIN_VERSION_MINOR    2
-//#define     MY_API_VERSION_MAJOR    1
-//#define     MY_API_VERSION_MINOR    16
-
-#include "ocpn_plugin.h"
-
 #include <wx/fileconf.h>
 #include <wx/filepicker.h>
 #include <wx/file.h>
 #include <wx/aui/aui.h>
 #include "ocpn_plugin.h"
+#include "config.h"
 
 #define VDR_TOOL_POSITION -1          // Request default positioning of toolbar tool
 
@@ -78,7 +67,14 @@ public:
       wxString GetCommonName();
       wxString GetShortDescription();
       wxString GetLongDescription();
-
+	  wxString _svg_vdr_pi;
+	  wxString _svg_play;
+	  wxString _svg_play_rollover;
+	  wxString _svg_play_toggled;
+	  wxString _svg_record;
+	  wxString _svg_record_rollover;
+	  wxString _svg_record_toggled;
+	  
       void Notify();
       void SetInterval( int interval );
 
@@ -95,7 +91,6 @@ private:
 
       int               m_tb_item_id_record;
       int               m_tb_item_id_play;
-
       wxFileConfig     *m_pconfig;
       wxAuiManager     *m_pauimgr;
       VDRControl       *m_pvdrcontrol;
@@ -105,6 +100,7 @@ private:
       bool              m_recording;
       wxTextFile        m_istream;
       wxFile            m_ostream;
+	  wxBitmap          m_panelBitmap;
 };
 
 class VDRControl : public wxWindow

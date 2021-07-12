@@ -17,14 +17,14 @@ extern wxBitmap *_img_vdr_play;
 extern wxBitmap *_img_vdr_record;
 
 #ifdef PLUGIN_USE_SVG
-//#include "ocpn_plugin.h"
-extern  wxString _svg_vdr_pi;
-extern  wxString _svg_play;
-extern  wxString _svg_play_rollover;
-extern  wxString _svg_play_toggled;
-extern  wxString _svg_record;
-extern  wxString _svg_record_rollover;  
-extern  wxString _svg_record_toggled;
+// #include "ocpn_plugin.h"
+  extern wxString _svg_vdr_pi;
+  extern wxString _svg_play;
+  extern wxString _svg_play_rollover;
+  extern wxString _svg_play_toggled;
+  extern wxString _svg_record;
+  extern wxString _svg_record_rollover;
+  extern wxString _svg_record_toggled;
 #endif
 
 
