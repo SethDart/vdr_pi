@@ -38,16 +38,16 @@ message(STATUS "Building: ${BUILD_TYPE}")
 # -------- Options ----------
 
 set(OCPN_TEST_REPO
-    "mike-rossiter/vdr-alpha"
+    "opencpn/vdr-alpha"
     CACHE STRING "Default repository for untagged builds"
 )
 set(OCPN_BETA_REPO
-    "mike-rossiter/vdr-beta"
+    "opencpn/vdr-beta"
     CACHE STRING 
     "Default repository for tagged builds matching 'beta'"
 )
 set(OCPN_RELEASE_REPO
-    "mike-rossiter/vdr-prod"
+    "opencpn/vdr-prod"
     CACHE STRING 
     "Default repository for tagged builds not matching 'beta'"
 )
@@ -71,20 +71,20 @@ endif ()
 # -------  Plugin setup --------
 #
 
-project(vdr_pi VERSION 1.3.5.0)
+project(vdr_pi VERSION 1.3.5.1)
 set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME VDR)    # Dialogs, installer artifacts, ...
 set(PLUGIN_API_NAME VDR) # As of GetCommonName() in plugin API
-set(CPACK_PACKAGE_CONTACT "Mike Rossiter")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Record/Playback vessels movements")
+set(CPACK_PACKAGE_CONTACT "Rick Gleason")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Record/Playback vessels nmea and movements")
 set(CPACK_PACKAGE_DESCRIPTION [=[
-Allows playback.
+Allows playback.d
 ]=])
 
-set(PKG_AUTHOR "Mike Rossiter")
+set(PKG_AUTHOR "Rick Gleason")
 set(PKG_IS_OPEN_SOURCE "yes")
-set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/Rasbats/vdr_pi)
+set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/rgleason/vdr_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/vdr.html)
 
 SET(SRC
