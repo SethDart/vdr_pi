@@ -6,6 +6,7 @@
 
 #include <wx/filename.h>
 #include <wx/mstream.h>
+#include "ocpn_plugin.h"
 #include "icons.h"
 
 wxBitmap *_img_vdr_pi;
@@ -13,10 +14,14 @@ wxBitmap *_img_vdr_play;
 wxBitmap *_img_vdr_record;
 
 #ifdef VDR_USE_SVG
-#include "ocpn_plugin.h"
+//wxString _svg_vdr_pi;
 wxString _svg_vdr;
 wxString _svg_vdr_play;
 wxString _svg_vdr_record;
+wxString _svg_vdr_record_toggled;
+wxString _svg_vdr_record_rollover;  
+wxString _svg_vdr_play_toggled;
+wxString _svg_vdr_play_rollover;
 #endif
 
 void initialize_images(void)
@@ -37,17 +42,32 @@ void initialize_images(void)
 	#ifdef VDR_USE_SVG
     wxFileName fn;
     wxString tmp_path;
-
     tmp_path = GetPluginDataDir("vdr_pi");
     fn.SetPath(tmp_path);
     fn.AppendDir(_T("data"));
 
     fn.SetFullName(_T("vdr_pi.svg"));
     _svg_vdr = fn.GetFullPath();
+
     fn.SetFullName(_T("vdr_play.svg"));
     _svg_vdr_play = fn.GetFullPath();
+
+    fn.SetFullName(_T("vdr_play_rollover.svg"));
+    _svg_vdr_play_rollover = fn.GetFullPath();
+
+   fn.SetFullName(_T("vdr_play_toggled.svg"));
+    _svg_vdr_play_toggled = fn.GetFullPath();
+
 	fn.SetFullName(_T("vdr_record.svg"));
     _svg_vdr_record = fn.GetFullPath();
+
+    fn.SetFullName(_T("vdr_record_rollover.svg"));
+    _svg_vdr_record_rollover = fn.GetFullPath();
+
+    fn.SetFullName(_T("vdr_record_toggled.svg"));
+    _svg_vdr_record_toggled = fn.GetFullPath();
+//    wxLogMessage(_T("Loading toolbar icon: ") + _svg_record_toggled);
+
 
 #endif // VDR_USE_SVG
 	return;

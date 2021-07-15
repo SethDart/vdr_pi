@@ -103,15 +103,14 @@ int vdr_pi::Init(void)
       //    This PlugIn needs two toolbar icons
 #ifdef VDR_USE_SVG
         m_tb_item_id_record = InsertPlugInToolSVG(_T( "VDR" ),
-            _svg_vdr_record, _svg_vdr_record, _svg_vdr_record,
+            _svg_vdr_record, _svg_vdr_record_rollover, _svg_vdr_record_toggled,
             wxITEM_CHECK, _("Record"), _T( "" ), NULL,
             VDR_TOOL_POSITION, 0, this);
 		m_tb_item_id_play = InsertPlugInToolSVG(_T( "VDR" ),
-            _svg_vdr_play, _svg_vdr_play, _svg_vdr_play,
+            _svg_vdr_play, _svg_vdr_play_rollover, _svg_vdr_play_toggled,
             wxITEM_CHECK, _("Play"), _T( "" ), NULL,
             VDR_TOOL_POSITION, 0, this);
 		 m_recording = false;
-
 #else
       m_tb_item_id_record = InsertPlugInTool(_T(""), _img_vdr_record, _img_vdr_record, wxITEM_CHECK,
             _("Record"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
