@@ -13,7 +13,7 @@ wxBitmap *_img_vdr_pi;
 wxBitmap *_img_vdr_play;
 wxBitmap *_img_vdr_record;
 
-#ifdef VDR_USE_SVG
+#ifdef PLUGIN_USE_SVG
 //wxString _svg_vdr_pi;
 wxString _svg_vdr;
 wxString _svg_vdr_play;
@@ -23,6 +23,7 @@ wxString _svg_vdr_record;
 //wxString _svg_vdr_play_toggled;
 //wxString _svg_vdr_play_rollover;
 #endif
+
 
 void initialize_images(void)
 {
@@ -39,8 +40,7 @@ void initialize_images(void)
 		_img_vdr_record = new wxBitmap(wxImage(sm));
 	}
 
-#ifdef VDR_USE_SVG
-
+#ifdef PLUGIN_USE_SVG
 //    wxFileName fn;
 //    fn.SetPath(GetPluginDataDir("vdr_pi"));
 //    fn.AppendDir(_T("data"));

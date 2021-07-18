@@ -101,8 +101,7 @@ int vdr_pi::Init(void)
       LoadConfig();
 
       //    This PlugIn needs two toolbar icons
-      
-#ifdef VDR_USE_SVG
+#ifdef PLUGIN_USE_SVG
         m_tb_item_id_record = InsertPlugInToolSVG(_T( "VDR" ),
             _svg_vdr_record, _svg_vdr_record, _svg_vdr_record,
             wxITEM_CHECK, _("Record"), _T( "" ), NULL,

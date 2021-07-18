@@ -11,22 +11,22 @@
    inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
    id="svg8"
    version="1.1"
-   viewBox="0 0 100 100"
-   height="100mm"
-   width="100mm">
+   viewBox="0 0 32 32"
+   height="32mm"
+   width="32mm">
   <defs
      id="defs2" />
   <sodipodi:namedview
-     inkscape:window-maximized="0"
-     inkscape:window-y="0"
-     inkscape:window-x="64"
-     inkscape:window-height="1033"
-     inkscape:window-width="1541"
+     inkscape:window-maximized="1"
+     inkscape:window-y="-9"
+     inkscape:window-x="-9"
+     inkscape:window-height="1011"
+     inkscape:window-width="1920"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="svg8"
      inkscape:document-units="mm"
-     inkscape:cy="199.26195"
+     inkscape:cy="201.28225"
      inkscape:cx="213.15385"
      inkscape:zoom="1.979899"
      inkscape:pageshadow="2"
@@ -43,54 +43,54 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <rect
-     rx="7.3447013e-18"
-     y="0"
+     rx="2.3503045e-18"
+     y="0.17014277"
      x="0"
-     height="100"
-     width="100"
+     height="31.829857"
+     width="32"
      id="rect2065"
-     style="font-variation-settings:normal;display:inline;opacity:1;vector-effect:none;fill:#000000;fill-opacity:0;fill-rule:evenodd;stroke-width:0.264999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1" />
+     style="font-variation-settings:normal;display:inline;opacity:1;vector-effect:none;fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke-width:0.0845739;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1" />
   <path
      sodipodi:insensitive="true"
-     d="M 48.875491,99.465463 A 50,50.006325 0 0 1 4.9039704e-6,49.449639 50,50.006325 0 0 1 48.91977,-0.52286647 50,50.006325 0 0 1 99.952363,47.289431 50,50.006325 0 0 1 53.282868,99.370209"
+     d="M 15.640157,31.829857 A 16,15.916942 0 0 1 1.5692705e-6,15.909892 16,15.916942 0 0 1 15.654326,0.00371512 16,15.916942 0 0 1 31.984756,15.222301 16,15.916942 0 0 1 17.050518,31.799538"
      sodipodi:arc-type="arc"
      sodipodi:open="true"
      sodipodi:end="1.5050917"
      sodipodi:start="1.5932884"
-     sodipodi:ry="50.006325"
-     sodipodi:rx="50"
-     sodipodi:cy="49.471786"
-     sodipodi:cx="50"
+     sodipodi:ry="15.916942"
+     sodipodi:rx="16"
+     sodipodi:cy="15.916942"
+     sodipodi:cx="16"
      sodipodi:type="arc"
      id="path2067"
-     style="display:inline;fill:#acacac;fill-opacity:1;fill-rule:evenodd;stroke-width:0.685231" />
+     style="display:inline;fill:#989898;fill-opacity:1;fill-rule:evenodd;stroke-width:0.21869" />
   <path
-     d="M 49.100393,89.455344 A 40,40 0 0 1 10.009917,48.57483 40,40 0 0 1 50.881656,9.4751794 40,40 0 0 1 89.990479,50.338141 40,40 0 0 1 49.136296,89.456136 L 50,49.465462 Z"
+     d="M 15.712126,28.643651 A 12.8,12.731943 0 0 1 3.2031731,15.631442 12.8,12.731943 0 0 1 16.28213,3.1860784 12.8,12.731943 0 0 1 28.796954,16.192701 12.8,12.731943 0 0 1 15.723615,28.643903 L 16,15.914928 Z"
      sodipodi:arc-type="slice"
      sodipodi:end="1.5923906"
      sodipodi:start="1.5932884"
-     sodipodi:ry="40"
-     sodipodi:rx="40"
-     sodipodi:cy="49.465462"
-     sodipodi:cx="50"
+     sodipodi:ry="12.731943"
+     sodipodi:rx="12.8"
+     sodipodi:cy="15.914928"
+     sodipodi:cx="16"
      sodipodi:type="arc"
      id="path2071"
-     style="display:inline;fill:#030303;fill-opacity:1;fill-rule:evenodd;stroke-width:0.27455" />
+     style="display:inline;fill:#373737;fill-opacity:1;fill-rule:evenodd;stroke-width:0.0876218" />
   <g
-     transform="translate(0,-0.53453904)"
      inkscape:label="Layer 1"
      id="layer1"
      inkscape:groupmode="layer">
-    <circle
-       r="20"
-       cy="49.311226"
-       cx="50.24667"
+    <ellipse
+       cy="15.695693"
+       cx="16.078934"
        id="path2084"
-       style="display:inline;fill:#acacac;fill-opacity:1;fill-rule:evenodd;stroke-width:0.264583" />
+       style="display:inline;fill:#848484;fill-opacity:1;fill-rule:evenodd;stroke-width:0.084441"
+       rx="6.4000001"
+       ry="6.3659716" />
   </g>
 </svg>

@@ -15,10 +15,8 @@
 # - You should have received a copy of the GNU General Public License     *
 # - along with this program; if not, write to the                         *
 # - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,                                       *
-# - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx          *
-# -----------------------------------------------------------------------------
-# Frontend1  v2.8.0.0 buildCI:yes useODAPI:no validateJSON:no
-# ---------------------------------------------------------------------------
+# - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*
+
 
 # -------- Cmake setup ---------
 #
@@ -65,7 +63,7 @@ set(OCPN_RELEASE_REPO
     "opencpn/vdr-prod"
     CACHE STRING "Default repository for tagged builds not matching 'beta'"
 )
-option(PLUGIN_USE_SVG "Use SVG graphics" ON)
+option(VDR_USE_SVG "Use SVG graphics" ON)
 
 set(OCPN_TARGET_TUPLE
     ""
@@ -85,15 +83,15 @@ endif ()
 #
 # -------  Plugin setup --------
 #
-project(Vdr_pi VERSION 1.2.10.6)
+project(Vdr_pi VERSION 1.2.10.17)
 set(PKG_PRERELEASE "") # Empty, or a tag like 'beta'
 
-set(DISPLAY_NAME Vdr) # Dialogs, installer artifacts, ...
+set(DISPLAY_NAME VDR) # Dialogs, installer artifacts, ...
 set(PLUGIN_API_NAME VDR) # As of GetCommonName() in plugin API
 set(CPACK_PACKAGE_CONTACT "Jean-Eudes Onfray")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Voyage Data Recorder")
 set(CPACK_PACKAGE_DESCRIPTION [=[
-Voyage Data Recorder plugin for OpenCPN. Provides NMEA stream save and replay.
+Record/Playback vessels nmea and movements.
 ]=])
 
 set(PKG_AUTHOR "Rick Gleason")
@@ -102,7 +100,11 @@ set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/rgleason/vdr_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/vdr.html)
 
 set(SRC
-  src/icons.h src/icons.cpp src/vdr_pi.h src/vdr_pi.cpp src/ocpn_plugin.h
+  src/icons.h
+  src/icons.cpp
+  src/vdr_pi.h
+  src/vdr_pi.cpp
+#  libs/api-16/ocpn_plugin.h
 )
 
 # -------- Setup completed, build the plugin --------
@@ -124,7 +126,7 @@ string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2" OCPN_MIN_VERSION
                      ${API_OCPN_MIN_VERSION}
 )
 
-if (PLUGIN_USE_SVG)
+if (VDR_USE_SVG)
   add_definitions(-DVDR_USE_SVG)
 endif ()
 
