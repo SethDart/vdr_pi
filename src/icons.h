@@ -16,7 +16,7 @@ extern wxBitmap *_img_vdr_record;
 #ifdef VDR_USE_SVG
    extern wxString _svg_vdr;
    extern wxString _svg_vdr_play;
-   extern wxString _svg_vdr_record;   
+   extern wxString _svg_vdr_record;
 //   extern wxString _svg_play_rollover;
 //   extern wxString _svg_play_toggled;
 //   extern wxString _svg_record_rollover;

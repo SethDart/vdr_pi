@@ -99,15 +99,14 @@ int vdr_pi::Init(void)
 
       //    And load the configuration items
       LoadConfig();
-
-      //    This PlugIn needs two toolbar icons
+	  
 #ifdef VDR_USE_SVG
         m_tb_item_id_record = InsertPlugInToolSVG(_T( "VDR" ),
-            _svg_vdr_record, _svg_vdr_record_rollover, _svg_vdr_record_toggled,
+            _svg_vdr_record, _svg_vdr_record, _svg_vdr_record,
             wxITEM_CHECK, _("Record"), _T( "" ), NULL,
             VDR_TOOL_POSITION, 0, this);
 		m_tb_item_id_play = InsertPlugInToolSVG(_T( "VDR" ),
-            _svg_vdr_play, _svg_vdr_play_rollover, _svg_vdr_play_toggled,
+            _svg_vdr_play, _svg_vdr_play, _svg_vdr_play,
             wxITEM_CHECK, _("Play"), _T( "" ), NULL,
             VDR_TOOL_POSITION, 0, this);
 		 m_recording = false;
@@ -118,6 +117,7 @@ int vdr_pi::Init(void)
             _("Play"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
       m_recording = false;
 #endif
+
 
       return (
            WANTS_TOOLBAR_CALLBACK    |

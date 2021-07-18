@@ -37,7 +37,6 @@
 #include "vdr_pi.h"
 #include "icons.h"
 
-
 // the class factories, used to create and destroy instances of the PlugIn
 
 extern "C" DECL_EXP opencpn_plugin* create_pi(void *ppimgr)
@@ -118,7 +117,6 @@ int vdr_pi::Init(void)
             _("Play"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
       m_recording = false;
 #endif
-
 
       return (
            WANTS_TOOLBAR_CALLBACK    |
