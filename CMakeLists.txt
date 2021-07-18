@@ -71,7 +71,7 @@ endif ()
 # -------  Plugin setup --------
 #
 
-project(vdr_pi VERSION 1.3.5.1)
+project(vdr_pi VERSION 1.3.5.2)
 set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME VDR)    # Dialogs, installer artifacts, ...
@@ -79,7 +79,7 @@ set(PLUGIN_API_NAME VDR) # As of GetCommonName() in plugin API
 set(CPACK_PACKAGE_CONTACT "Rick Gleason")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Record/Playback vessels nmea and movements")
 set(CPACK_PACKAGE_DESCRIPTION [=[
-Allows playback.d
+Voyage Data Recorder NMEA stream save and replay
 ]=])
 
 set(PKG_AUTHOR "Rick Gleason")

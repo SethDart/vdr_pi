@@ -18,10 +18,10 @@ wxBitmap *_img_vdr_record;
 wxString _svg_vdr;
 wxString _svg_vdr_play;
 wxString _svg_vdr_record;
-//wxString _svg_record_toggled;
-//wxString _svg_record_rollover;  
-//wxString _svg_play_toggled;
-//wxString _svg_play_rollover;
+wxString _svg_vdr_record_toggled;
+wxString _svg_vdr_record_rollover;  
+wxString _svg_vdr_play_toggled;
+wxString _svg_vdr_play_rollover;
 #endif
 
 void initialize_images(void)
@@ -52,20 +52,20 @@ void initialize_images(void)
     fn.SetFullName(_T("vdr_play.svg"));
     _svg_vdr_play = fn.GetFullPath();
 
+    fn.SetFullName(_T("vdr_play_rollover.svg"));
+    _svg_vdr_play_rollover = fn.GetFullPath();
+
+   fn.SetFullName(_T("vdr_play_toggled.svg"));
+    _svg_vdr_play_toggled = fn.GetFullPath();
+
 	fn.SetFullName(_T("vdr_record.svg"));
     _svg_vdr_record = fn.GetFullPath();
-	
-//   fn.SetFullName(_T("vdr_play_rollover.svg"));
-//   _svg_play_rollover = fn.GetFullPath();
 
-//    fn.SetFullName(_T("vdr_play_toggled.svg"));
-//    _svg_play_toggled = fn.GetFullPath();
+    fn.SetFullName(_T("vdr_record_rollover.svg"));
+    _svg_vdr_record_rollover = fn.GetFullPath();
 
-//    fn.SetFullName(_T("vdr_record_rollover.svg"));
-//    _svg_record_rollover = fn.GetFullPath();
-
-//    fn.SetFullName(_T("vdr_record_toggled.svg"));
-//    _svg_record_toggled = fn.GetFullPath();
+    fn.SetFullName(_T("vdr_record_toggled.svg"));
+    _svg_vdr_record_toggled = fn.GetFullPath();
 //    wxLogMessage(_T("Loading toolbar icon: ") + _svg_record_toggled);
 
 

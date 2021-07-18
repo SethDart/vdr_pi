@@ -95,6 +95,9 @@ private:
       wxTextFile        m_istream;
       wxFile            m_ostream;
 	  wxBitmap          m_panelBitmap;
+//	  extern    wxstring _svg_vdr_play;
+//	  extern    wxstring _svg_vdr_record;
+//	  extern    wxstring _svg_vdr_pi;
 };
 
 class VDRControl : public wxWindow
