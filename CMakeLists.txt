@@ -100,7 +100,10 @@ set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/rgleason/vdr_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/vdr.html)
 
 set(SRC
-  src/icons.h src/icons.cpp src/vdr_pi.h src/vdr_pi.cpp src/ocpn_plugin.h
+  src/icons.h 
+  src/icons.cpp 
+  src/vdr_pi.h 
+  src/vdr_pi.cpp 
 )
 
 # -------- Setup completed, build the plugin --------
