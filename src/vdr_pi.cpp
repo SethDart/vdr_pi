@@ -85,7 +85,7 @@ vdr_pi::vdr_pi(void *ppimgr)
         m_panelBitmap = wxBitmap(panelIcon);
     else
         wxLogWarning("VDR panel icon has NOT been loaded");
-    
+
 }
 
 int vdr_pi::Init(void)
@@ -100,8 +100,6 @@ int vdr_pi::Init(void)
       //    And load the configuration items
       LoadConfig();
 
-      //    This PlugIn needs two toolbar icons
-      
 #ifdef VDR_USE_SVG
         m_tb_item_id_record = InsertPlugInToolSVG(_T( "VDR" ),
             _svg_vdr_record, _svg_vdr_record, _svg_vdr_record,
@@ -159,12 +157,14 @@ bool vdr_pi::DeInit(void)
 
 int vdr_pi::GetAPIVersionMajor()
 {
-     return API_VERSION_MAJOR;
+      return atoi(API_VERSION);
 }
 
 int vdr_pi::GetAPIVersionMinor()
 {
-     return API_VERSION_MINOR;
+    std::string v(API_VERSION);
+    size_t dotpos = v.find('.');
+    return atoi(v.substr(dotpos + 1).c_str());
 }
 
 int vdr_pi::GetPlugInVersionMajor()
@@ -179,7 +179,7 @@ int vdr_pi::GetPlugInVersionMinor()
 
 wxBitmap *vdr_pi::GetPlugInBitmap()
 {
-      return _img_vdr_pi;
+       return &m_panelBitmap;
 }
 
 wxString vdr_pi::GetCommonName()
@@ -266,11 +266,11 @@ void vdr_pi::OnToolbarToolCallback(int id)
                     idir = fn.GetPath();
                     ifile = fn.GetFullName();
                   }
-                
+
                   wxString file;
                   int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file"), idir, ifile, _T("*.*") );
 
-                  if( response != wxID_OK ) 
+                  if( response != wxID_OK )
                   {
                         SetToolbarItemState( id, false );
                         return;
@@ -280,7 +280,7 @@ void vdr_pi::OnToolbarToolCallback(int id)
 
                   m_istream.Open( m_ifilename );
                   Start( m_interval, wxTIMER_CONTINUOUS ); // start timer
-      
+
                   if (! m_pvdrcontrol )
                   {
                         m_pvdrcontrol = new VDRControl( GetOCPNCanvasWindow(), wxID_ANY, this, 1000/m_interval, m_istream.GetLineCount() );
@@ -318,7 +318,7 @@ void vdr_pi::OnToolbarToolCallback(int id)
                   wxString file;
                   int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file"), idir, ifile, _T("*.*") );
 
-                  if( response != wxID_OK ) 
+                  if( response != wxID_OK )
                   {
                         SetToolbarItemState( id, false );
                         return;
@@ -431,4 +431,3 @@ void VDRControl::OnSliderUpdated( wxCommandEvent& event )
 {
       m_pvdr->SetInterval( 1000/m_pslider->GetValue() );
 }
-

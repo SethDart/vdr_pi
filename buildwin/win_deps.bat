@@ -1,8 +1,8 @@
 rem
 rem Install build dependencies. Requires a working choco installation,
-rem see https://docs.chocolatey.org/en-us/choco/setup. 
+rem see https://docs.chocolatey.org/en-us/choco/setup.
 rem
-rem Initial run will do choco installs requiring administrative 
+rem Initial run will do choco installs requiring administrative
 rem privileges.
 rem
 

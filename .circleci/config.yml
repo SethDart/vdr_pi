@@ -38,17 +38,17 @@ jobs:
         default: "fp-arm20-v1"
     <<: *flatpak-steps
 
-  build-flatpak-x86-1808:
-    machine:
-      image: ubuntu-2004:202010-01
-    environment:
-      - OCPN_TARGET: flatpak
-      - FLATPAK_BRANCH: stable
-    parameters:
-      cache-key:
-        type: string
-        default: "fp-x86-18-v1"
-    <<: *flatpak-steps
+#  build-flatpak-x86-1808:
+#    machine:
+#      image: ubuntu-2004:202010-01
+#    environment:
+#      - OCPN_TARGET: flatpak
+#      - FLATPAK_BRANCH: stable
+#    parameters:
+#      cache-key:
+#        type: string
+#        default: "fp-x86-18-v1"
+#    <<: *flatpak-steps
 
   build-flatpak-x86-2008:
     machine:
@@ -61,10 +61,10 @@ jobs:
         type: string
         default: "fp-x86-20-v1"
     <<: *flatpak-steps
- 
+
   build-macos:
     macos:
-      xcode: "12.5.1"  
+      xcode: "12.5.1"
     environment:
       - OCPN_TARGET: macos
     steps:
@@ -160,12 +160,12 @@ workflows:
       - build-flatpak-arm64:
           <<: *std-filters
 
-      - build-flatpak-x86-1808:
-          <<: *std-filters
+#      - build-flatpak-x86-1808:
+#          <<: *std-filters
 
       - build-flatpak-x86-2008:
           <<: *std-filters
- 
+
       - build-macos:
           <<: *std-filters
 
@@ -189,5 +189,3 @@ workflows:
 
       - build-android-armhf:
           <<: *std-filters
-
- 

@@ -83,7 +83,7 @@ endif ()
 #
 # -------  Plugin setup --------
 #
-project(Vdr_pi VERSION 1.2.10.17)
+project(vdr_pi VERSION 1.3.5.7)
 set(PKG_PRERELEASE "") # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME VDR) # Dialogs, installer artifacts, ...
@@ -152,6 +152,17 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
     include(PluginLibs)
   endif ()
   include(PluginLocalization)
+
+  include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
+
+#  add_subdirectory("libs/jsoncpp")
+#  target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+
+#  add_subdirectory("libs/tinyxml")
+#  target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
+
+#  add_subdirectory("libs/wxJSON")
+#  target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 endif ()
 
 configure_file(
