@@ -18,4 +18,5 @@ against this site.
 This software is Copyright (C) 2011 by Jean-Eudes Onfray.  It is
 licensed under a GNU Public License, version 2 or later. See the 
 source files for details
+Icons made by Rick Gleason under GNU Public License version 2 or later. 
 

@@ -34,4 +34,4 @@ modules:
       sources:
           - type: git
             url: ..
-            branch: master-update
+            branch: master
