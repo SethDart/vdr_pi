@@ -12,8 +12,7 @@ if [ -z "$CLOUDSMITH_API_KEY" ]; then
     exit 0
 fi
 
-# Print repo even if builder treats it as a secret:
-echo "Using upload repo: $(add_spaces @pkg_repo@)"
+echo "Using CLOUDSMITH_API_KEY: ${CLOUDSMITH_API_KEY:0:4}..."
 
 if [ -f ~/.uploadrc ]; then source ~/.uploadrc; fi
 set -xe
@@ -22,12 +21,10 @@ cloudsmith push raw --no-wait-for-sync \
     --name @pkg_displayname@-metadata \
     --version @pkg_semver@ \
     --summary "Plugin metadata for automatic installation" \
-    @pkg_repo@ @pkg_displayname@.xml
+    @pkg_repo@ @pkg_xmlname@.xml
 
 cloudsmith push raw --no-wait-for-sync \
     --name @pkg_displayname@-tarball \
     --version @pkg_semver@ \
     --summary "Plugin tarball for automatic installation" \
     @pkg_repo@ @pkg_tarname@.tar.gz
-
-echo "Using REPO: @pkg_repo@ ..."

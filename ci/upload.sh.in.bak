@@ -4,20 +4,6 @@
 # Upload the .tar.gz and .xml artifacts to cloudsmith
 #
 
-function add_spaces()
-# Echo $1 with a space between each character
-{
-    local str=$1
-    local newstr=""
-    while [ -n "$str" ]; do
-        next=${str#?}
-        newstr="${newstr}${str%$next} "
-        str=$next
-    done
-    echo $newstr
-}
-
-
 if [ -z "$CLOUDSMITH_API_KEY" ]; then
     echo 'Warning: $CLOUDSMITH_API_KEY is not available, giving up.'
     echo 'Metadata: @pkg_displayname@.xml'
