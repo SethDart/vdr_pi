@@ -1,21 +1,20 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: vdr_pi 0.3\n"
+"Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-01 14:18-0600\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2019-11-27 15:31\n"
+"Last-Translator: Pavel Kalian (nohal)\n"
+"Language-Team: Bulgarian\n"
+"Language: bg_BG\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Language: bg\n"
+"X-Crowdin-File: /plugins/vdr_pi/po/vdr_pi.pot\n"
 
 #: src/vdr_pi.cpp:82
 msgid "Record"
@@ -34,8 +33,7 @@ msgid "Voyage Data Recorder plugin for OpenCPN"
 msgstr ""
 
 #: src/vdr_pi.cpp:162
-msgid ""
-"Voyage Data Recorder plugin for OpenCPN\n"
+msgid "Voyage Data Recorder plugin for OpenCPN\n"
 "Provides NMEA stream save and replay."
 msgstr ""
 
@@ -54,3 +52,4 @@ msgstr ""
 #: src/vdr_pi.cpp:346
 msgid "Progress:"
 msgstr ""
+

@@ -83,7 +83,7 @@ endif ()
 #
 # -------  Plugin setup --------
 #
-project(vdr_pi VERSION 1.3.5.5)
+project(vdr_pi VERSION 1.3.5.6)
 set(PKG_PRERELEASE "") # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME VDR) # Dialogs, installer artifacts, ...
@@ -100,10 +100,11 @@ set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/rgleason/vdr_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/vdr.html)
 
 set(SRC
-  src/icons.h 
-  src/icons.cpp 
-  src/vdr_pi.h 
-  src/vdr_pi.cpp 
+  src/icons.h
+  src/icons.cpp
+  src/vdr_pi.h
+  src/vdr_pi.cpp
+#  libs/api-16/ocpn_plugin.h
 )
 
 # -------- Setup completed, build the plugin --------
@@ -121,8 +122,9 @@ set(VERSION_PATCH ${PROJECT_VERSION_PATCH})
 set(PACKAGE_NAME ${CMAKE_PROJECT_NAME})
 
 # Create the minimim ocpn version id string like ov50
-string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2"
-       OCPN_MIN_VERSION ${API_OCPN_MIN_VERSION})
+string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2" OCPN_MIN_VERSION
+                     ${API_OCPN_MIN_VERSION}
+)
 
 if (VDR_USE_SVG)
   add_definitions(-DVDR_USE_SVG)
@@ -151,7 +153,7 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   endif ()
   include(PluginLocalization)
 
-  include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
+#  include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
 
 #  add_subdirectory("libs/jsoncpp")
 #  target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
@@ -179,6 +181,6 @@ configure_file(
 set(checksum "@checksum@")
 configure_file(
   # The XML metadata file
-  ${CMAKE_SOURCE_DIR}/vdr-plugin.xml.in
+  ${CMAKE_SOURCE_DIR}/plugin.xml.in
   ${CMAKE_BINARY_DIR}/${pkg_displayname}.xml.in @ONLY
 )
