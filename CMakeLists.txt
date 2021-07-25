@@ -77,7 +77,6 @@ if ("${_lc_target}" MATCHES "android*")
   set(CMAKE_CROSSCOMPILING ON)
 else ()
   set(QT_ANDROID OFF)
-  add_definitions(-D__OCPN_USE_CURL__)
 endif ()
 
 #
@@ -91,7 +90,8 @@ set(PLUGIN_API_NAME VDR) # As of GetCommonName() in plugin API
 set(CPACK_PACKAGE_CONTACT "Jean-Eudes Onfray")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Voyage Data Recorder")
 set(CPACK_PACKAGE_DESCRIPTION [=[
-Record/Playback vessels nmea and movements.
+A Voyage Data Recorder (VDR) to record and play NMEA files.
+Save NMEA stream to a file.  Replay NMEA stream previously saved.
 ]=])
 
 set(PKG_AUTHOR "Rick Gleason")
@@ -104,7 +104,6 @@ set(SRC
   src/icons.cpp
   src/vdr_pi.h
   src/vdr_pi.cpp
-#  libs/api-16/ocpn_plugin.h
 )
 
 # -------- Setup completed, build the plugin --------
