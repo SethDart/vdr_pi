@@ -126,10 +126,6 @@ string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2" OCPN_MIN_VERSION
                      ${API_OCPN_MIN_VERSION}
 )
 
-if (VDR_USE_SVG)
-  add_definitions(-DVDR_USE_SVG)
-endif ()
-
 # Set up targets. Targets sets up a recursive call with BUILD_TYPE set to
 # 'flatpak', 'pkg' or 'tarball'. The initial call without BUILD_TYPE ends here.
 #
