@@ -59,7 +59,7 @@ jobs:
         type: string
         default: "fp-x86-20-v2"
     <<: *flatpak-steps
- 
+
   build-macos:
     macos:
       xcode: "12.5.1"
@@ -163,7 +163,7 @@ workflows:
 
       - build-flatpak-x86-2008:
           <<: *std-filters
- 
+
       - build-macos:
           <<: *std-filters
 
@@ -187,5 +187,3 @@ workflows:
 
       - build-android-armhf:
           <<: *std-filters
-
- 
