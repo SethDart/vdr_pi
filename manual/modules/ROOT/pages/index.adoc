@@ -56,9 +56,7 @@ time!
 
 ==== Want to play ?
 
-* To get started, download this
-
-link:../../../files/nmea/rausch_shortened.zip[file]. 
+* To get started, download this link:{attachmentsdir}/rausch_shortened.zip[file]. 
 
 Save and un-zip and you have a .txt file. The file is ready to play.
 * If you can't find the boat, have a look in the Adriatic or just press
@@ -73,5 +71,4 @@ image::nmea-debug-dsc.png[]
 ==== Why is my SOG way off and showing 60-70 knots in the Dashboard, when I playback a file?
 
 Uncheck “Calculate SOG” option in Preferences. See
-http://www.cruisersforum.com/forums/f134/playback-vdr-from-recorded-file-201359.html#post2635729[Playback
-from recorded file]
+http://www.cruisersforum.com/forums/f134/playback-vdr-from-recorded-file-201359.html#post2635729[Playbackfrom recorded file]
