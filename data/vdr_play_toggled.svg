@@ -9,7 +9,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
-   sodipodi:docname="vdr_pi - Copy.svg"
+   sodipodi:docname="vdr_play_toggled.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -27,10 +27,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.919596"
-     inkscape:cx="41.605658"
-     inkscape:cy="19.697975"
+     inkscape:cx="32.766823"
+     inkscape:cy="19.697974"
      inkscape:document-units="mm"
-     inkscape:current-layer="svg8"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -47,7 +47,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -73,7 +72,7 @@
      sodipodi:arc-type="arc"
      d="M 4.1381252,8.42165 A 4.2333331,4.2113576 0 0 1 8.9203997e-7,4.2094924 4.2333331,4.2113576 0 0 1 4.1418741,9.8295831e-4 4.2333331,4.2113576 0 0 1 8.4626334,4.0275673 4.2333331,4.2113576 0 0 1 4.5112831,8.413628" />
   <path
-     style="display:inline;fill:#c1c1c1;fill-opacity:0.99000001;fill-rule:evenodd;stroke-width:0.088;stroke-miterlimit:4;stroke-dasharray:none"
+     style="display:inline;fill:#d2d2d2;fill-opacity:0.99000001;fill-rule:evenodd;stroke-width:0.088;stroke-miterlimit:4;stroke-dasharray:none"
      id="path2071"
      sodipodi:type="arc"
      sodipodi:cx="4.2333336"
@@ -90,7 +89,7 @@
      inkscape:label="Layer 1"
      style="display:inline">
     <path
-       style="display:inline;fill:#030303;fill-opacity:1;stroke:#000000;stroke-width:0.0273831px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="display:inline;fill:#454545;fill-opacity:1;stroke:#000000;stroke-width:0.0273831px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 2.8201846,2.4805971 3.890875,1.590728 v 0 l -3.909709,1.852299 z"
        id="path2198"
        sodipodi:nodetypes="ccccc" />

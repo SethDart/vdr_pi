@@ -102,11 +102,11 @@ int vdr_pi::Init(void)
 
 #ifdef VDR_USE_SVG
         m_tb_item_id_record = InsertPlugInToolSVG(_T( "VDR" ),
-            _svg_vdr_record, _svg_vdr_record, _svg_vdr_record,
+            _svg_vdr_record, _svg_record_toggled, _svg_record_toggled,
             wxITEM_CHECK, _("Record"), _T( "" ), NULL,
             VDR_TOOL_POSITION, 0, this);
 		m_tb_item_id_play = InsertPlugInToolSVG(_T( "VDR" ),
-            _svg_vdr_play, _svg_vdr_play, _svg_vdr_play,
+            _svg_vdr_play, _svg_play_toggled, _svg_play_toggled,
             wxITEM_CHECK, _("Play"), _T( "" ), NULL,
             VDR_TOOL_POSITION, 0, this);
 		 m_recording = false;
