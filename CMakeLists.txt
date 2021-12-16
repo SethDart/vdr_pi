@@ -1,118 +1,44 @@
-# ===========================================================================
-# Author:      Jean-Eudes Onfray
-# ---------------------------------------------------------------------------
-# - Copyright (C) 2010 by Jean-Eudes Onfray                                *
-# - This program is free software; you can redistribute it and/or modify  *
-# - it under the terms of the GNU General Public License as published by  *
-# - the Free Software Foundation; either version 2 of the License, or     *
-# - (at your option) any later version.                                   *
-# - *
-# - This program is distributed in the hope that it will be useful,       *
-# - but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# - GNU General Public License for more details.                          *
-# - *
-# - You should have received a copy of the GNU General Public License     *
-# - along with this program; if not, write to the                         *
-# - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,                                       *
-# - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*
-#
-#   Frontend:  ShipDriver_pi VERSION 2.8.5.1
+# ~~~
+# Summary:      Main plugin build script
+# Copyright (c) 2020-2021 Mike Rossiter
+# License:      GPLv3+
+# ~~~
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#  ShipDriver Template VERSION 3.0
 
 # -------- Cmake setup ---------
 #
 cmake_minimum_required(VERSION 3.12.0)
-
-cmake_policy(SET CMP0042 NEW)
-
-if (POLICY CMP0072)
-  cmake_policy(SET CMP0072 NEW)
-endif ()
-
-if (POLICY CMP0077)
-  cmake_policy(SET CMP0077 NEW)
-endif ()
-
-# Locations where cmake looks for cmake modules.
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/build ${CMAKE_SOURCE_DIR}/cmake)
-
-if (WIN32)
-  list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/buildwin)
-endif ()
+include(${CMAKE_SOURCE_DIR}/cmake/CmakeSetup.cmake NO_POLICY_SCOPE)
 message(STATUS "Cmake version: ${CMAKE_VERSION}.")
 
-# -------- Build setup (mostly in PluginCompiler) --------
+
+# -------- Build setup  --------
 #
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-message(STATUS "Building: ${BUILD_TYPE}")
-
-# -------- Options ----------
-
-set(OCPN_TEST_REPO
-    "opencpn/vdr-alpha"
-    CACHE STRING "Default repository for untagged builds"
-)
-set(OCPN_BETA_REPO
-    "opencpn/vdr-beta"
-    CACHE STRING "Default repository for tagged builds matching 'beta'"
-)
-set(OCPN_RELEASE_REPO
-    "opencpn/vdr-prod"
-    CACHE STRING "Default repository for tagged builds not matching 'beta'"
-)
-option(VDR_USE_SVG "Use SVG graphics" ON)
-
-set(OCPN_TARGET_TUPLE
-    ""
-    CACHE STRING "Target spec: \"platform;version;arch\""
-)
-
-string(TOLOWER "${OCPN_TARGET_TUPLE}" _lc_target)
-if ("${_lc_target}" MATCHES "android*")
-  set(QT_ANDROID ON)
-  # Until we have a proper toolchain file:
-  set(CMAKE_CROSSCOMPILING ON)
+include(PluginOptions)
+if (BUILD_TYPE)
+  message(STATUS "Building: ${BUILD_TYPE}")
 else ()
-  set(QT_ANDROID OFF)
+  message(STATUS "Configuring")
 endif ()
 
+# -------- Plugin setup ----------
 #
-# -------  Plugin setup --------
-#
-project(vdr_pi VERSION 1.3.12.0)
-set(PKG_PRERELEASE "") # Empty, or a tag like 'beta'
-
-set(DISPLAY_NAME VDR) # Dialogs, installer artifacts, ...
-set(PLUGIN_API_NAME VDR) # As of GetCommonName() in plugin API
-set(CPACK_PACKAGE_CONTACT "Jean-Eudes Onfray")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Voyage Data Recorder")
-set(CPACK_PACKAGE_DESCRIPTION [=[
-A Voyage Data Recorder (VDR) to record and play NMEA files.
-Save NMEA stream to a file.  Replay NMEA stream previously saved.
-]=])
-
-set(PKG_AUTHOR "Rick Gleason")
-set(PKG_IS_OPEN_SOURCE "yes")
-set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/rgleason/vdr_pi)
-set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/vdr.html)
-
-set(SRC
-  src/icons.h
-  src/icons.cpp
-  src/vdr_pi.h
-  src/vdr_pi.cpp
-)
+include(Plugin.cmake)
 
 # -------- Setup completed, build the plugin --------
 #
-add_library(${CMAKE_PROJECT_NAME} SHARED ${SRC})
+project(${PKG_NAME} VERSION ${PKG_VERSION})
+include(PluginCompiler)
+
+add_library(${CMAKE_PROJECT_NAME} SHARED EXCLUDE_FROM_ALL ${SRC})
 include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
 
-add_subdirectory("libs/api-16")
+add_subdirectory("libs/${PKG_API_LIB}")
 target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api)
 
 set(VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
@@ -122,28 +48,32 @@ set(VERSION_PATCH ${PROJECT_VERSION_PATCH})
 set(PACKAGE_NAME ${CMAKE_PROJECT_NAME})
 
 # Create the minimim ocpn version id string like ov50
-string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2" OCPN_MIN_VERSION
-                     ${API_OCPN_MIN_VERSION}
-)
+string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2"
+       OCPN_MIN_VERSION ${API_OCPN_MIN_VERSION})
 
-# Set up targets. Targets sets up a recursive call with BUILD_TYPE set to
-# 'flatpak', 'pkg' or 'tarball'. The initial call without BUILD_TYPE ends here.
+if (COMMAND late_init)
+  late_init()
+endif ()
+
+# Set up targets. Targets sets up new targets with BUILD_TYPE set to
+# 'flatpak', 'android' or 'tarball'. The initial call without BUILD_TYPE ends
+# here.
 #
-include(Targets)
-create_targets(
-  ${PROJECT_SOURCE_DIR}/flatpak/org.opencpn.OpenCPN.Plugin.vdr.yaml
+file(GLOB FLATPAK_MANIFEST
+  ${PROJECT_SOURCE_DIR}/flatpak/org.opencpn.OpenCPN.Plugin.*.yaml
 )
+include(Targets)
+create_targets(${FLATPAK_MANIFEST})
 if ("${BUILD_TYPE}" STREQUAL "")
-  return()
+  return ()
 endif ()
 
 if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   # Build package as required (flatpak already dealt with).
-  include(PluginCompiler)
+  #
   include(PluginInstall)
-  include(PluginPackage)
   if (QT_ANDROID)
-    include(libs/AndroidLibs.cmake)
+    include(AndroidLibs)
   else ()
     include(PluginLibs)
   endif ()
@@ -151,24 +81,32 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
 
   include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
 
+  if (COMMAND add_plugin_libraries)
+    add_plugin_libraries()
+  endif ()
+
 endif ()
 
 configure_file(
-  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include//config.h @ONLY
+  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include//config.h
+  @ONLY
 )
 
 configure_file(
   # The cloudsmith upload script
-  ${CMAKE_SOURCE_DIR}/ci/upload.sh.in ${CMAKE_BINARY_DIR}/upload.sh @ONLY
+  ${CMAKE_SOURCE_DIR}/ci/upload.sh.in ${CMAKE_BINARY_DIR}/upload.sh
+  @ONLY
 )
 configure_file(
   # The cloudsmith upload script, windows bat file.
-  ${CMAKE_SOURCE_DIR}/ci/upload.bat.in ${CMAKE_BINARY_DIR}/upload.bat @ONLY
+  ${CMAKE_SOURCE_DIR}/ci/upload.bat.in ${CMAKE_BINARY_DIR}/upload.bat
+  @ONLY
 )
 
 set(checksum "@checksum@")
 configure_file(
   # The XML metadata file
   ${CMAKE_SOURCE_DIR}/plugin.xml.in
-  ${CMAKE_BINARY_DIR}/${pkg_displayname}.xml.in @ONLY
+  ${CMAKE_BINARY_DIR}/${pkg_displayname}.xml.in
+  @ONLY
 )

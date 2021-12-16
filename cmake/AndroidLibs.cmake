@@ -1,17 +1,21 @@
+# ~~~
+# Summary:      Wraps the master.zip binary Android libs blob
+# License:      GPLv3+
+# Copyright (c) 2021 Alec Leamas
 #
-# For armhf and arm64: Download precompiled libraries and set up
-# linking
-#
+# For android armhf and arm64: Download precompiled libraries and set up
+# linkage
+# ~~~
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+
+
 cmake_minimum_required(VERSION 3.1)
 
 find_package(Gettext REQUIRED)
-
-set(Qt_Build  "build_arm64/qtbase"
-  CACHE STRING "Base directory for QT build"
-)
-set(wxQt_Build "build_android_release_64_static_O3"
-  CACHE STRING "wxWidgets QT build base directory"
-)
 
 # install() needs to find the cross-compiled library:
 set_property(
@@ -37,11 +41,25 @@ if (NOT EXISTS ${OCPN_ANDROID_CACHEDIR}/master.zip)
   )
 endif ()
 if (NOT EXISTS ${_master_base})
+  message(STATUS "Extracting image (patience, please...)")
   execute_process(
     COMMAND ${CMAKE_COMMAND} -E tar -xzf ${OCPN_ANDROID_CACHEDIR}/master.zip
     WORKING_DIRECTORY "${OCPN_ANDROID_CACHEDIR}"
   )
 endif ()
+
+# Set up Qt_Build and wxQt_Build
+if ("${ARM_ARCH}" STREQUAL "aarch64")
+  set(_Qt_Build  "build_arm64/qtbase")
+  set(_wxQt_Build "build_android_release_64_static_O3")
+elseif ("${ARM_ARCH}" STREQUAL "armhf")
+  set(_Qt_Build  "build_arm32_19_O3/qtbase")
+  set(_wxQt_Build "build_android_release_19_static_O3")
+else ()
+  message(FATAL_ERROR "No valid arm configuration detected.")
+endif ()
+set(Qt_Build  ${_Qt_Build} CACHE STRING "Base directory for QT build")
+set(wxQt_Build ${_wxQt_Build} CACHE STRING "wxWidgets QT build base directory")
 
 # Setup directories and libraries
 if ("${Qt_Build}" MATCHES "arm64")

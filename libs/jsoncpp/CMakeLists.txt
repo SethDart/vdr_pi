@@ -1,3 +1,9 @@
+# ~~~
+# Summary:      jsoncpp library cmake setup
+# License:      Expat
+# Copyright (c) 2021 Alec Leamas
+# ~~~
+
 if (TARGET ocpn::jsoncpp)
   return()
 endif ()
@@ -5,7 +11,7 @@ endif ()
 cmake_minimum_required(VERSION 3.1.0)
 project("jsoncpp")
 
-option(USE_SYSTEM_JSONCPP "Use system copy of library if available" ON)
+option(USE_SYSTEM_JSONCPP "Use system copy of library if available" OFF)
 
 add_library(_JSONCPP INTERFACE)
 add_library(ocpn::jsoncpp ALIAS _JSONCPP)
