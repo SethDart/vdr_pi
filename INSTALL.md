@@ -1,7 +1,7 @@
 ## INSTALL: Building Plugins generic README.
 
-Install build dependencies as described in the
-[wiki](https://github.com/Rasbats/managed_plugins/wiki/Local-Build)
+Install build dependencies as described in the 
+[manual](https://opencpn-manuals.github.io/main/AlternativeWorkflow/Local-Build.html)
 Then clone this repository, enter it and make
 `rm -rf build; mkdir build; cd build`.
 
@@ -16,18 +16,29 @@ To build the flatpak tarball:
     $ cmake ..
     $ make flatpak
 
-On most platforms besides flatpak: build a platform-dependent legacy
-installer like a NSIS .exe on Windows, a Debian .deb package on Linux
-and a .dmg image for MacOS:
+Historically, it has been possible to build legacy packages like
+an NSIS installer on Windows and .deb packages on Linux. This ability
+has been removed in the 5.6.0 cycle.
 
-    $ cmake ..
-    $ make pkg
+#### Building for Android
+
+Builds for android requires an ndk installation and an updated cmake,
+see manual (above).
+
+To build an android aarch64 tarball:
+
+    $ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/android-aarch64-toolchain.cmake ..
+    $ make
+
+To build an android armhf tarball
+
+    $ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/android-armhf-toolchain.cmake ..
+    $ make
 
 #### Building on windows (MSVC)
 On windows, a different workflow is used:
 
-    > cmake -T v141_xp -G "Visual Studio 15 2017" --config RelWithDebInfo  ..
+    > ..\buildwin\win_deps.bat
+    > cmake -T v141_xp -G "Visual Studio 15 2017" ^
+           -DCMAKE_BUILD_TYPE=RelWithDebInfo  ..
     > cmake --build . --target tarball --config RelWithDebInfo
-
-This is to build the installer tarball. Use _--target pkg_ to build the
-legacy NSIS installer.

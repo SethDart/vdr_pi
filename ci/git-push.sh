@@ -1,6 +1,5 @@
 #!/bin/bash
 #
-#
 # Temporary hack to handle .uploadrc  and local-build.rc when used for
 # PYTHONPATH and git-push
 

@@ -1,6 +1,7 @@
 cd build
-cmake -T v141_xp -G "Visual Studio 15 2017" ..
-cmake --build . --target tarball --config RelWithDebInfo >output.txt
+rem normal use
+rem cmake -T v141_xp -G "Visual Studio 15 2017" ..
+rem cmake --build . --target tarball --config RelWithDebInfo >output.txt
 
 rem cmake -T v141_xp ..
 rem cmake --build . --target package --config release >output.txt
@@ -16,3 +17,9 @@ rem  - py ..\ci\windows-ldd
 rem  - cmd: upload.bat
 rem  - py ..\ci\git-push
 
+cd build
+cmake -T v141_xp ..
+cmake -G "Visual Studio 15 2017" -DCMAKE_BUILD_TYPE=RelWithDebInfo  ..
+cmake --build . --target tarball --config RelWithDebInfo
+
+cmd /k
