@@ -8,7 +8,6 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
-#  ShipDriver Template VERSION 3.0
 
 # -------- Cmake setup ---------
 #
@@ -26,8 +25,6 @@ else ()
   message(STATUS "Configuring")
 endif ()
 
-# -------- Plugin setup ----------
-#
 include(Plugin.cmake)
 
 # -------- Setup completed, build the plugin --------
@@ -35,7 +32,7 @@ include(Plugin.cmake)
 project(${PKG_NAME} VERSION ${PKG_VERSION})
 include(PluginCompiler)
 
-add_library(${CMAKE_PROJECT_NAME} SHARED EXCLUDE_FROM_ALL ${SRC})
+add_library(${CMAKE_PROJECT_NAME} SHARED ${SRC})
 include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
 
 add_subdirectory("libs/${PKG_API_LIB}")
@@ -83,6 +80,11 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
 
   if (COMMAND add_plugin_libraries)
     add_plugin_libraries()
+  endif ()
+
+  if (EXISTS "libs/jsoncpp" AND NOT TARGET ocpn::jsoncpp)
+    add_subdirectory("libs/jsoncpp")
+    target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
   endif ()
 
 endif ()

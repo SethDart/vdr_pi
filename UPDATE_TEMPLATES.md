@@ -8,9 +8,7 @@ is to
   - Bootstrap process by downloading the updates-templates script
     and add it to repo if it does not exist.
   - Make sure the plugin repo is clean (commit or stash changes)
-  - Pin files which should not be updated.
   - Run script
-  - Inspect the results.
   - Handle updates to CMakeLists.txt/Plugin.cmake and the
     flatpak yaml manifest.
   - Upstream local changes to shipdriver templates
@@ -52,43 +50,46 @@ Using the Windows command CLI goes like:
     > git commit -m "Add update-templates script"
 
 
-Pin files which should not be updated
--------------------------------------
-
-If there are files which are known to have local modifications, list these
-files (one per line) in a file named *update-ignored*.  This file is not
-present by default, and needs to be created and committed if used.
-
-
 Running
 -------
 
 The script is run from the plugin top directory using
-`./update-templates`. In windows, assuming standard installation paths:
+`./update-templates`. In windows CMD, assuming standard installation paths:
 
     > "C:\Program Files\Git\bin\bash.exe" update-templates
 
-Usage summary:
+Usage summary :
 
-    update-templates [-T | -h] [treeish]
+    update-templates [-T]  <treeish>
+    update-templates <-h|-l>
 
-The *treeish* argument can be used to merge changes from another shipdriver
-branch than the default shipdriver/master.
+Parameters:
 
-_-T_ runs in test mode, lots of output, requires an existing remote and
-does not self-update.
+**treeish**: A shipdriver tag or branch.  Recommended usage is using the
+latest stable (non-beta) tag.
 
-*update-templates -h* prints the complete help message.
+Options:
 
-Script unconditionally updates known files and commits them directly.
+**-l** lists available tags which can be used as _treeish_
+
+**-T** runs in test mode, lots of output, requires an existing shipdriver 
+remote and does not self-update.
+
+**-h** prints the complete help message.
+
+Examples:
+
+    update-templates -l                   -- List available tags
+    update-templates sd3.0.1              -- Update from sd3.0.1 tag
+    update-templates shipdriver/v3.0      -- Update from v3.0 release branch
+    update-templates shipdriver/master    -- Update from development branch
 
 Checking modifications in CMakeLists.txt and flatpak manifest
 -------------------------------------------------------------
 
 As part of the 3.0.0 transition CMakeLists.txt is split into one plugin-specific 
-file Plugin.cmake and a generic CMakeLists.txt.  Later updates
-are only supposed to affect CMakeLists.txt while Plugin.cmake, the
-plugin-specific parts is kept as-is.
+file Plugin.cmake and a generic CMakeLists.txt. If the file _Plugin.cmake_
+exists script will thus update _CMakeLists.txt_, otherwise not.
 
 The "flatpak manifest" is the yaml file configuring the flatpak build,
 named like flatpak/org.opencpn.OpenCPN.Plugin.\*.yaml.  This might need
