@@ -103,18 +103,18 @@ int vdr_pi::Init(void)
 #ifdef VDR_USE_SVG
         m_tb_item_id_record = InsertPlugInToolSVG(_T( "VDR" ),
             _svg_vdr_record, _svg_record_toggled, _svg_record_toggled,
-            wxITEM_CHECK, _("Record"), _T( "" ), NULL,
+            wxITEM_CHECK, _("VDR Record"), _T( "" ), NULL,
             VDR_TOOL_POSITION, 0, this);
 		m_tb_item_id_play = InsertPlugInToolSVG(_T( "VDR" ),
             _svg_vdr_play, _svg_play_toggled, _svg_play_toggled,
-            wxITEM_CHECK, _("Play"), _T( "" ), NULL,
+            wxITEM_CHECK, _("VDR Play"), _T( "" ), NULL,
             VDR_TOOL_POSITION, 0, this);
 		 m_recording = false;
 #else
       m_tb_item_id_record = InsertPlugInTool(_T(""), _img_vdr_record, _img_vdr_record, wxITEM_CHECK,
-            _("Record"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
+            _("VDR Record"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
       m_tb_item_id_play = InsertPlugInTool(_T(""), _img_vdr_play, _img_vdr_play, wxITEM_CHECK,
-            _("Play"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
+            _("VDR Play"), _T(""), NULL, VDR_TOOL_POSITION, 0, this);
       m_recording = false;
 #endif
 
@@ -268,7 +268,7 @@ void vdr_pi::OnToolbarToolCallback(int id)
                   }
 
                   wxString file;
-                  int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file"), idir, ifile, _T("*.*") );
+                  int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file to Play"), idir, ifile, _T("*.*") );
 
                   if( response != wxID_OK )
                   {
@@ -316,7 +316,7 @@ void vdr_pi::OnToolbarToolCallback(int id)
                   }
 
                   wxString file;
-                  int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file"), idir, ifile, _T("*.*") );
+                  int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Create a file to Record"), idir, ifile, _T("*.*") );
 
                   if( response != wxID_OK )
                   {
