@@ -80,7 +80,7 @@ function (create_finish_script)
     execute_process(
       COMMAND cmake -E ${_rmdir_cmd} app/${pkg_displayname}
     )
-    execute_process(
+     execute_process(
       COMMAND cmake -E rename app/files app/${pkg_displayname}
     )
     execute_process(
@@ -98,14 +98,14 @@ function (create_finish_script)
 endfunction ()
 
 function (android_target)
+  add_custom_target(android-conf)
   if ("${ARM_ARCH}" STREQUAL "aarch64")
     set(OCPN_TARGET_TUPLE "'android-arm64\;16\;arm64'")
   else ()
     set(OCPN_TARGET_TUPLE "'android-armhf\;16\;armhf'")
   endif ()
   add_custom_command(
-    OUTPUT android-conf-stamp
-    COMMAND cmake -E touch android-conf-stamp
+    TARGET android-conf
     COMMAND cmake
       -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/app/files
       -DBUILD_TYPE:STRING=tarball
@@ -113,10 +113,9 @@ function (android_target)
       $ENV{CMAKE_BUILD_OPTS}
       ${CMAKE_BINARY_DIR}
   )
-  add_custom_target(android-build DEPENDS android-conf-stamp)
-  add_custom_command(
-    TARGET android-build COMMAND ${_build_target_cmd} ${PKG_NAME}
-  )
+  add_custom_target(android-build)
+  add_custom_command(TARGET android-build COMMAND ${_build_cmd})
+
   add_custom_target(android-install)
   add_custom_command(TARGET android-install COMMAND ${_install_cmd})
 
@@ -131,15 +130,16 @@ function (android_target)
   add_dependencies(android android-finish)
   add_dependencies(android-finish android-install)
   add_dependencies(android-install android-build)
+  add_dependencies(android-build android-conf)
 endfunction ()
 
 function (tarball_target)
 
   # tarball target setup
   #
+  add_custom_target(tarball-conf)
   add_custom_command(
-    OUTPUT tarball-conf-stamp
-    COMMAND cmake -E touch tarball-conf-stamp
+    TARGET tarball-conf
     COMMAND cmake
       -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/app/files
       -DBUILD_TYPE:STRING=tarball
@@ -147,10 +147,8 @@ function (tarball_target)
       ${CMAKE_BINARY_DIR}
   )
 
-  add_custom_target(tarball-build DEPENDS tarball-conf-stamp)
-  add_custom_command(
-    TARGET tarball-build COMMAND ${_build_target_cmd} ${PKG_NAME}
-  )
+  add_custom_target(tarball-build)
+  add_custom_command(TARGET tarball-build COMMAND ${_build_cmd})
 
   add_custom_target(tarball-install)
   add_custom_command(TARGET tarball-install COMMAND ${_install_cmd})
@@ -162,6 +160,7 @@ function (tarball_target)
     COMMAND cmake -P ${CMAKE_BINARY_DIR}/finish_tarball.cmake
     VERBATIM
   )
+  add_dependencies(tarball-build tarball-conf)
   add_dependencies(tarball-install tarball-build)
   add_dependencies(tarball-finish tarball-install)
 
@@ -224,7 +223,7 @@ function (flatpak_target manifest)
   file(WRITE "${CMAKE_BINARY_DIR}/build_flatpak.cmake" ${_fp_script})
   add_custom_target(flatpak)
   add_custom_command(
-    TARGET flatpak
+    TARGET flatpak      # Compute checksum
     COMMAND cmake -P ${CMAKE_BINARY_DIR}/build_flatpak.cmake
     VERBATIM
   )
@@ -242,10 +241,11 @@ function (create_targets manifest)
   tarball_target()
   flatpak_target(${manifest})
   android_target()
-  add_custom_target(default ALL)
-  if ("${ARM_ARCH}" STREQUAL "")
-    add_dependencies(default tarball)
-  else ()
-    add_dependencies(default android)
+  if ("${BUILD_TYPE}" STREQUAL "" )
+    if ("${ARM_ARCH}" STREQUAL "")
+      add_dependencies(${PACKAGE_NAME} tarball)
+    else ()
+      add_dependencies(${PACKAGE_NAME} android)
+    endif ()
   endif ()
 endfunction ()
