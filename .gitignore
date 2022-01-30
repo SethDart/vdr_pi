@@ -1,7 +1,4 @@
 build
-buildwin/wxWidgets-3.1.2.7z
-bld-no-clone.bat
-bld-wo-clone.bat
 build-*
 !build-deps
 po/*.pot
