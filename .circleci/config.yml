@@ -90,13 +90,13 @@ jobs:
       - USE_DEADSNAKES_PY37: 1
     <<: *debian-steps
 
-  build-bionic:
-    docker:
-      - image: cimg/base:stable-18.04
-    environment:
-      - OCPN_TARGET: bionic
-      - CMAKE_BUILD_PARALLEL_LEVEL: 2
-    <<: *debian-steps
+##  build-bionic:
+##   docker:
+##      - image: cimg/base:stable-18.04
+##    environment:
+##      - OCPN_TARGET: bionic
+##      - CMAKE_BUILD_PARALLEL_LEVEL: 2
+##    <<: *debian-steps
 
   build-bionic-gtk3:
     docker:
@@ -168,8 +168,8 @@ workflows:
       - build-macos:
           <<: *std-filters
 
-      - build-xenial:
-          <<: *std-filters
+##      - build-xenial:
+##          <<: *std-filters
 
       - build-bionic-gtk3:
           <<: *std-filters
