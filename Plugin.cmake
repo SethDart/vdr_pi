@@ -32,7 +32,7 @@ option(VDR_USE_SVG "Use SVG graphics" ON)
 #
 set(PKG_NAME vdr_pi)
 set(PKG_VERSION  1.3.17.0)
-set(PKG_PRERELEASE "beta")  # Empty, or a tag like 'beta'
+set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME VDR)    # Dialogs, installer artifacts, ...
 set(PLUGIN_API_NAME VDR) # As of GetCommonName() in plugin API
