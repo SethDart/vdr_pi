@@ -81,22 +81,22 @@ jobs:
       - run: cd build-osx; /bin/bash < upload.sh
       - run: ci/git-push.sh  build-osx
 
-  build-xenial:
-    docker:
-      - image: circleci/buildpack-deps:xenial-scm
-    environment:
-      - OCPN_TARGET: xenial
-      - CMAKE_BUILD_PARALLEL_LEVEL: 2
-      - USE_DEADSNAKES_PY37: 1
-    <<: *debian-steps
-
-##  build-bionic:
-##   docker:
-##      - image: cimg/base:stable-18.04
+##  build-xenial:
+##    docker:
+##      - image: circleci/buildpack-deps:xenial-scm
 ##    environment:
-##      - OCPN_TARGET: bionic
+##      - OCPN_TARGET: xenial
 ##      - CMAKE_BUILD_PARALLEL_LEVEL: 2
+##      - USE_DEADSNAKES_PY37: 1
 ##    <<: *debian-steps
+
+  build-bionic:
+   docker:
+      - image: cimg/base:stable-18.04
+    environment:
+      - OCPN_TARGET: bionic
+      - CMAKE_BUILD_PARALLEL_LEVEL: 2
+    <<: *debian-steps
 
   build-bionic-gtk3:
     docker:
