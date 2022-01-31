@@ -91,7 +91,7 @@ jobs:
 ##    <<: *debian-steps
 
   build-bionic:
-   docker:
+    docker:
       - image: cimg/base:stable-18.04
     environment:
       - OCPN_TARGET: bionic
