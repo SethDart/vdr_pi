@@ -2,8 +2,12 @@
 
 Install build dependencies as described in the 
 [manual](https://opencpn-manuals.github.io/main/AlternativeWorkflow/Local-Build.html)
-Then clone this repository, enter it and make
-`rm -rf build; mkdir build; cd build`.
+
+After cloning, enter this directory, setup the library submodule and
+enter a fresh working directory:
+
+    $ git submodule update --init opencpn-libs
+    $ rm -rf build; mkdir build; cd build
 
 A "normal" (not flatpak) tar.gz tarball which can be used by the new plugin
 installer available from OpenCPN 5.2.0 is built using:
@@ -38,7 +42,12 @@ To build an android armhf tarball
 #### Building on windows (MSVC)
 On windows, a different workflow is used:
 
+    > ..\minimal-path.bat
     > ..\buildwin\win_deps.bat
-    > cmake -T v141_xp -G "Visual Studio 15 2017" ^
-           -DCMAKE_BUILD_TYPE=RelWithDebInfo  ..
+    > cmake -T v141_xp -G "Visual Studio 15 2017" -DCMAKE_BUILD_TYPE=RelWithDebInfo  ..
     > cmake --build . --target tarball --config RelWithDebInfo
+
+The _minimal-path.bat_ file strips down %PATH% to a very small path, excluding
+most if not all otherwise available tools. In many cases this neither required
+nor convenient and can be excluded. However, using it represents a tested
+baseline.
