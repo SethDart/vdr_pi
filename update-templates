@@ -140,25 +140,20 @@ for dir in cmake ci scripts buildwin; do
     update_dir $dir $source_treeish
 done
 
-echo "Updating libs"
-git checkout $source_treeish libs
-git add libs
-git diff-index --quiet --cached HEAD -- || {
-    git commit -m "Templates: Updating libs"
-}
-
 # If Plugin.cmake exists we should also update CMakeLists.txt
 if [ -f Plugin.cmake ]; then CMakeLists=CMakeLists.txt; fi
 
 echo "Templates: Updating other files"
 for f in \
     appveyor.yml \
+    Changelog.md \
     .circleci \
     .clang-format \
     .cmake-format.yaml \
     .drone.yml \
     .gitattributes \
     .gitignore \
+    flatpak/manifest.wx31.patch \
     INSTALL.md \
     plugin.xml.in \
     .travis.yml \
@@ -170,8 +165,28 @@ do
     git checkout $source_treeish $f
     git add $f || git add --renormalize $f
 done
-
 git commit -m "Templates: Updating other files"
+
+# Handle opencpn-libs submodule
+test -d opencpn-libs || \
+    git submodule add https://github.com/leamas/opencpn-libs.git opencpn-libs
+git submodule update --remote --merge opencpn-libs
+git add opencpn-libs
+git diff-index --quiet --cached HEAD -- || {
+    echo "Updating opencpn-libs submodule"
+    git commit -m "opencpn-libs: Update to latest version."
+}
+
+
+# Check for files/dirs which are private, but should be copied on first run.
+for f in config.h.in build-deps libs; do
+    if test -e $f; then continue; fi
+    git checkout $source_treeish $f
+done
+git diff-index --quiet --cached HEAD -- || {
+    echo "Adding initial versions of private data"
+    git commit -m "Adding initial versions of private data"
+}
 
 if [ -e update-ignored ]; then
     echo "Revert changes in blacklisted files."
@@ -187,7 +202,6 @@ git diff-index --quiet --cached HEAD -- || {
     echo "Removing unused files"
     git commit -am "Templates: Removing obsoleted and unused files."
 }
-
 
 if [ -f cmake/TemplateVersion ]; then
     our_manifest=$(echo flatpak/org.opencpn.OpenCPN.Plugin.*.yaml)
@@ -214,9 +228,8 @@ git commit -m "cmake: Update TemplateVersion to $commit"
 cat << EOF
 
 
-Shipdriver templates has been updated. To review changes made:
+Shipdriver templates has been updated. Please review Changelog.md for info
+about changes in last release.
 
-    $ git log --oneline -12
-
-See UPDATE_TEMPLATES.md for more.
+See UPDATE_TEMPLATES.md for more info.
 EOF
