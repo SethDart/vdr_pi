@@ -31,7 +31,7 @@ option(VDR_USE_SVG "Use SVG graphics" ON)
 # -------  Plugin setup --------
 #
 set(PKG_NAME vdr_pi)
-set(PKG_VERSION  1.3.20.0)
+set(PKG_VERSION  1.3.21.0)
 set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME VDR)    # Dialogs, installer artifacts, ...
@@ -67,15 +67,20 @@ endmacro ()
 
 macro(add_plugin_libraries)
   # Add libraries required by this plugin
-#  add_subdirectory("libs/tinyxml")
+#  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/tinyxml")
 #  target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-#  add_subdirectory("libs/wxJSON")
+#  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/wxJSON")
 #  target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 
-#  add_subdirectory("libs/plugingl")
+#  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/plugingl")
 #  target_link_libraries(${PACKAGE_NAME} ocpn::plugingl)
 
-#  add_subdirectory("libs/jsoncpp")
+#  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/jsoncpp")
 #  target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+
+  # The wxsvg library enables SVG overall in the plugin
+#  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/wxsvg")
+#  target_link_libraries(${PACKAGE_NAME} ocpn::wxsvg)
+
 endmacro ()
