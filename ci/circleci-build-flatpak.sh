@@ -12,8 +12,6 @@
 # (at your option) any later version.
 
 set -e
-
-
 MANIFEST=$(cd flatpak; ls org.opencpn.OpenCPN.Plugin*yaml)
 echo "Using manifest file: $MANIFEST"
 set -x
@@ -21,6 +19,8 @@ set -x
 # Load local environment if it exists i. e., this is a local build
 if [ -f ~/.config/local-build.rc ]; then source ~/.config/local-build.rc; fi
 if [ -d /ci-source ]; then cd /ci-source; fi
+
+git submodule update --init opencpn-libs
 
 # Set up build directory and a visible link in /
 builddir=build-flatpak
@@ -43,24 +43,34 @@ if [ -n "$CI" ]; then
     sudo apt install flatpak flatpak-builder
 fi
 
-flatpak remote-add --user --if-not-exists \
-    flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-
-flatpak install --user -y --noninteractive \
-    flathub org.freedesktop.Sdk//20.08
-
-flatpak install --user -y --or-update --noninteractive \
-    flathub  org.opencpn.OpenCPN
-
 # The flatpak checksumming needs python3:
 if ! python3 --version 2>&1 >/dev/null; then
     pyenv local $(pyenv versions | sed 's/*//' | awk '{print $1}' | tail -1)
     cp .python-version $HOME
 fi
 
+flatpak remote-add --user --if-not-exists flathub-beta \
+    https://flathub.org/beta-repo/flathub-beta.flatpakrepo
+flatpak remote-add --user --if-not-exists \
+    flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+flatpak install --user -y --noninteractive \
+    flathub org.freedesktop.Sdk//20.08
+
 # Configure and build the plugin tarball and metadata.
 cd $builddir
-cmake -DCMAKE_BUILD_TYPE=Release ..
+if [ -n "$BUILD_WX31" ]; then
+    manifest=$(ls ../flatpak/org.opencpn.OpenCPN.Plugin*yaml)
+    sed -i  '/STRING=TARBALL/s/$/ -DOCPN_WX_ABI=wx315/' $manifest
+    sed -i  '/runtime-version/s/stable/beta/'  $manifest
+    flatpak install --user -y --or-update --noninteractive \
+        flathub-beta  org.opencpn.OpenCPN//beta
+    cmake -DCMAKE_BUILD_TYPE=Release -DOCPN_WX_ABI=wx315  ..
+else
+    flatpak install --user -y --or-update --noninteractive \
+        flathub  org.opencpn.OpenCPN
+    cmake -DCMAKE_BUILD_TYPE=Release ..
+fi
 make -j $(nproc) VERBOSE=1 flatpak
 
 # Restore permissions and owner in build tree.
