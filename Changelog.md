@@ -1,4 +1,29 @@
-3.1.1 Mar 27, 2022
+3.2.1  Dec 18, 2022
+* New release afrter some release problems of the 3.2.0 tag
+
+3.2.0  Dec 18, 2022
+* Drop all ubuntu builds according to OpenCPN#2502.
+* Update builds according to OpenCPN#2797:
+  + Update windows build to use wxwidgets 3.2, new ABI msvc-wx32
+  + Update macos to build for 10.10 on 13.4.1 using wxwidgets3.2,
+    new ABI darwin-wx32
+  + Update flatpak to runtime 22.08 and wxwidgets 3.2
+  + New debian wxwidgets 3.2 builds for bookworm and bullseye, new
+    ABI debian-wx32.
+* Updates to opencpn-libs, notably a new api-18 exposing new
+  communication interfaces.
+* Windows build refactored with a ci/appveyor.bat script which can
+  be run in local builds.
+* Remove still more wxWidgets 3.1.5 builds (#444)
+* update-templates: Remove .drone.yml (#443)
+* Drop the __OCPN__ANDROID__ symbol, use __ANDROID__ instead.
+* Fix bad bug when copying results in Flatpak resulting in empty
+  Flatpak plugin tarballs (#453, 454).
+* Drop the buggy and superfluous symbols ANDROID and ARMHF; use
+  __ANDROID__, __arm__ and __aarch64__ instead  (#451).
+* AndroidLibs: Update downloaded library hash (#446).
+* update-templates: Don't access non-existing Flatpak/wx31.patch
+* opencpn-libs: fixes to mute some warnings in plugin\_gl
 * Handle updated ubuntu repository keys (#436).
 * Remove too early ubuntu-wx315 which fails in validation (#437).
 
