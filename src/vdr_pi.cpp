@@ -260,15 +260,14 @@ void vdr_pi::OnToolbarToolCallback(int id)
             }
             else
             {
-                  wxString idir, ifile;
+                  wxString idir;
                   if(m_ifilename.Length()){
                     wxFileName fn(m_ifilename);
                     idir = fn.GetPath();
-                    ifile = fn.GetFullName();
                   }
 
                   wxString file;
-                  int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file to Play"), idir, ifile, _T("*.*") );
+                  int response = PlatformFileSelectorDialog( GetOCPNCanvasWindow(), &file, _("Choose a file to Play"), idir, "", _T("*.*") );
 
                   if( response != wxID_OK )
                   {
