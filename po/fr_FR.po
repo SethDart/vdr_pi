@@ -1,0 +1,57 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: opencpn\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-01 14:18-0600\n"
+"PO-Revision-Date: 2020-02-13 02:57\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /plugins/vdr_pi/po/vdr_pi.pot\n"
+
+#: src/vdr_pi.cpp:82
+msgid "Record"
+msgstr "VDR : Enregistrer"
+
+#: src/vdr_pi.cpp:84
+msgid "Play"
+msgstr "VDR : Jouer"
+
+#: src/vdr_pi.cpp:151
+msgid "VDR"
+msgstr "VDR"
+
+#: src/vdr_pi.cpp:157
+msgid "Voyage Data Recorder plugin for OpenCPN"
+msgstr "Complément \"Enregistreur/Lecteur de données de voyage\" pour OpenCPN"
+
+#: src/vdr_pi.cpp:162
+msgid "Voyage Data Recorder plugin for OpenCPN\n"
+"Provides NMEA stream save and replay."
+msgstr "Complément \"Enregistreur/Lecteur de données de voyage\" pour OpenCPN\n"
+"Il permet de :\n"
+"- Sauvegarder le flux de données NMEA et AIS circulant dans le PC.\n"
+"- Réutiliser un flux de données NMEA et AIS ayant circulé dans le PC."
+
+#: src/vdr_pi.cpp:227 src/vdr_pi.cpp:261
+msgid "Choose a file"
+msgstr "Choisir un fichier"
+
+#: src/vdr_pi.cpp:242
+msgid "VDR replay"
+msgstr "Utiliser des enregistrements VDR"
+
+#: src/vdr_pi.cpp:339
+msgid "Speed:"
+msgstr "Vitesse :"
+
+#: src/vdr_pi.cpp:346
+msgid "Progress:"
+msgstr "Progression :"
+

@@ -1,157 +1,124 @@
-##---------------------------------------------------------------------------
-## Author:      Jean-Eudes Onfray
-## Copyright:   
-## License:     wxWidgets License
-##---------------------------------------------------------------------------
+# ~~~
+# Summary:      Main plugin build script
+# Copyright (c) 2020-2021 Mike Rossiter
+# License:      GPLv3+
+# ~~~
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+
+# -------- Cmake setup ---------
+#
+cmake_minimum_required(VERSION 3.12.0)
+include(${CMAKE_SOURCE_DIR}/cmake/CmakeSetup.cmake NO_POLICY_SCOPE)
+message(STATUS "Cmake version: ${CMAKE_VERSION}.")
 
 
-# define minimum cmake version
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.2)
-# This should be 2.8.0 to have FindGTK2 module
-IF (COMMAND cmake_policy)
-  CMAKE_POLICY(SET CMP0003 OLD)
-  CMAKE_POLICY(SET CMP0005 OLD)
-  CMAKE_POLICY(SET CMP0011 OLD)
-ENDIF (COMMAND cmake_policy)
+# -------- Build setup  --------
+#
+include(PluginOptions)
+if (BUILD_TYPE)
+  message(STATUS "Building: ${BUILD_TYPE}")
+else ()
+  message(STATUS "Configuring")
+endif ()
 
-PROJECT(vdr_pi)
+# -------- Plugin setup ----------
+#
+include(Plugin.cmake)
 
-SET(PACKAGE_NAME vdr_pi)
-SET(PLUGIN_SOURCE_DIR .)
-MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
+# -------- Setup completed, build the plugin --------
+#
+project(${PKG_NAME} VERSION ${PKG_VERSION})
+include(PluginCompiler)
 
-#SET(CMAKE_BUILD_TYPE Debug)
+add_library(${CMAKE_PROJECT_NAME} SHARED EXCLUDE_FROM_ALL ${SRC})
+include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
 
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
+add_subdirectory("opencpn-libs/${PKG_API_LIB}")
+if (${PKG_NAME} MATCHES wx32)
+  target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api_wx32)
+else ()
+  target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api)
+endif ()
 
-# require proper c++
-#ADD_DEFINITIONS( "-Wall -ansi -pedantic -Wno-variadic-macros" )
-#TODO: Should we use  -fno-stack-protector
-#  IF NOT DEBUGGING CFLAGS="-O2 -march=native"
-IF(NOT WIN32)
- ADD_DEFINITIONS( "-Wall -g -fexceptions -fvisibility=hidden" )
+set(VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(VERSION_PATCH ${PROJECT_VERSION_PATCH})
 
- IF(NOT APPLE)
-  SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,-Bsymbolic")
- ELSE(NOT APPLE)
-  SET(CMAKE_SHARED_LINKER_FLAGS "-Wl")
- ENDIF(NOT APPLE)
+set(PACKAGE_NAME ${CMAKE_PROJECT_NAME})
 
-ENDIF(NOT WIN32)
+# Create the minimim ocpn version id string like ov50
+string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2"
+       OCPN_MIN_VERSION ${API_OCPN_MIN_VERSION})
 
-#SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,-Bsymbolic")
+if (COMMAND late_init)
+  late_init()
+endif ()
 
-# Add some definitions to satisfy MS
-IF(WIN32)
-    ADD_DEFINITIONS(-D__MSVC__)
-    ADD_DEFINITIONS(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE)
-ENDIF(WIN32)
-
-
-#SET(wxWidgets_USE_LIBS base core net xml html adv aui)
-#SET(BUILD_SHARED_LIBS TRUE)
-#SET( wxWidgets_USE_DEBUG OFF)
-#SET( wxWidgets_USE_UNICODE ON)
-#FIND_PACKAGE(wxWidgets REQUIRED)
-
-INCLUDE(${wxWidgets_USE_FILE})
-
-FIND_PACKAGE(Gettext REQUIRED)
-
-# For convenience we define the sources as a variable. You can add
-# header files and cpp/c files and CMake will sort them out
-
-
-SET(SRC_VDR
-            src/icons.h
-            src/icons.cpp
-            src/vdr_pi.h
-            src/vdr_pi.cpp
- 	)
-
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_VDR} )
-
-IF(WIN32)
-  SET(OPENCPN_IMPORT_LIB "../../${CMAKE_CFG_INTDIR}/${PARENT}")
-  TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${OPENCPN_IMPORT_LIB} )
-  ADD_DEPENDENCIES(${PACKAGE_NAME} ${PARENT})
-ENDIF(WIN32)
-
-TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${wxWidgets_LIBRARIES} )
-
-IF(UNIX)
-INSTALL(TARGETS ${PACKAGE_NAME} RUNTIME LIBRARY DESTINATION ${PREFIX_PLUGINS})
-ENDIF(UNIX)
-
-IF(WIN32)
-INSTALL(TARGETS ${PACKAGE_NAME} RUNTIME DESTINATION "plugins")
-ENDIF(WIN32)
-
-# find src/ -name \*.cpp -or -name \*.h -or -name \*.hpp >po/POTFILES.in
-FIND_PROGRAM(GETTEXT_XGETTEXT_EXECUTABLE xgettext)
-IF (GETTEXT_XGETTEXT_EXECUTABLE)
-ADD_CUSTOM_COMMAND(
-   OUTPUT po/${PACKAGE_NAME}.pot.dummy
-   COMMAND ${GETTEXT_XGETTEXT_EXECUTABLE} --force-po --package-name=${PACKAGE_NAME} --package-version="${PACKAGE_VERSION}" --output=po/${PACKAGE_NAME}.pot  --keyword=_ --width=80 --files-from=${CMAKE_CURRENT_SOURCE_DIR}/po/POTFILES.in
-   DEPENDS po/POTFILES.in po/${PACKAGE_NAME}.pot
-   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-   COMMENT "vdr-pot-update [${PACKAGE_NAME}]: Generated pot file."
+# Configure the flatpak manifest
+file(
+  GLOB manifest ${PROJECT_SOURCE_DIR}/flatpak/org.opencpn.OpenCPN.Plugin.*.yaml
 )
-ADD_CUSTOM_TARGET(vdr-pot-update COMMENT "vdr-pot-update: Done." DEPENDS po/${PACKAGE_NAME}.pot.dummy)
+include(ConfigureManifest)
+configure_manifest(${manifest} _new_manifest)
 
-ENDIF(GETTEXT_XGETTEXT_EXECUTABLE )
+# Set up targets. Targets sets up new targets with BUILD_TYPE set to
+# 'flatpak', 'android' or 'tarball'. The initial call without BUILD_TYPE ends
+# here.
+#
+include(Targets)
+create_targets(${_new_manifest})
 
-MACRO(GETTEXT_UPDATE_PO _potFile)
-   SET(_poFiles ${_potFile})
-   GET_FILENAME_COMPONENT(_absPotFile ${_potFile} ABSOLUTE)
+if ("${BUILD_TYPE}" STREQUAL "")
+  return ()
+endif ()
 
-   FOREACH (_currentPoFile ${ARGN})
-      GET_FILENAME_COMPONENT(_absFile ${_currentPoFile} ABSOLUTE)
-      GET_FILENAME_COMPONENT(_poBasename ${_absFile} NAME_WE)
+ 
+if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
+  # Build package as required (flatpak already dealt with).
+  #
+  if (APPLE)
+    include(MacosWxwidgets)
+  endif ()
+  include(PluginInstall)
+  if (QT_ANDROID)
+    include(AndroidLibs)
+  else ()
+    include(PluginLibs)
+  endif ()
+  include(PluginLocalization)
 
-      ADD_CUSTOM_COMMAND(
-         OUTPUT ${_absFile}.dummy
-         COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} --width=80 --strict --quiet --update --backup=none --no-location -s ${_absFile} ${_absPotFile}
-         DEPENDS ${_absPotFile} ${_absFile}
-         COMMENT "vdr-po-update [${_poBasename}]: Updated po file."
-      )
+  include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
+ 
+  if (COMMAND add_plugin_libraries)
+    add_plugin_libraries()
+  endif ()
 
-      SET(_poFiles ${_poFiles} ${_absFile}.dummy)
+endif ()
 
-   ENDFOREACH (_currentPoFile )
+configure_file(
+  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include//config.h
+  @ONLY
+)
 
-   ADD_CUSTOM_TARGET(vdr-po-update COMMENT "vdr-po-update: Done." DEPENDS ${_poFiles})
-ENDMACRO(GETTEXT_UPDATE_PO)
+configure_file(
+  # The cloudsmith upload script
+  ${CMAKE_SOURCE_DIR}/ci/upload.sh.in ${CMAKE_BINARY_DIR}/upload.sh
+  @ONLY
+)
+configure_file(
+  # The cloudsmith upload script, windows bat file.
+  ${CMAKE_SOURCE_DIR}/ci/upload.bat.in ${CMAKE_BINARY_DIR}/upload.bat
+  @ONLY
+)
 
-IF (GETTEXT_MSGMERGE_EXECUTABLE)
-FILE(GLOB PACKAGE_PO_FILES po/*.po)
-GETTEXT_UPDATE_PO(po/${PACKAGE_NAME}.pot ${PACKAGE_PO_FILES})
-ENDIF(GETTEXT_MSGMERGE_EXECUTABLE)
-
-SET(_gmoFiles)
-MACRO(GETTEXT_BUILD_MO)
-   FOREACH (_poFile ${ARGN})
-      GET_FILENAME_COMPONENT(_absFile ${_poFile} ABSOLUTE)
-      GET_FILENAME_COMPONENT(_poBasename ${_absFile} NAME_WE)
-      SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/${_poBasename}.mo)
-
-      ADD_CUSTOM_COMMAND(
-         OUTPUT ${_gmoFile}
-         COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_absFile}
-         DEPENDS ${_absFile}
-         COMMENT "vdr-i18n [${_poBasename}]: Created mo file."
-      )
-
-      INSTALL(FILES ${_gmoFile} DESTINATION ${PREFIX_DATA}/locale/${_poBasename}/LC_MESSAGES RENAME opencpn-${PACKAGE_NAME}.mo )
-      SET(_gmoFiles ${_gmoFiles} ${_gmoFile})
-   ENDFOREACH (_poFile )
-ENDMACRO(GETTEXT_BUILD_MO)
-
-if(GETTEXT_MSGFMT_EXECUTABLE)
-   FILE(GLOB PACKAGE_PO_FILES po/*.po)
-   GETTEXT_BUILD_MO(${PACKAGE_PO_FILES})
-   ADD_CUSTOM_TARGET(vdr-i18n COMMENT "vdr-i18n: Done." DEPENDS ${_gmoFiles})
-   #ADD_DEPENDENCIES(vdr-i18n ${PACKAGE_PO_FILES})
-   ADD_DEPENDENCIES(${PACKAGE_NAME} vdr-i18n)
-ENDIF(GETTEXT_MSGFMT_EXECUTABLE)
-
+set(checksum "@checksum@")
+configure_file(
+  # The XML metadata file
+  ${CMAKE_SOURCE_DIR}/plugin.xml.in
+  ${CMAKE_BINARY_DIR}/${pkg_displayname}.xml.in
+  @ONLY
+)
