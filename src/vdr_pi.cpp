@@ -59,7 +59,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 vdr_pi::vdr_pi(void *ppimgr)
-      :opencpn_plugin_116(ppimgr), wxTimer(this)
+      :opencpn_plugin_117(ppimgr), wxTimer(this)
 {
       // Create the PlugIn icons
       initialize_images();
@@ -177,6 +177,26 @@ int vdr_pi::GetPlugInVersionMinor()
       return PLUGIN_VERSION_MINOR;
 }
 
+int GetPlugInVersionPatch()
+{ 
+      return PLUGIN_VERSION_PATCH; 
+}
+
+int GetPlugInVersionPost() 
+{ 
+      return PLUGIN_VERSION_TWEAK; 
+}
+
+const char *GetPlugInVersionPre() 
+{
+      return PKG_PRERELEASE; 
+}
+
+const char *GetPlugInVersionBuild()
+{
+       return PKG_BUILD_INFO; 
+}
+
 wxBitmap *vdr_pi::GetPlugInBitmap()
 {
        return &m_panelBitmap;
@@ -186,7 +206,6 @@ wxString vdr_pi::GetCommonName()
 {
       return _("VDR");
 }
-
 
 wxString vdr_pi::GetShortDescription()
 {

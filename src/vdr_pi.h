@@ -50,7 +50,7 @@
 
 class VDRControl;
 
-class vdr_pi : public opencpn_plugin_116, wxTimer
+class vdr_pi : public opencpn_plugin_117, wxTimer
 {
 public:
       vdr_pi( void *ppimgr );
